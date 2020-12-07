@@ -19,13 +19,16 @@ export class AuthService {
 
     if (!data.success) return false;
 
-    IdentityService.getInstance().set(data.user, data.token);
+    await IdentityService.getInstance().set(data.user, data.token);
     return true;
   }
 
   async logout(): Promise<void> {
     const url = `${process.env.REACT_APP_DATA_SERVICE}/logout`;
-    await Axios.post(url);
-    IdentityService.getInstance().clear();
+    const headers = {
+      Authorization: `Bearer ${IdentityService.getInstance().token}`,
+    };
+    await Axios.post(url, null, { headers });
+    await IdentityService.getInstance().clear();
   }
 }
