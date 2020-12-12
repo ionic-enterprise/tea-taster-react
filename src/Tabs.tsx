@@ -35,7 +35,7 @@ const Tabs: React.FC<RouteComponentProps> = ({ match }) => (
         component={TeaDetailsPage}
       />
     </IonRouterOutlet>
-    <IonTabBar slot="bottom">
+    <IonTabBar color="tertiary" slot="bottom">
       <IonTabButton tab="tea" href={`${match.url}/tea`}>
         <IonIcon icon={leaf} />
         <IonLabel>Tea</IonLabel>

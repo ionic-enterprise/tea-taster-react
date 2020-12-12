@@ -12,7 +12,9 @@ exports[`<TastingNotesPage /> renders consistently 1`] = `
         </ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content>
+    <ion-content
+      class="main-content"
+    >
       <ion-header
         collapse="condense"
       >

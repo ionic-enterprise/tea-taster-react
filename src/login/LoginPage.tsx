@@ -43,7 +43,7 @@ const LoginPage: React.FC = () => {
           <IonTitle>Login</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="main-content">
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Login</IonTitle>
@@ -107,7 +107,7 @@ const LoginPage: React.FC = () => {
         </form>
       </IonContent>
       <IonFooter>
-        <IonToolbar>
+        <IonToolbar color="secondary">
           <IonButton
             expand="full"
             disabled={!formState.isValid}

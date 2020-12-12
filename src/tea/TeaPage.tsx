@@ -60,7 +60,7 @@ const TeaPage: React.FC = () => {
           <IonTitle>Tea</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent className="main-content" fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Tea</IonTitle>

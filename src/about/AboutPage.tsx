@@ -39,7 +39,7 @@ const AboutPage: React.FC = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="main-content">
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">About Tea Taster</IonTitle>

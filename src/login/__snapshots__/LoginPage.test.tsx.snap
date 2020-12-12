@@ -12,7 +12,9 @@ exports[`<LoginPage /> renders consistently 1`] = `
         </ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content>
+    <ion-content
+      class="main-content"
+    >
       <ion-header
         collapse="condense"
       >
@@ -60,7 +62,9 @@ exports[`<LoginPage /> renders consistently 1`] = `
       </form>
     </ion-content>
     <ion-footer>
-      <ion-toolbar>
+      <ion-toolbar
+        color="secondary"
+      >
         <ion-button
           expand="full"
         >
