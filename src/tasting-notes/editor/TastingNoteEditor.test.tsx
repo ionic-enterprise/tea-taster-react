@@ -2,6 +2,7 @@ import React from 'react';
 import { render, wait, waitForElement } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import { cleanup } from '@testing-library/react-hooks';
+import { Plugins } from '@capacitor/core';
 import TastingNoteEditor from './TastingNoteEditor';
 jest.mock('../../tea/useTea', () => ({
   useTea: () => ({
@@ -174,6 +175,58 @@ describe('<TastingNoteEditor />', () => {
         () => container.querySelector('[type="submit"]')!,
       );
       expect((submit as HTMLIonButtonElement).textContent).toEqual('Update');
+    });
+  });
+
+  describe('share', () => {
+    beforeEach(() => {
+      (Plugins.Share as any) = jest.fn();
+      (Plugins.Share.share as any) = jest.fn();
+    });
+
+    it('is not allowed until a brand, name, and rating have all been entered', async () => {
+      const { container, getByLabelText } = render(component);
+      const [brand, name, rating, share] = await waitForElement(() => [
+        container.querySelector('#brand-input')!,
+        container.querySelector('#name-input')!,
+        getByLabelText(/Rate 1 stars/),
+        container.querySelector('#share-button')! as HTMLIonButtonElement,
+      ]);
+      await wait(() => {
+        expect(share.disabled).toBeTruthy();
+        fireEvent.ionChange(brand, mockNote.brand);
+        expect(share.disabled).toBeTruthy();
+        fireEvent.ionChange(name, mockNote.name);
+        expect(share.disabled).toBeTruthy();
+        fireEvent.click(rating);
+      });
+      expect(share.disabled).toBeFalsy();
+    });
+
+    it('calls the share plugin when pressed', async () => {
+      const { container, getByLabelText } = render(component);
+      const [brand, name, rating, share] = await waitForElement(() => [
+        container.querySelector('#brand-input')!,
+        container.querySelector('#name-input')!,
+        getByLabelText(/Rate 1 stars/),
+        container.querySelector('#share-button')! as HTMLIonButtonElement,
+      ]);
+      await wait(() => {
+        expect(share.disabled).toBeTruthy();
+        fireEvent.ionChange(brand, mockNote.brand);
+        expect(share.disabled).toBeTruthy();
+        fireEvent.ionChange(name, mockNote.name);
+        expect(share.disabled).toBeTruthy();
+        fireEvent.click(rating);
+        fireEvent.click(share);
+      });
+      expect(Plugins.Share.share).toHaveBeenCalledTimes(1);
+      expect(Plugins.Share.share).toHaveBeenCalledWith({
+        title: `${mockNote.brand}: ${mockNote.name}`,
+        text: `I gave ${mockNote.brand}: ${mockNote.name} ${mockNote.rating} stars on the Tea Taster app`,
+        dialogTitle: 'Share your tasting note',
+        url: 'https://tea-taster-training.web.app',
+      });
     });
   });
 

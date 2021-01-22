@@ -15,12 +15,13 @@ import {
   IonSelectOption,
   IonTextarea,
 } from '@ionic/react';
-import { close } from 'ionicons/icons';
+import { close, shareOutline } from 'ionicons/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { TastingNote, Tea } from '../../shared/models';
 import { Rating } from '../../shared/components';
 import { useTea } from '../../tea/useTea';
 import { useTastingNotes } from '../useTastingNotes';
+import { Plugins } from '@capacitor/core';
 
 interface TastingNoteEditorProps {
   onDismiss: (opts: { refresh: boolean }) => void;
@@ -31,12 +32,13 @@ const TastingNoteEditor: React.FC<TastingNoteEditorProps> = ({
   onDismiss,
   note = undefined,
 }) => {
-  const { handleSubmit, control, formState } = useForm<TastingNote>({
+  const { handleSubmit, control, formState, getValues } = useForm<TastingNote>({
     mode: 'onChange',
   });
   const [teas, setTeas] = useState<Array<Tea>>([]);
   const { getTeas } = useTea();
   const { saveNote } = useTastingNotes();
+  const [allowSharing, setAllowSharing] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
@@ -46,10 +48,27 @@ const TastingNoteEditor: React.FC<TastingNoteEditorProps> = ({
     init();
   }, [getTeas]);
 
+  useEffect(() => {
+    const { brand, name, rating } = getValues();
+    if (brand.length && name.length && rating > 0) setAllowSharing(true);
+    else setAllowSharing(false);
+  }, [getValues, formState]);
+
   const save = async (data: TastingNote) => {
     if (note?.id) data.id = note.id;
     await saveNote(data);
     onDismiss({ refresh: true });
+  };
+
+  const share = async (): Promise<void> => {
+    const { Share } = Plugins;
+    const { brand, name, rating } = getValues();
+    await Share.share({
+      title: `${brand}: ${name}`,
+      text: `I gave ${brand}: ${name} ${rating} stars on the Tea Taster app`,
+      dialogTitle: 'Share your tasting note',
+      url: 'https://tea-taster-training.web.app',
+    });
   };
 
   return (
@@ -58,6 +77,13 @@ const TastingNoteEditor: React.FC<TastingNoteEditorProps> = ({
         <IonToolbar>
           <IonTitle>{!note && 'Add New'} Tasting Note</IonTitle>
           <IonButtons slot="primary">
+            <IonButton
+              id="share-button"
+              disabled={!allowSharing}
+              onClick={() => share()}
+            >
+              <IonIcon slot="icon-only" icon={shareOutline} />
+            </IonButton>
             <IonButton
               id="cancel-button"
               onClick={() => onDismiss({ refresh: false })}
