@@ -23,13 +23,16 @@ export const useTea = () => {
     return await Promise.all(
       data.map(async (item: any) => await fromJsonToTea(item)),
     );
-  }, []);
+  }, [instance]);
 
-  const getTeaById = useCallback(async (id: number): Promise<Tea> => {
-    const url = `/tea-categories/${id}`;
-    const { data } = await instance.get(url);
-    return await fromJsonToTea(data);
-  }, []);
+  const getTeaById = useCallback(
+    async (id: number): Promise<Tea> => {
+      const url = `/tea-categories/${id}`;
+      const { data } = await instance.get(url);
+      return await fromJsonToTea(data);
+    },
+    [instance],
+  );
 
   const saveTea = async (tea: Tea): Promise<void> => {
     const { Storage } = Plugins;

@@ -1,13 +1,7 @@
 import { Plugins } from '@capacitor/core';
-import React, { createContext, useEffect, useReducer } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useAuthInterceptor } from '../core/auth';
 import { Tea } from '../shared/models';
-
-interface TeaState {
-  teas: Tea[];
-  loading: boolean;
-  error: string;
-}
 
 const images: Array<string> = [
   'green',
@@ -20,47 +14,22 @@ const images: Array<string> = [
   'yellow',
 ];
 
-const initialState: TeaState = { teas: [], loading: false, error: '' };
-
-type TeaAction =
-  | { type: 'GET_TEAS' }
-  | { type: 'GET_TEAS_SUCCESS'; teas: Tea[] }
-  | { type: 'GET_TEAS_FAILURE'; error: string }
-  | { type: 'SAVE_TEA'; tea: Tea };
-
-const reducer = (
-  state: TeaState = initialState,
-  action: TeaAction,
-): TeaState => {
-  switch (action.type) {
-    case 'GET_TEAS':
-      return { ...state, loading: true, error: '' };
-    case 'GET_TEAS_SUCCESS':
-      return { ...state, loading: false, teas: action.teas };
-    case 'GET_TEAS_FAILURE':
-      return { ...state, loading: false, error: action.error };
-    case 'SAVE_TEA': {
-      const teas = state.teas.filter(t => t.id !== action.tea.id);
-      return { ...state, loading: false, teas: [...teas, action.tea] };
-    }
-    default:
-      return state;
-  }
-};
-
 export const TeaContext = createContext<{
-  state: TeaState;
-  // getTeaById: (id: number) => Tea | undefined;
-  // saveTea: (tea: Tea) => Promise<void>;
+  teas: Tea[];
+  error: string;
+  getTeaById: (id: number) => Tea | undefined;
+  save: (tea: Tea) => Promise<void>;
 }>({
-  state: initialState,
-  // getTeaById: id => undefined,
-  // saveTea: tea => Promise.resolve(),
+  teas: [],
+  error: '',
+  getTeaById: id => undefined,
+  save: tea => Promise.resolve(),
 });
 
 export const TeaProvider: React.FC = ({ children }) => {
   const { instance } = useAuthInterceptor();
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [teas, setTeas] = useState<Tea[]>([]);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     (async () => {
@@ -68,16 +37,35 @@ export const TeaProvider: React.FC = ({ children }) => {
       try {
         const { data } = await instance.get(url);
         const teas: Tea[] = await Promise.all(
-          data.map(async (item: any) => await transformTea(item)),
+          data.map(async (item: any) => await convert(item)),
         );
-        dispatch({ type: 'GET_TEAS_SUCCESS', teas });
+        setTeas(teas);
       } catch (error) {
-        dispatch({ type: 'GET_TEAS_FAILURE', error: error.message });
+        setError(error.message);
       }
     })();
   }, [instance]);
 
-  const transformTea = async (data: any): Promise<Tea> => {
+  const getTeaById = (id: number): Tea | undefined => {
+    return teas.find(tea => tea.id === id);
+  };
+
+  const save = async (tea: Tea): Promise<void> => {
+    const { Storage } = Plugins;
+    try {
+      await Storage.set({
+        key: `rating${tea.id}`,
+        value: tea.rating?.toString() || '0',
+      });
+      let index = teas.findIndex(t => t.id === tea.id);
+      teas[index] = tea;
+      setTeas(teas);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const convert = async (data: any): Promise<Tea> => {
     const { Storage } = Plugins;
     const rating = await Storage.get({ key: `rating${data.id}` });
     return {
@@ -88,6 +76,8 @@ export const TeaProvider: React.FC = ({ children }) => {
   };
 
   return (
-    <TeaContext.Provider value={{ state }}>{children}</TeaContext.Provider>
+    <TeaContext.Provider value={{ teas, error, getTeaById, save }}>
+      {children}
+    </TeaContext.Provider>
   );
 };

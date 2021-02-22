@@ -67,3 +67,71 @@ export const mockTeas: Array<Tea> = [
       'resemble the shoots of white teas, but are slightly oxidized.',
   },
 ];
+
+export const resultTeas = () => {
+  return expectedTeas.map((t: Tea) => {
+    const tea = { ...t };
+    delete tea.image;
+    delete tea.rating;
+    return tea;
+  });
+};
+
+const expectedTeas = [
+  {
+    id: 1,
+    name: 'Green',
+    image: 'green.jpg',
+    description: 'Green tea description.',
+    rating: 1,
+  },
+  {
+    id: 2,
+    name: 'Black',
+    image: 'black.jpg',
+    description: 'Black tea description.',
+    rating: 2,
+  },
+  {
+    id: 3,
+    name: 'Herbal',
+    image: 'herbal.jpg',
+    description: 'Herbal Infusion description.',
+    rating: 3,
+  },
+  {
+    id: 4,
+    name: 'Oolong',
+    image: 'oolong.jpg',
+    description: 'Oolong tea description.',
+    rating: 4,
+  },
+  {
+    id: 5,
+    name: 'Dark',
+    image: 'dark.jpg',
+    description: 'Dark tea description.',
+    rating: 5,
+  },
+  {
+    id: 6,
+    name: 'Puer',
+    image: 'puer.jpg',
+    description: 'Puer tea description.',
+    rating: 0,
+  },
+  {
+    id: 7,
+    name: 'White',
+    image: 'white.jpg',
+    description: 'White tea description.',
+    rating: 0,
+  },
+  {
+    id: 8,
+    name: 'Yellow',
+    image: 'yellow.jpg',
+    description: 'Yellow tea description.',
+    rating: 0,
+  },
+];

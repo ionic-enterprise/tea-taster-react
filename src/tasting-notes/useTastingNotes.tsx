@@ -9,13 +9,16 @@ export const useTastingNotes = () => {
     const url = `/user-tasting-notes`;
     const { data } = await instance.get(url);
     return data;
-  }, []);
+  }, [instance]);
 
-  const getNoteById = useCallback(async (id: number): Promise<TastingNote> => {
-    const url = `/user-tasting-notes/${id}`;
-    const { data } = await instance.get(url);
-    return data;
-  }, []);
+  const getNoteById = useCallback(
+    async (id: number): Promise<TastingNote> => {
+      const url = `/user-tasting-notes/${id}`;
+      const { data } = await instance.get(url);
+      return data;
+    },
+    [instance],
+  );
 
   const deleteNote = async (id: number): Promise<void> => {
     const url = `/user-tasting-notes/${id}`;

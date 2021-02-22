@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.teataster",
-  "appName": "Tea Tasting Notes",
+  "appId": "io.ionic.teataster.react",
+  "appName": "Tea Taster",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
