@@ -81,18 +81,16 @@ export const AuthProvider: React.FC<{ displayPasscodeRequest: () => void }> = ({
     })();
   }, [vault]);
 
-  ///TODO: ADD LOCK/UNLOCK EVENTS
-
   vault.onVaultLocked = (event: LockEvent) => {
     dispatch({ type: 'CLEAR_SESSION' });
   };
 
-  vault.onPasscodeRequest = async () => {
-    return new Promise((res, reject) => {
-      //displayPasscodeRequest(res, reject);
-      // return with pin
-    });
-  };
+  // vault.onPasscodeRequest = async () => {
+  //   return new Promise((res, reject) => {
+  //     //displayPasscodeRequest(res, reject);
+  //     // return with pin
+  //   });
+  // };
 
   ///TODO: PROVIDE PASSCODE MECHANISM
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { Plugins } from '@capacitor/core';
-import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
+import { IonApp, IonModal, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { AuthProvider, PrivateRoute } from './core/auth';
 import LoginPage from './login/LoginPage';
@@ -26,6 +26,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/global.css';
+import PinDialog from './pin-dialog/PinDialog';
 
 export const TeaTaster: React.FC = () => {
   useEffect(() => {
@@ -54,6 +55,9 @@ const App: React.FC = () => (
    * 3.
    */
   <AuthProvider displayPasscodeRequest={() => undefined}>
+    <IonModal isOpen={true}>
+      <PinDialog onDismiss={() => {}} setPasscodeMode={false} />
+    </IonModal>
     <TeaTaster />
   </AuthProvider>
 );
