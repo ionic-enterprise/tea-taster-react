@@ -15,11 +15,17 @@ import {
 } from '@ionic/react';
 import { useForm, Controller } from 'react-hook-form';
 import { useHistory } from 'react-router';
-import { logInOutline } from 'ionicons/icons';
+import { lockOpenOutline, logInOutline } from 'ionicons/icons';
 import { useAuthentication } from '../core/auth';
 
 const LoginPage: React.FC = () => {
-  const { login, session, error } = useAuthentication();
+  const {
+    login,
+    session,
+    error,
+    canUnlock,
+    restoreSession,
+  } = useAuthentication();
   const history = useHistory();
   const { handleSubmit, control, formState, errors } = useForm<{
     email: string;
@@ -49,6 +55,16 @@ const LoginPage: React.FC = () => {
             <IonTitle size="large">Login</IonTitle>
           </IonToolbar>
         </IonHeader>
+        {canUnlock() && (
+          <div
+            className="unlock-app ion-text-center"
+            onClick={() => restoreSession()}
+          >
+            <IonIcon icon={lockOpenOutline} />
+            <div>Unlock</div>
+          </div>
+        )}
+
         <form>
           <IonList>
             <IonItem>

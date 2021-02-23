@@ -43,10 +43,30 @@ export const useAuthentication = () => {
     }
   };
 
+  const canUnlock = async (): Promise<boolean> => {
+    if (!(await vault.hasStoredSession())) return false;
+
+    if (!(await (await vault.getVault()).isLocked())) return false;
+
+    const mode = await vault.getAuthMode();
+    return (
+      mode === AuthMode.PasscodeOnly ||
+      mode === AuthMode.BiometricAndPasscode ||
+      (mode === AuthMode.BiometricOnly && (await vault.isBiometricsAvailable()))
+    );
+  };
+
+  const restoreSession = async (): Promise<void> => {
+    const session = await vault.restoreSession();
+    if (session) dispatch({ type: 'RESTORE_SESSION', session });
+  };
+
   return {
     session: state.session,
     loading: state.loading,
     error: state.error,
+    restoreSession,
+    canUnlock,
     login,
     logout,
   };

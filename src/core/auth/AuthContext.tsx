@@ -55,16 +55,19 @@ export const AuthContext = createContext<{
   state: typeof initialState;
   dispatch: (action: AuthAction) => void;
   vault: SessionVault;
-  clear: () => Promise<void>;
 }>({
   state: initialState,
   dispatch: () => {},
   vault: SessionVault.getInstance(),
-  clear: async () => {},
 });
 
-export const AuthProvider: React.FC = ({ children }) => {
+export const AuthProvider: React.FC<{ displayPasscodeRequest: () => void }> = ({
+  displayPasscodeRequest,
+  children,
+}) => {
   const vault = SessionVault.getInstance();
+
+  // Pass a function that displays the modal.
 
   const [initializing, setInitializing] = useState<boolean>(true);
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -84,17 +87,17 @@ export const AuthProvider: React.FC = ({ children }) => {
     dispatch({ type: 'CLEAR_SESSION' });
   };
 
-  ///TODO: PROVIDE PASSCODE MECHANISM
-
-  const clear = async (): Promise<void> => {
-    await vault.logout();
-    dispatch({ type: 'CLEAR_SESSION' });
+  vault.onPasscodeRequest = async () => {
+    return new Promise((res, reject) => {
+      //displayPasscodeRequest(res, reject);
+      // return with pin
+    });
   };
 
-  ///TODO: ADD RESTORE SESSION METHOD
+  ///TODO: PROVIDE PASSCODE MECHANISM
 
   return (
-    <AuthContext.Provider value={{ state, dispatch, vault, clear }}>
+    <AuthContext.Provider value={{ state, dispatch, vault }}>
       {initializing ? <div>Loading...</div> : children}
     </AuthContext.Provider>
   );

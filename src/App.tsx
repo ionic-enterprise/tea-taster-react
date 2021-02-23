@@ -47,7 +47,13 @@ export const TeaTaster: React.FC = () => {
 };
 
 const App: React.FC = () => (
-  <AuthProvider>
+  /**
+   * displayPasscodeRequest
+   * 1. Render the modal
+   * 2. Show modal with function for onDidDismiss
+   * 3.
+   */
+  <AuthProvider displayPasscodeRequest={() => undefined}>
     <TeaTaster />
   </AuthProvider>
 );
