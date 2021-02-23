@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonButton,
   IonContent,
@@ -27,6 +27,7 @@ const LoginPage: React.FC = () => {
     restoreSession,
   } = useAuthentication();
   const history = useHistory();
+  const [showUnlock, setShowUnlock] = useState<boolean>(false);
   const { handleSubmit, control, formState, errors } = useForm<{
     email: string;
     password: string;
@@ -37,6 +38,12 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     session && history.replace('/tabs');
   }, [session, history]);
+
+  useEffect(() => {
+    (async () => {
+      setShowUnlock(await canUnlock());
+    })();
+  }, [session]);
 
   const handleLogin = async (data: { email: string; password: string }) => {
     await login(data.email, data.password);
@@ -55,7 +62,7 @@ const LoginPage: React.FC = () => {
             <IonTitle size="large">Login</IonTitle>
           </IonToolbar>
         </IonHeader>
-        {canUnlock() && (
+        {showUnlock && (
           <div
             className="unlock-app ion-text-center"
             onClick={() => restoreSession()}
