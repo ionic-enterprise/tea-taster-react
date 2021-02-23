@@ -38,11 +38,15 @@ export const TeaTaster: React.FC = () => {
     if (isPlatform('capacitor')) SplashScreen.hide();
   }, []);
 
+  const handleOnDismiss = (opts: { data: any; role?: string }) => {
+    console.log(opts);
+  };
+
   return (
     <IonApp>
       <IonModal isOpen={displayPasscodeRequest}>
         <PinDialog
-          onDismiss={() => {}}
+          onDismiss={handleOnDismiss}
           setPasscodeMode={isPasscodeSetRequest}
         />
       </IonModal>
@@ -57,16 +61,17 @@ export const TeaTaster: React.FC = () => {
   );
 };
 
-const App: React.FC = () => (
-  /**
-   * displayPasscodeRequest
-   * 1. Render the modal
-   * 2. Show modal with function for onDidDismiss
-   * 3.
-   */
-  <AuthProvider passcodeHandler={() => undefined}>
-    <TeaTaster />
-  </AuthProvider>
-);
+const App: React.FC = () => {
+  const handlePasscodeRequest = () => {
+    console.log('HELLO FROM HANDLE PASSCODE REQUEST');
+    return '111';
+  };
+
+  return (
+    <AuthProvider handlePasscodeRequest={handlePasscodeRequest}>
+      <TeaTaster />
+    </AuthProvider>
+  );
+};
 
 export default App;

@@ -65,10 +65,9 @@ export const AuthContext = createContext<{
   isPasscodeSetRequest: false,
 });
 
-export const AuthProvider: React.FC<{ passcodeHandler: () => void }> = ({
-  passcodeHandler,
-  children,
-}) => {
+export const AuthProvider: React.FC<{
+  handlePasscodeRequest: () => string | undefined;
+}> = ({ handlePasscodeRequest, children }) => {
   const vault = SessionVault.getInstance();
 
   // Pass a function that displays the modal.
@@ -100,8 +99,13 @@ export const AuthProvider: React.FC<{ passcodeHandler: () => void }> = ({
   ): Promise<string | undefined> => {
     setIsPasscodeSetRequest(_isPasscodeSetRequest);
     setDisplayPasscodeRequest(true);
+    return new Promise((resolve, reject) => {
+      setIsPasscodeSetRequest(false);
+      setDisplayPasscodeRequest(false);
+      return resolve(handlePasscodeRequest());
+    });
 
-    return '111';
+    // return '111';
 
     //   return new Promise((res, reject) => {
     //     //displayPasscodeRequest(res, reject);
