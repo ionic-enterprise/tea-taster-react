@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   IonButton,
   IonButtons,
@@ -9,22 +9,24 @@ import {
   IonHeader,
   IonIcon,
   IonLabel,
+  IonModal,
   IonRow,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
 import { close } from 'ionicons/icons';
 import './PinDialog.css';
+import { AuthContext } from '../core/auth';
 
 interface PinDialogProps {
   onDismiss: (opts: { data: any; role?: string }) => void;
-  setPasscodeMode: boolean;
 }
 
-const PinDialog: React.FC<PinDialogProps> = ({
-  onDismiss,
-  setPasscodeMode,
-}) => {
+const PinDialog: React.FC<PinDialogProps> = ({ onDismiss }) => {
+  const { isPasscodeSetRequest, displayPasscodeRequest } = useContext(
+    AuthContext,
+  );
+
   const [title, setTitle] = useState<string>('');
   const [prompt, setPrompt] = useState<string>('');
   const [displayPin, setDisplayPin] = useState<string>('');
@@ -33,7 +35,6 @@ const PinDialog: React.FC<PinDialogProps> = ({
   const [disableEnter, setDisableEnter] = useState<boolean>(false);
   const [disableInput, setDisableInput] = useState<boolean>(false);
   const [disableDelete, setDisableDelete] = useState<boolean>(false);
-
   const [pin, setPin] = useState<string>('');
 
   const initSetPasscodeMode = () => {
@@ -66,12 +67,12 @@ const PinDialog: React.FC<PinDialogProps> = ({
   }, [pin]);
 
   useEffect(() => {
-    if (setPasscodeMode) {
+    if (isPasscodeSetRequest) {
       initSetPasscodeMode();
     } else {
       return initUnlockMode();
     }
-  }, [setPasscodeMode]);
+  }, [isPasscodeSetRequest]);
 
   const append = (n: number) => {
     setError('');
@@ -85,7 +86,7 @@ const PinDialog: React.FC<PinDialogProps> = ({
   };
 
   const enter = () => {
-    if (setPasscodeMode) {
+    if (isPasscodeSetRequest) {
       if (!verifyPin.length) {
         initVerifyMode();
       } else if (verifyPin === pin) {
@@ -100,11 +101,11 @@ const PinDialog: React.FC<PinDialogProps> = ({
   };
 
   return (
-    <>
+    <IonModal isOpen={displayPasscodeRequest}>
       <IonHeader>
         <IonToolbar>
           <IonTitle>{title}</IonTitle>
-          {!setPasscodeMode && (
+          {!isPasscodeSetRequest && (
             <IonButtons slot="primary">
               <IonButton
                 onClick={() => onDismiss({ data: undefined, role: 'cancel' })}
@@ -204,7 +205,7 @@ const PinDialog: React.FC<PinDialogProps> = ({
           </IonRow>
         </IonGrid>
       </IonFooter>
-    </>
+    </IonModal>
   );
 };
 export default PinDialog;

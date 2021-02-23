@@ -66,12 +66,9 @@ export const AuthContext = createContext<{
 });
 
 export const AuthProvider: React.FC<{
-  handlePasscodeRequest: () => string | undefined;
+  handlePasscodeRequest: (opts?: any) => string | undefined;
 }> = ({ handlePasscodeRequest, children }) => {
   const vault = SessionVault.getInstance();
-
-  // Pass a function that displays the modal.
-
   const [initializing, setInitializing] = useState<boolean>(true);
   const [state, dispatch] = useReducer(reducer, initialState);
   const [displayPasscodeRequest, setDisplayPasscodeRequest] = useState<boolean>(
@@ -94,26 +91,23 @@ export const AuthProvider: React.FC<{
     dispatch({ type: 'CLEAR_SESSION' });
   };
 
+  vault.onVaultUnlocked = async () => {
+    await vault.restoreSession();
+  };
+
   vault.onPasscodeRequest = async (
     _isPasscodeSetRequest: boolean,
   ): Promise<string | undefined> => {
     setIsPasscodeSetRequest(_isPasscodeSetRequest);
     setDisplayPasscodeRequest(true);
+
     return new Promise((resolve, reject) => {
-      setIsPasscodeSetRequest(false);
       setDisplayPasscodeRequest(false);
+      setIsPasscodeSetRequest(false);
+
       return resolve(handlePasscodeRequest());
     });
-
-    // return '111';
-
-    //   return new Promise((res, reject) => {
-    //     //displayPasscodeRequest(res, reject);
-    //     // return with pin
-    //   });
   };
-
-  ///TODO: PROVIDE PASSCODE MECHANISM
 
   return (
     <AuthContext.Provider

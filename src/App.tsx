@@ -29,27 +29,13 @@ import './theme/global.css';
 import PinDialog from './pin-dialog/PinDialog';
 
 export const TeaTaster: React.FC = () => {
-  const { isPasscodeSetRequest, displayPasscodeRequest } = useContext(
-    AuthContext,
-  );
-
   useEffect(() => {
     const { SplashScreen } = Plugins;
     if (isPlatform('capacitor')) SplashScreen.hide();
   }, []);
 
-  const handleOnDismiss = (opts: { data: any; role?: string }) => {
-    console.log(opts);
-  };
-
   return (
     <IonApp>
-      <IonModal isOpen={displayPasscodeRequest}>
-        <PinDialog
-          onDismiss={handleOnDismiss}
-          setPasscodeMode={isPasscodeSetRequest}
-        />
-      </IonModal>
       <IonReactRouter>
         <IonRouterOutlet>
           <Route exact path="/login" component={LoginPage} />
@@ -62,13 +48,14 @@ export const TeaTaster: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  const handlePasscodeRequest = () => {
-    console.log('HELLO FROM HANDLE PASSCODE REQUEST');
+  const handlePasscodeRequest = (opts: any) => {
+    console.log('HELLO FROM HANDLE PASSCODE REQUEST', opts);
     return '111';
   };
 
   return (
     <AuthProvider handlePasscodeRequest={handlePasscodeRequest}>
+      <PinDialog onDismiss={handlePasscodeRequest} />
       <TeaTaster />
     </AuthProvider>
   );

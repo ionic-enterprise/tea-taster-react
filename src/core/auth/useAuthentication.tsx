@@ -59,6 +59,7 @@ export const useAuthentication = () => {
   const restoreSession = async (): Promise<void> => {
     const session = await vault.restoreSession();
     if (session) dispatch({ type: 'RESTORE_SESSION', session });
+    console.log('SESSION_RESTORED');
   };
 
   return {
