@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { Plugins } from '@capacitor/core';
 import { IonApp, IonModal, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { AuthProvider, PrivateRoute } from './core/auth';
+import { AuthContext, AuthProvider, PrivateRoute } from './core/auth';
 import LoginPage from './login/LoginPage';
 import Tabs from './Tabs';
 
@@ -29,6 +29,10 @@ import './theme/global.css';
 import PinDialog from './pin-dialog/PinDialog';
 
 export const TeaTaster: React.FC = () => {
+  const { isPasscodeSetRequest, displayPasscodeRequest } = useContext(
+    AuthContext,
+  );
+
   useEffect(() => {
     const { SplashScreen } = Plugins;
     if (isPlatform('capacitor')) SplashScreen.hide();
@@ -36,6 +40,12 @@ export const TeaTaster: React.FC = () => {
 
   return (
     <IonApp>
+      <IonModal isOpen={displayPasscodeRequest}>
+        <PinDialog
+          onDismiss={() => {}}
+          setPasscodeMode={isPasscodeSetRequest}
+        />
+      </IonModal>
       <IonReactRouter>
         <IonRouterOutlet>
           <Route exact path="/login" component={LoginPage} />
@@ -54,10 +64,7 @@ const App: React.FC = () => (
    * 2. Show modal with function for onDidDismiss
    * 3.
    */
-  <AuthProvider displayPasscodeRequest={() => undefined}>
-    <IonModal isOpen={true}>
-      <PinDialog onDismiss={() => {}} setPasscodeMode={false} />
-    </IonModal>
+  <AuthProvider passcodeHandler={() => undefined}>
     <TeaTaster />
   </AuthProvider>
 );

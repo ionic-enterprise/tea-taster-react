@@ -55,14 +55,18 @@ export const AuthContext = createContext<{
   state: typeof initialState;
   dispatch: (action: AuthAction) => void;
   vault: SessionVault;
+  isPasscodeSetRequest: boolean;
+  displayPasscodeRequest: boolean;
 }>({
   state: initialState,
   dispatch: () => {},
   vault: SessionVault.getInstance(),
+  displayPasscodeRequest: false,
+  isPasscodeSetRequest: false,
 });
 
-export const AuthProvider: React.FC<{ displayPasscodeRequest: () => void }> = ({
-  displayPasscodeRequest,
+export const AuthProvider: React.FC<{ passcodeHandler: () => void }> = ({
+  passcodeHandler,
   children,
 }) => {
   const vault = SessionVault.getInstance();
@@ -71,6 +75,12 @@ export const AuthProvider: React.FC<{ displayPasscodeRequest: () => void }> = ({
 
   const [initializing, setInitializing] = useState<boolean>(true);
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [displayPasscodeRequest, setDisplayPasscodeRequest] = useState<boolean>(
+    false,
+  );
+  const [isPasscodeSetRequest, setIsPasscodeSetRequest] = useState<boolean>(
+    false,
+  );
 
   useEffect(() => {
     (async () => {
@@ -85,17 +95,32 @@ export const AuthProvider: React.FC<{ displayPasscodeRequest: () => void }> = ({
     dispatch({ type: 'CLEAR_SESSION' });
   };
 
-  // vault.onPasscodeRequest = async () => {
-  //   return new Promise((res, reject) => {
-  //     //displayPasscodeRequest(res, reject);
-  //     // return with pin
-  //   });
-  // };
+  vault.onPasscodeRequest = async (
+    _isPasscodeSetRequest: boolean,
+  ): Promise<string | undefined> => {
+    setIsPasscodeSetRequest(_isPasscodeSetRequest);
+    setDisplayPasscodeRequest(true);
+
+    return '111';
+
+    //   return new Promise((res, reject) => {
+    //     //displayPasscodeRequest(res, reject);
+    //     // return with pin
+    //   });
+  };
 
   ///TODO: PROVIDE PASSCODE MECHANISM
 
   return (
-    <AuthContext.Provider value={{ state, dispatch, vault }}>
+    <AuthContext.Provider
+      value={{
+        state,
+        dispatch,
+        vault,
+        displayPasscodeRequest,
+        isPasscodeSetRequest,
+      }}
+    >
       {initializing ? <div>Loading...</div> : children}
     </AuthContext.Provider>
   );
