@@ -1,7 +1,7 @@
-import { Plugins } from '@capacitor/core';
-import Axios from 'axios';
+import { LockEvent } from '@ionic-enterprise/identity-vault';
 import React, { createContext, useEffect, useReducer, useState } from 'react';
 import { Session } from '../models';
+import { SessionVault } from '../session-vault/SessionVault';
 
 interface AuthState {
   session?: Session;
@@ -54,33 +54,47 @@ const reducer = (
 export const AuthContext = createContext<{
   state: typeof initialState;
   dispatch: (action: AuthAction) => void;
+  vault: SessionVault;
+  clear: () => Promise<void>;
 }>({
   state: initialState,
   dispatch: () => {},
+  vault: SessionVault.getInstance(),
+  clear: async () => {},
 });
 
 export const AuthProvider: React.FC = ({ children }) => {
+  const vault = SessionVault.getInstance();
+
   const [initializing, setInitializing] = useState<boolean>(true);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    const { Storage } = Plugins;
     (async () => {
-      const { value: token } = await Storage.get({ key: 'auth-token' });
-      if (!token) return setInitializing(false);
-
-      const headers = { Authorization: 'Bearer ' + token };
-      const url = `${process.env.REACT_APP_DATA_SERVICE}/users/current`;
-      const { data: user } = await Axios.get(url, { headers });
-
-      dispatch({ type: 'RESTORE_SESSION', session: { token, user } });
-
+      const session = await vault.restoreSession();
+      if (!session) return setInitializing(false);
+      dispatch({ type: 'RESTORE_SESSION', session });
       return setInitializing(false);
     })();
-  }, []);
+  }, [vault]);
+
+  ///TODO: ADD LOCK/UNLOCK EVENTS
+
+  vault.onVaultLocked = (event: LockEvent) => {
+    dispatch({ type: 'CLEAR_SESSION' });
+  };
+
+  ///TODO: PROVIDE PASSCODE MECHANISM
+
+  const clear = async (): Promise<void> => {
+    await vault.logout();
+    dispatch({ type: 'CLEAR_SESSION' });
+  };
+
+  ///TODO: ADD RESTORE SESSION METHOD
 
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>
+    <AuthContext.Provider value={{ state, dispatch, vault, clear }}>
       {initializing ? <div>Loading...</div> : children}
     </AuthContext.Provider>
   );
