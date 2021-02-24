@@ -66,7 +66,9 @@ export const AuthContext = createContext<{
 });
 
 export const AuthProvider: React.FC<{
-  handlePasscodeRequest: (opts?: any) => string | undefined;
+  handlePasscodeRequest: (
+    callback: (value: unknown) => void,
+  ) => JSX.Element | undefined;
 }> = ({ handlePasscodeRequest, children }) => {
   const vault = SessionVault.getInstance();
   const [initializing, setInitializing] = useState<boolean>(true);
@@ -77,6 +79,9 @@ export const AuthProvider: React.FC<{
   const [isPasscodeSetRequest, setIsPasscodeSetRequest] = useState<boolean>(
     false,
   );
+  const [passcodeRequestPromise, setPasscodeRequestPromise] = useState<
+    (value: any) => void
+  >();
 
   useEffect(() => {
     (async () => {
@@ -100,12 +105,10 @@ export const AuthProvider: React.FC<{
   ): Promise<string | undefined> => {
     setIsPasscodeSetRequest(_isPasscodeSetRequest);
     setDisplayPasscodeRequest(true);
-
-    return new Promise((resolve, reject) => {
+    return new Promise(res => {
+      setPasscodeRequestPromise(res);
       setDisplayPasscodeRequest(false);
       setIsPasscodeSetRequest(false);
-
-      return resolve(handlePasscodeRequest());
     });
   };
 
@@ -119,7 +122,13 @@ export const AuthProvider: React.FC<{
         isPasscodeSetRequest,
       }}
     >
-      {initializing ? <div>Loading...</div> : children}
+      {passcodeRequestPromise != null ? (
+        handlePasscodeRequest(passcodeRequestPromise)
+      ) : initializing ? (
+        <div>Loading...</div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };

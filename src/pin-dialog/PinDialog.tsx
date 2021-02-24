@@ -23,8 +23,8 @@ interface PinDialogProps {
 }
 
 const PinDialog: React.FC<PinDialogProps> = ({ onDismiss }) => {
-  const { isPasscodeSetRequest, displayPasscodeRequest } = useContext(
-    AuthContext,
+  const [isPasscodeSetRequest, setIsPasscodeSetRequest] = useState<boolean>(
+    true,
   );
 
   const [title, setTitle] = useState<string>('');
@@ -101,7 +101,7 @@ const PinDialog: React.FC<PinDialogProps> = ({ onDismiss }) => {
   };
 
   return (
-    <IonModal isOpen={displayPasscodeRequest}>
+    <IonModal isOpen={true}>
       <IonHeader>
         <IonToolbar>
           <IonTitle>{title}</IonTitle>

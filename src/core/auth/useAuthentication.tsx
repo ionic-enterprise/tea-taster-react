@@ -22,7 +22,7 @@ export const useAuthentication = () => {
       const mode = (await vault.isBiometricsAvailable())
         ? AuthMode.BiometricOnly
         : AuthMode.PasscodeOnly;
-      await vault.login(session, mode);
+      await vault.login(session, AuthMode.PasscodeOnly);
       dispatch({ type: 'LOGIN_SUCCESS', session });
     } catch (error) {
       dispatch({ type: 'LOGIN_FAILURE', error: error.message });
@@ -59,7 +59,7 @@ export const useAuthentication = () => {
   const restoreSession = async (): Promise<void> => {
     const session = await vault.restoreSession();
     if (session) dispatch({ type: 'RESTORE_SESSION', session });
-    console.log('SESSION_RESTORED');
+    console.log('E: SESSION_RESTORED');
   };
 
   return {

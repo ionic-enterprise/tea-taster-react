@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { Plugins } from '@capacitor/core';
 import { IonApp, IonModal, IonRouterOutlet, isPlatform } from '@ionic/react';
@@ -47,18 +47,14 @@ export const TeaTaster: React.FC = () => {
   );
 };
 
-const App: React.FC = () => {
-  const handlePasscodeRequest = (opts: any) => {
-    console.log('HELLO FROM HANDLE PASSCODE REQUEST', opts);
-    return '111';
-  };
-
-  return (
-    <AuthProvider handlePasscodeRequest={handlePasscodeRequest}>
-      <PinDialog onDismiss={handlePasscodeRequest} />
-      <TeaTaster />
-    </AuthProvider>
-  );
-};
+const App: React.FC = () => (
+  <AuthProvider
+    handlePasscodeRequest={callback => (
+      <PinDialog onDismiss={({ data }) => callback(data)} />
+    )}
+  >
+    <TeaTaster />
+  </AuthProvider>
+);
 
 export default App;
