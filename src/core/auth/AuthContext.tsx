@@ -9,11 +9,15 @@ interface AuthState {
   error: string;
 }
 
+type PasscodeCallback = (value: string) => void;
+
 const initialState: AuthState = {
   session: undefined,
   loading: false,
   error: '',
 };
+
+let passcodeRequestCallback: undefined | PasscodeCallback;
 
 export type AuthAction =
   | { type: 'CLEAR_SESSION' }
@@ -67,7 +71,7 @@ export const AuthContext = createContext<{
 
 export const AuthProvider: React.FC<{
   handlePasscodeRequest: (
-    callback: (value: unknown) => void,
+    callback: PasscodeCallback,
   ) => JSX.Element | undefined;
 }> = ({ handlePasscodeRequest, children }) => {
   const vault = SessionVault.getInstance();
@@ -79,9 +83,6 @@ export const AuthProvider: React.FC<{
   const [isPasscodeSetRequest, setIsPasscodeSetRequest] = useState<boolean>(
     false,
   );
-  const [passcodeRequestPromise, setPasscodeRequestPromise] = useState<
-    (value: any) => void
-  >();
 
   useEffect(() => {
     (async () => {
@@ -103,12 +104,14 @@ export const AuthProvider: React.FC<{
   vault.onPasscodeRequest = async (
     _isPasscodeSetRequest: boolean,
   ): Promise<string | undefined> => {
-    setIsPasscodeSetRequest(_isPasscodeSetRequest);
-    setDisplayPasscodeRequest(true);
-    return new Promise(res => {
-      setPasscodeRequestPromise(res);
-      setDisplayPasscodeRequest(false);
-      setIsPasscodeSetRequest(false);
+    return new Promise(resolve => {
+      passcodeRequestCallback = (value: string) => {
+        resolve(value);
+        setDisplayPasscodeRequest(false);
+        setIsPasscodeSetRequest(false);
+      };
+      setIsPasscodeSetRequest(_isPasscodeSetRequest);
+      setDisplayPasscodeRequest(true);
     });
   };
 
@@ -122,8 +125,8 @@ export const AuthProvider: React.FC<{
         isPasscodeSetRequest,
       }}
     >
-      {passcodeRequestPromise != null ? (
-        handlePasscodeRequest(passcodeRequestPromise)
+      {displayPasscodeRequest && passcodeRequestCallback ? (
+        handlePasscodeRequest(passcodeRequestCallback)
       ) : initializing ? (
         <div>Loading...</div>
       ) : (
