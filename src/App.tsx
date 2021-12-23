@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
+import { IonApp, IonRouterOutlet, isPlatform, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { AuthProvider, PrivateRoute } from './core/auth';
 import Tabs from './Tabs';
@@ -27,6 +27,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/global.css';
+
+setupIonicReact();
 
 const App: React.FC = () => {
   useEffect(() => {
