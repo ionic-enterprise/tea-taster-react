@@ -8,25 +8,32 @@ import {
   IonFab,
   IonFabButton,
   IonIcon,
-  IonModal,
   IonList,
   IonItem,
   IonLabel,
   IonItemSliding,
   IonItemOption,
   IonItemOptions,
+  useIonModal,
 } from '@ionic/react';
 import { Share } from '@capacitor/share';
-import TastingNoteEditor from './editor/TastingNoteEditor';
+import TastingNoteEditor, { TastingNoteEditorProps } from './editor/TastingNoteEditor';
 import { add, share, trashBin } from 'ionicons/icons';
+import { useTea } from '../tea/useTea';
 import { useTastingNotes } from './useTastingNotes';
 import { TastingNote } from '../shared/models';
 
 const TastingNotesPage: React.FC = () => {
-  const { getNotes, deleteNote } = useTastingNotes();
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const { getTeas } = useTea();
+  const { getNotes, saveNote, deleteNote } = useTastingNotes();
   const [notes, setNotes] = useState<TastingNote[]>([]);
   const [selectedNote, setSelectedNote] = useState<TastingNote | undefined>(undefined);
+  const [presentModal, dismissModal] = useIonModal(TastingNoteEditor, {
+    note: selectedNote,
+    saveNote,
+    getTeas,
+    onDismiss: ({ refresh }) => handleOnDismiss(refresh),
+  } as TastingNoteEditorProps);
 
   useEffect(() => {
     (async () => {
@@ -36,7 +43,7 @@ const TastingNotesPage: React.FC = () => {
   }, [getNotes]);
 
   const handleOnDismiss = async (refresh: boolean) => {
-    setShowModal(false);
+    dismissModal();
     setSelectedNote(undefined);
     if (refresh) {
       const notes = await getNotes();
@@ -46,12 +53,12 @@ const TastingNotesPage: React.FC = () => {
 
   const handleUpdateNote = (note: TastingNote) => {
     setSelectedNote(note);
-    setShowModal(true);
+    presentModal();
   };
 
   const handleNewNote = () => {
     setSelectedNote(undefined);
-    setShowModal(true);
+    presentModal();
   };
 
   const handleDeleteNote = async (id: number) => {
@@ -118,9 +125,6 @@ const TastingNotesPage: React.FC = () => {
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>
-        <IonModal isOpen={showModal}>
-          <TastingNoteEditor onDismiss={({ refresh }) => handleOnDismiss(refresh)} note={selectedNote} />
-        </IonModal>
       </IonContent>
     </IonPage>
   );
