@@ -1,4 +1,4 @@
-export * from './AuthContext';
 export * from './PrivateRoute';
-export * from './useAuthentication';
+export * from './SessionContext';
 export * from './useAuthInterceptor';
+export * from './useSession';

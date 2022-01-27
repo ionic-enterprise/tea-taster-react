@@ -4,7 +4,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { AuthProvider, PrivateRoute } from './core/auth';
+import { SessionProvider, PrivateRoute } from './core/auth';
 import Tabs from './Tabs';
 import LoginPage from './login/LoginPage';
 
@@ -37,7 +37,7 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      <AuthProvider>
+      <SessionProvider>
         <IonReactRouter>
           <IonRouterOutlet>
             <Route exact path="/login" component={LoginPage} />
@@ -45,7 +45,7 @@ const App: React.FC = () => {
             <Route exact path="/" render={() => <Redirect to="/login" />} />
           </IonRouterOutlet>
         </IonReactRouter>
-      </AuthProvider>
+      </SessionProvider>
     </IonApp>
   );
 };

@@ -6,6 +6,10 @@
 .main-content {
   --background: linear-gradient(white, var(--ion-color-secondary));
 }
+.unlock-app {
+  margin-top: 3em;
+  font-size: xx-large;
+}
 
 @media (prefers-color-scheme: dark) {
   .main-content {

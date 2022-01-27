@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonButton,
   IonButtons,
@@ -16,16 +16,22 @@ import {
 import { logOutOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 import { name, author, description, version } from '../../package.json';
-import { useAuthentication } from '../core/auth';
+import { useSession } from '../core/auth';
+import { User } from '../core/models';
 
 const AboutPage: React.FC = () => {
-  const { logout } = useAuthentication();
+  const { getUserInfo, logout } = useSession();
   const history = useHistory();
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   const handleLogout = async () => {
     await logout();
     history.replace('/login');
   };
+
+  useEffect(() => {
+    getUserInfo().then((u: User | undefined) => setUser(u));
+  }, [getUserInfo]);
 
   return (
     <IonPage>
@@ -59,8 +65,8 @@ const AboutPage: React.FC = () => {
             <IonNote slot="end">{version}</IonNote>
           </IonItem>
           <IonItem>
-            <IonLabel>Author</IonLabel>
-            <IonNote slot="end">{author.name}</IonNote>
+            <IonLabel>Email</IonLabel>
+            <IonNote slot="end">{user?.email}</IonNote>
           </IonItem>
         </IonList>
       </IonContent>
