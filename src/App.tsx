@@ -38,8 +38,8 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <IonApp>
-      <AuthProvider>
+    <AuthProvider>
+      <IonApp>
         <IonReactRouter>
           <IonRouterOutlet>
             <Route exact path="/login" component={LoginPage} />
@@ -47,8 +47,8 @@ const App: React.FC = () => {
             <Route exact path="/" render={() => <Redirect to="/login" />} />
           </IonRouterOutlet>
         </IonReactRouter>
-      </AuthProvider>
-    </IonApp>
+      </IonApp>
+    </AuthProvider>
   );
 };
 

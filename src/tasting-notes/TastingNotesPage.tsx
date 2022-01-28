@@ -19,19 +19,15 @@ import {
 import { Share } from '@capacitor/share';
 import TastingNoteEditor, { TastingNoteEditorProps } from './editor/TastingNoteEditor';
 import { add, share, trashBin } from 'ionicons/icons';
-import { useTea } from '../tea/useTea';
 import { useTastingNotes } from './useTastingNotes';
 import { TastingNote } from '../shared/models';
 
 const TastingNotesPage: React.FC = () => {
-  const { getTeas } = useTea();
-  const { getNotes, saveNote, deleteNote } = useTastingNotes();
+  const { getNotes, deleteNote } = useTastingNotes();
   const [notes, setNotes] = useState<TastingNote[]>([]);
   const [selectedNote, setSelectedNote] = useState<TastingNote | undefined>(undefined);
   const [presentModal, dismissModal] = useIonModal(TastingNoteEditor, {
     note: selectedNote,
-    saveNote,
-    getTeas,
     onDismiss: ({ refresh }) => handleOnDismiss(refresh),
   } as TastingNoteEditorProps);
 

@@ -20,21 +20,23 @@ import { useForm, Controller } from 'react-hook-form';
 import { TastingNote, Tea } from '../../shared/models';
 import { Rating } from '../../shared/components';
 import { close } from 'ionicons/icons';
+import { useTea } from '../../tea/useTea';
+import { useTastingNotes } from '../useTastingNotes';
 
 export interface TastingNoteEditorProps {
   note?: TastingNote;
-  getTeas: () => Promise<Tea[]>;
-  saveNote: (note: TastingNote) => Promise<void>;
   onDismiss: (opts: { refresh: boolean }) => void;
 }
 
-const TastingNoteEditor: React.FC<TastingNoteEditorProps> = ({ getTeas, saveNote, onDismiss, note = undefined }) => {
+const TastingNoteEditor: React.FC<TastingNoteEditorProps> = ({ onDismiss, note = undefined }) => {
   const {
     handleSubmit,
     control,
     formState: { isValid },
     reset,
   } = useForm<TastingNote>({ mode: 'onChange' });
+  const { getTeas } = useTea();
+  const { saveNote } = useTastingNotes();
   const [teas, setTeas] = useState<Tea[]>([]);
 
   const save = async (data: TastingNote) => {
