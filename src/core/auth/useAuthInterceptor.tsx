@@ -1,5 +1,5 @@
 import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
 import { useSession } from './useSession';
 
 export const useAuthInterceptor = () => {

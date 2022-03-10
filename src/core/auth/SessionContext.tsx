@@ -1,7 +1,8 @@
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { IonicAuth } from '@ionic-enterprise/auth';
 import { User } from '../models';
 import getAuthConfig from './auth-config';
+import { SessionVaultContext } from '../vault';
 
 export const SessionContext = createContext<{
   error: string | undefined;
@@ -31,7 +32,8 @@ export const SessionProvider: React.FC = ({ children }) => {
   const [error, setError] = useState<string | undefined>(undefined);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const { config } = getAuthConfig();
-  const authConnectRef = useRef<IonicAuth>(new IonicAuth(config));
+  const { vault } = useContext(SessionVaultContext);
+  const authConnectRef = useRef<IonicAuth>(new IonicAuth({ ...config, tokenStorageProvider: vault }));
 
   useEffect(() => {
     const checkAuthenticationStatus = async (auth: IonicAuth) => {

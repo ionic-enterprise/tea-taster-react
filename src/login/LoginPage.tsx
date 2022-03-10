@@ -3,14 +3,16 @@ import { IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@
 import { useHistory } from 'react-router';
 import { logInOutline } from 'ionicons/icons';
 import { useSession } from '../core/auth';
+import { useSessionVault } from '../core/vault';
 
 const LoginPage: React.FC = () => {
   const { login, isAuthenticated, error } = useSession();
+  const { isLocked } = useSessionVault();
   const history = useHistory();
 
   useEffect(() => {
-    isAuthenticated && history.replace('/tabs');
-  }, [isAuthenticated, history]);
+    !isLocked && isAuthenticated && history.replace('/tabs');
+  }, [isLocked, isAuthenticated, history]);
 
   return (
     <IonPage>

@@ -27,6 +27,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/global.css';
+import { SessionVaultProvider } from './core/vault';
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -37,15 +38,17 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      <SessionProvider>
-        <IonReactRouter>
-          <IonRouterOutlet>
-            <Route exact path="/login" component={LoginPage} />
-            <PrivateRoute path="/tabs" component={Tabs} />
-            <Route exact path="/" render={() => <Redirect to="/login" />} />
-          </IonRouterOutlet>
-        </IonReactRouter>
-      </SessionProvider>
+      <SessionVaultProvider>
+        <SessionProvider>
+          <IonReactRouter>
+            <IonRouterOutlet>
+              <Route exact path="/login" component={LoginPage} />
+              <PrivateRoute path="/tabs" component={Tabs} />
+              <Route exact path="/" render={() => <Redirect to="/login" />} />
+            </IonRouterOutlet>
+          </IonReactRouter>
+        </SessionProvider>
+      </SessionVaultProvider>
     </IonApp>
   );
 };
