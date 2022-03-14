@@ -33,15 +33,9 @@ export const SessionVaultContext = createContext<{
 export const SessionVaultProvider: React.FC = ({ children }) => {
   const [isLocked, setIsLocked] = useState<boolean>(false);
 
-  vault.onLock(() => {
-    setIsLocked(true);
-    console.log('ERIC/ onLocked Fired.');
-  });
+  vault.onLock(() => setIsLocked(true));
 
-  vault.onUnlock(() => {
-    setIsLocked(false);
-    console.log('ERIC/ onUnlocked Fired.');
-  });
+  vault.onUnlock(() => setIsLocked(false));
 
   useEffect(() => {
     vault.isLocked().then((isLocked) => setIsLocked(isLocked));

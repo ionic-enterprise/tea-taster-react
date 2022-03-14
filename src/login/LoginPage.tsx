@@ -1,14 +1,21 @@
-import React, { useEffect } from 'react';
-import { IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import { IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
 import { useHistory } from 'react-router';
-import { logInOutline } from 'ionicons/icons';
+import { lockOpenOutline, logInOutline } from 'ionicons/icons';
 import { useSession } from '../core/auth';
 import { useSessionVault } from '../core/vault';
 
 const LoginPage: React.FC = () => {
-  const { login, isAuthenticated, error } = useSession();
+  const { checkAuthenticationStatus, login, isAuthenticated, error } = useSession();
+  const { canUnlock: canVaultUnlock } = useSessionVault();
   const { isLocked } = useSessionVault();
   const history = useHistory();
+
+  const [canUnlock, setCanUnlock] = useState<boolean>(false);
+
+  useEffect(() => {
+    canVaultUnlock().then((isUnlockable) => setCanUnlock(isUnlockable && isPlatform('hybrid')));
+  }, [canVaultUnlock]);
 
   useEffect(() => {
     !isLocked && isAuthenticated && history.replace('/tabs');
@@ -27,11 +34,26 @@ const LoginPage: React.FC = () => {
             <IonTitle size="large">Login</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <div className="unlock-app ion-text-center" onClick={() => login()}>
-          <IonIcon icon={logInOutline} />
-          Sign In
-        </div>
+        {!canUnlock ? (
+          <>
+            <div className="unlock-app ion-text-center" onClick={() => login()}>
+              <IonIcon icon={logInOutline} />
+              Sign In
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="unlock-app ion-text-center" onClick={() => checkAuthenticationStatus()}>
+              <IonIcon icon={lockOpenOutline} />
+              Unlock
+            </div>
+          </>
+        )}
+
         {error && <div>{error}</div>}
+
+        {/* DEBUG */}
+        <h1>Can Unlock Vault? {canUnlock.toString()}</h1>
       </IonContent>
     </IonPage>
   );

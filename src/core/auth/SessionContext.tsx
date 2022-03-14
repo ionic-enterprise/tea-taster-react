@@ -7,6 +7,7 @@ import { SessionVaultContext } from '../vault';
 export const SessionContext = createContext<{
   error: string | undefined;
   isAuthenticated: boolean;
+  checkAuthenticationStatus: () => Promise<void>;
   getAccessToken: () => Promise<string | undefined>;
   getUserInfo: () => Promise<User | undefined>;
   login: () => Promise<void>;
@@ -14,6 +15,9 @@ export const SessionContext = createContext<{
 }>({
   error: undefined,
   isAuthenticated: false,
+  checkAuthenticationStatus: async () => {
+    throw new Error('Method not implemented');
+  },
   getAccessToken: async () => {
     throw new Error('Method not implemented');
   },
@@ -35,18 +39,16 @@ export const SessionProvider: React.FC = ({ children }) => {
   const { vault } = useContext(SessionVaultContext);
   const authConnectRef = useRef<IonicAuth>(new IonicAuth({ ...config, tokenStorageProvider: vault }));
 
-  useEffect(() => {
-    const checkAuthenticationStatus = async (auth: IonicAuth) => {
-      try {
-        const isAuthenticated = await auth.isAuthenticated();
-        setIsAuthenticated(isAuthenticated);
-      } catch (error: any) {
-        setError(error.toString());
-        setIsAuthenticated(false);
-      }
-    };
-    checkAuthenticationStatus(authConnectRef.current);
-  }, []);
+  const checkAuthenticationStatus = async () => {
+    const auth = authConnectRef.current;
+    try {
+      const isAuthenticated = await auth.isAuthenticated();
+      setIsAuthenticated(isAuthenticated);
+    } catch (error: any) {
+      setError(error.toString());
+      setIsAuthenticated(false);
+    }
+  };
 
   const getAccessToken = async (): Promise<string | undefined> => {
     const auth = authConnectRef.current;
@@ -91,6 +93,7 @@ export const SessionProvider: React.FC = ({ children }) => {
       value={{
         error,
         isAuthenticated,
+        checkAuthenticationStatus,
         getAccessToken,
         getUserInfo,
         login,
