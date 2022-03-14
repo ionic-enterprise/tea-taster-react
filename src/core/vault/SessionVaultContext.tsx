@@ -4,9 +4,9 @@ import createVault from './vault-factory';
 
 const vault: BrowserVault | Vault = createVault({
   key: 'io.ionic.teataster',
-  type: VaultType.SecureStorage,
-  deviceSecurityType: DeviceSecurityType.None,
-  lockAfterBackgrounded: 5000,
+  type: VaultType.DeviceSecurity,
+  deviceSecurityType: DeviceSecurityType.Both,
+  lockAfterBackgrounded: 200,
   shouldClearVaultAfterTooManyFailedAttempts: true,
   customPasscodeInvalidUnlockAttempts: 2,
   unlockVaultOnLoad: false,
@@ -33,9 +33,15 @@ export const SessionVaultContext = createContext<{
 export const SessionVaultProvider: React.FC = ({ children }) => {
   const [isLocked, setIsLocked] = useState<boolean>(false);
 
-  vault.onLock(() => setIsLocked(true));
+  vault.onLock(() => {
+    setIsLocked(true);
+    console.log('ERIC/ onLocked Fired.');
+  });
 
-  vault.onUnlock(() => setIsLocked(false));
+  vault.onUnlock(() => {
+    setIsLocked(false);
+    console.log('ERIC/ onUnlocked Fired.');
+  });
 
   useEffect(() => {
     vault.isLocked().then((isLocked) => setIsLocked(isLocked));
