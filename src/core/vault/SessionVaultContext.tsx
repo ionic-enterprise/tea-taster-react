@@ -4,9 +4,9 @@ import createVault from './vault-factory';
 
 const vault: BrowserVault | Vault = createVault({
   key: 'io.ionic.teataster',
-  type: VaultType.DeviceSecurity,
-  deviceSecurityType: DeviceSecurityType.Both,
-  lockAfterBackgrounded: 200,
+  type: VaultType.SecureStorage,
+  deviceSecurityType: DeviceSecurityType.None,
+  lockAfterBackgrounded: 5000,
   shouldClearVaultAfterTooManyFailedAttempts: true,
   customPasscodeInvalidUnlockAttempts: 2,
   unlockVaultOnLoad: false,

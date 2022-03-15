@@ -1,27 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
+import {
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonPage,
+  IonSelect,
+  IonSelectOption,
+  IonTitle,
+  IonToolbar,
+  isPlatform,
+} from '@ionic/react';
+import { Device } from '@ionic-enterprise/identity-vault';
 import { useHistory } from 'react-router';
 import { arrowRedoOutline, lockOpenOutline, logInOutline } from 'ionicons/icons';
 import { useSession } from '../core/auth';
-import { useSessionVault } from '../core/vault';
+import { UnlockMode, useSessionVault } from '../core/vault';
 
 const LoginPage: React.FC = () => {
   const { checkAuthenticationStatus, login, logout, isAuthenticated, error } = useSession();
-  const { canUnlock: canVaultUnlock } = useSessionVault();
+  const { canUnlock: canUnlockVault } = useSessionVault();
   const { isLocked } = useSessionVault();
   const history = useHistory();
   const [canUnlock, setCanUnlock] = useState<boolean>(false);
+  const [hasDeviceSecurity, setHasDeviceSecurity] = useState<boolean>(false);
+  const [mode, setMode] = useState<UnlockMode>('NeverLock');
 
   useEffect(() => {
-    canVaultUnlock().then((isUnlockable) => setCanUnlock(isUnlockable && isPlatform('hybrid')));
-  }, [canVaultUnlock]);
+    canUnlockVault().then((isUnlockable) => setCanUnlock(isUnlockable && isPlatform('hybrid')));
+  }, [canUnlockVault]);
+
+  useEffect(() => {
+    Device.isSystemPasscodeSet().then(setHasDeviceSecurity);
+  }, []);
 
   useEffect(() => {
     !isLocked && isAuthenticated && history.replace('/tabs');
   }, [isLocked, isAuthenticated, history]);
 
   const handleLogin = async () => {
-    await login();
+    await login(mode);
   };
 
   const handleUnlock = async () => {
@@ -34,7 +53,7 @@ const LoginPage: React.FC = () => {
 
   const handleRedoLogin = async () => {
     await logout();
-    const isUnlockable = await canVaultUnlock();
+    const isUnlockable = await canUnlockVault();
     setCanUnlock(isUnlockable);
   };
 
@@ -53,6 +72,15 @@ const LoginPage: React.FC = () => {
         </IonHeader>
         {!canUnlock ? (
           <>
+            <IonItem>
+              <IonLabel>Session Locking</IonLabel>
+              <IonSelect onIonChange={(e) => setMode(e.detail.value! as UnlockMode)} value={mode}>
+                {hasDeviceSecurity && <IonSelectOption value={'Device'}>Device Security</IonSelectOption>}
+                <IonSelectOption value={'SessionPIN'}>Session PIN Unlock</IonSelectOption>
+                <IonSelectOption value={'NeverLock'}>Never Lock Session</IonSelectOption>
+                <IonSelectOption value={'ForceLogin'}>Force Login</IonSelectOption>
+              </IonSelect>
+            </IonItem>
             <div className="unlock-app ion-text-center" onClick={() => handleLogin()}>
               <IonIcon icon={logInOutline} />
               Sign In
