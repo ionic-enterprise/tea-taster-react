@@ -43,6 +43,7 @@ export const SessionProvider: React.FC = ({ children }) => {
     const auth = authConnectRef.current;
     try {
       const isAuthenticated = await auth.isAuthenticated();
+      setError('');
       setIsAuthenticated(isAuthenticated);
     } catch (error: any) {
       setError(error.toString());
@@ -71,10 +72,11 @@ export const SessionProvider: React.FC = ({ children }) => {
     try {
       const auth = authConnectRef.current;
       await auth.login();
+      setError('');
       setIsAuthenticated(true);
     } catch (error: any) {
       setIsAuthenticated(false);
-      setError(error);
+      setError(error.toString());
     }
   };
 
@@ -82,9 +84,10 @@ export const SessionProvider: React.FC = ({ children }) => {
     try {
       const auth = authConnectRef.current;
       await auth.logout();
+      setError('');
       setIsAuthenticated(false);
     } catch (error: any) {
-      setError(error);
+      setError(error.toString());
     }
   };
 
