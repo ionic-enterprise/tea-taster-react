@@ -1,6 +1,8 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { Vault, BrowserVault, VaultType, DeviceSecurityType } from '@ionic-enterprise/identity-vault';
 import createVault from './vault-factory';
+import PinDialog from '../../pin-dialog/PinDialog';
+import { useIonModal } from '@ionic/react';
 
 const vault: BrowserVault | Vault = createVault({
   key: 'io.ionic.teataster',
@@ -30,12 +32,39 @@ export const SessionVaultContext = createContext<{
   },
 });
 
+type CustomPasscodeCallback = (opts: { data: any; role?: string }) => void;
+let passcodeRequestCallback: CustomPasscodeCallback = () => {};
 export const SessionVaultProvider: React.FC = ({ children }) => {
   const [isLocked, setIsLocked] = useState<boolean>(false);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isSetPasscodeMode, setIsSetPasscodeMode] = useState<boolean>(false);
+  const [present, dismiss] = useIonModal(PinDialog, {
+    isSetPasscodeMode,
+    onDismiss: (opts: { data: any; role?: string }) => passcodeRequestCallback(opts),
+  });
 
   vault.onLock(() => setIsLocked(true));
 
   vault.onUnlock(() => setIsLocked(false));
+
+  vault.onPasscodeRequested(async (isPasscodeSetRequest, onComplete) => {
+    return new Promise((resolve) => {
+      passcodeRequestCallback = (opts: { data: any; role?: string }) => {
+        if (opts.role === 'cancel') onComplete('');
+        else onComplete(opts.data);
+        setIsSetPasscodeMode(false);
+        setShowModal(false);
+        resolve();
+      };
+      setIsSetPasscodeMode(isSetPasscodeMode);
+      setShowModal(true);
+    });
+  });
+
+  useEffect(() => {
+    showModal ? present() : dismiss();
+  }, [showModal, present, dismiss]);
 
   useEffect(() => {
     vault.isLocked().then((isLocked) => setIsLocked(isLocked));
