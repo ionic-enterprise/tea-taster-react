@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { Vault, BrowserVault, VaultType, DeviceSecurityType } from '@ionic-enterprise/identity-vault';
 import createVault from './vault-factory';
 
@@ -41,9 +41,9 @@ export const SessionVaultProvider: React.FC = ({ children }) => {
     vault.isLocked().then((isLocked) => setIsLocked(isLocked));
   }, []);
 
-  const canUnlock = async (): Promise<boolean> => {
+  const canUnlock = useCallback(async (): Promise<boolean> => {
     return !(await vault.isEmpty()) && (await vault.isLocked());
-  };
+  }, []);
 
   const setUnlockMode = async (unlockMode: UnlockMode): Promise<void> => {
     let type: VaultType;
