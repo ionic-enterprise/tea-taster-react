@@ -89,6 +89,7 @@ export const SessionProvider: React.FC = ({ children }) => {
     try {
       const auth = authConnectRef.current;
       await auth.logout();
+      await setUnlockMode('NeverLock');
       setError('');
       setIsAuthenticated(false);
     } catch (error: any) {
