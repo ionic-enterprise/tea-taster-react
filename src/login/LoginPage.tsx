@@ -35,6 +35,9 @@ const LoginPage: React.FC = () => {
     Device.isSystemPasscodeSet().then(setHasDeviceSecurity);
   }, []);
 
+  // Add useEffect to call checkAuthenticationStatus
+  // if Vault is Secure Storage
+
   useEffect(() => {
     !isLocked && isAuthenticated && history.replace('/tabs');
   }, [isLocked, isAuthenticated, history]);

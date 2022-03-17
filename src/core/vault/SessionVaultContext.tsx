@@ -48,6 +48,8 @@ export const SessionVaultProvider: React.FC = ({ children }) => {
 
   vault.onUnlock(() => setIsLocked(false));
 
+  vault.onConfigChanged(() => vault.isLocked().then((isLocked) => setIsLocked(isLocked)));
+
   vault.onPasscodeRequested(async (isPasscodeSetRequest, onComplete) => {
     return new Promise((resolve) => {
       passcodeRequestCallback = (opts: { data: any; role?: string }) => {
@@ -57,7 +59,7 @@ export const SessionVaultProvider: React.FC = ({ children }) => {
         setShowModal(false);
         resolve();
       };
-      setIsSetPasscodeMode(isSetPasscodeMode);
+      setIsSetPasscodeMode(isPasscodeSetRequest);
       setShowModal(true);
     });
   });

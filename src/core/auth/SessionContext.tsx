@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { IonicAuth } from '@ionic-enterprise/auth';
 import { User } from '../models';
 import getAuthConfig from './auth-config';
