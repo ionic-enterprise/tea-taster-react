@@ -3,6 +3,7 @@ import { IonicAuth } from '@ionic-enterprise/auth';
 import { User } from '../models';
 import getAuthConfig from './auth-config';
 import { SessionVaultContext, UnlockMode } from '../vault';
+import { VaultType } from '@ionic-enterprise/identity-vault';
 
 export const SessionContext = createContext<{
   error: string | undefined;
@@ -38,6 +39,12 @@ export const SessionProvider: React.FC = ({ children }) => {
   const { config } = getAuthConfig();
   const { vault, setUnlockMode } = useContext(SessionVaultContext);
   const authConnectRef = useRef<IonicAuth>(new IonicAuth({ ...config, tokenStorageProvider: vault }));
+
+  useEffect(() => {
+    // This strategy prompts the user to unlock the Vault automatically
+    // when the application is launched.
+    checkAuthenticationStatus();
+  }, []);
 
   const checkAuthenticationStatus = async () => {
     const auth = authConnectRef.current;
@@ -88,10 +95,10 @@ export const SessionProvider: React.FC = ({ children }) => {
   const logout = async (): Promise<void> => {
     try {
       const auth = authConnectRef.current;
+      setIsAuthenticated(false);
       await auth.logout();
       await setUnlockMode('NeverLock');
       setError('');
-      setIsAuthenticated(false);
     } catch (error: any) {
       setError(error.toString());
     }

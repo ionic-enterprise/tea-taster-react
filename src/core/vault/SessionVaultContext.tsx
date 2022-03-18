@@ -66,7 +66,8 @@ export const SessionVaultProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     showModal ? present() : dismiss();
-  }, [showModal, present, dismiss]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showModal]);
 
   useEffect(() => {
     vault.isLocked().then((isLocked) => setIsLocked(isLocked));

@@ -35,9 +35,6 @@ const LoginPage: React.FC = () => {
     Device.isSystemPasscodeSet().then(setHasDeviceSecurity);
   }, []);
 
-  // Add useEffect to call checkAuthenticationStatus
-  // if Vault is Secure Storage
-
   useEffect(() => {
     !isLocked && isAuthenticated && history.replace('/tabs');
   }, [isLocked, isAuthenticated, history]);
@@ -47,10 +44,13 @@ const LoginPage: React.FC = () => {
   };
 
   const handleUnlock = async () => {
-    // Checking the authentication status calls isAuthenticated.
-    // That method will prompt the user to unlock the vault in
-    // order to gain access to session information to verify
-    // if the user is still authenticated.
+    // In order to check the authentication status,
+    // the Vault needs to be unlocked to fetch session
+    // tokens.
+    //
+    // Therefore, we can check the user's authentication
+    // status to both ensure they are still authenticated
+    // and unlock the Vault at the same time.
     await checkAuthenticationStatus();
   };
 
