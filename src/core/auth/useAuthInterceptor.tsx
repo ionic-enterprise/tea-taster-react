@@ -1,9 +1,9 @@
 import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useContext, useRef } from 'react';
-import { AuthContext } from './AuthContext';
+import { SessionContext } from './SessionContext';
 
 export const useAuthInterceptor = () => {
-  const { state, dispatch } = useContext(AuthContext);
+  const { state, dispatch } = useContext(SessionContext);
 
   if (state === undefined) {
     throw new Error('useAuthInterceptor must be used with an AuthProvider');

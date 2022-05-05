@@ -4,19 +4,19 @@ import Axios from 'axios';
 import { IonSpinner } from '@ionic/react';
 import { Session } from '../models';
 
-interface AuthState {
+interface SessionState {
   session?: Session;
   loading: boolean;
   error: string;
 }
 
-const initialState: AuthState = {
+const initialState: SessionState = {
   session: undefined,
   loading: false,
   error: '',
 };
 
-export type AuthAction =
+export type SessionAction =
   | { type: 'CLEAR_SESSION' }
   | { type: 'RESTORE_SESSION'; session: Session }
   | { type: 'LOGIN' }
@@ -26,7 +26,7 @@ export type AuthAction =
   | { type: 'LOGOUT_SUCCESS' }
   | { type: 'LOGOUT_FAILURE'; error: string };
 
-const reducer = (state: AuthState = initialState, action: AuthAction): AuthState => {
+const reducer = (state: SessionState = initialState, action: SessionAction): SessionState => {
   switch (action.type) {
     case 'CLEAR_SESSION':
       return { ...state, session: undefined };
@@ -49,15 +49,15 @@ const reducer = (state: AuthState = initialState, action: AuthAction): AuthState
   }
 };
 
-export const AuthContext = createContext<{
+export const SessionContext = createContext<{
   state: typeof initialState;
-  dispatch: (action: AuthAction) => void;
+  dispatch: (action: SessionAction) => void;
 }>({
   state: initialState,
   dispatch: () => {},
 });
 
-export const AuthProvider: React.FC = ({ children }) => {
+export const SessionProvider: React.FC = ({ children }) => {
   const [initializing, setInitializing] = useState<boolean>(true);
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -81,8 +81,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>
+    <SessionContext.Provider value={{ state, dispatch }}>
       {initializing ? <IonSpinner name="dots" data-testid="initializing" /> : children}
-    </AuthContext.Provider>
+    </SessionContext.Provider>
   );
 };

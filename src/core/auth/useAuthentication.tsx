@@ -1,10 +1,10 @@
 import { Storage } from '@capacitor/storage';
 import Axios from 'axios';
 import { useContext } from 'react';
-import { AuthContext } from './AuthContext';
+import { SessionContext } from './SessionContext';
 
 export const useAuthentication = () => {
-  const { state, dispatch } = useContext(AuthContext);
+  const { state, dispatch } = useContext(SessionContext);
 
   if (state === undefined) {
     throw new Error('useAuthentication must be used with an AuthProvider');
@@ -21,7 +21,7 @@ export const useAuthentication = () => {
       await Storage.set({ key: 'auth-token', value: data.token });
       const session = { token: data.token, user: data.user };
       dispatch({ type: 'LOGIN_SUCCESS', session });
-    } catch (error) {
+    } catch (error: any) {
       dispatch({ type: 'LOGIN_FAILURE', error: error.message });
     }
   };
@@ -35,7 +35,7 @@ export const useAuthentication = () => {
       await Axios.post(url, null, { headers });
       await Storage.remove({ key: 'auth-token' });
       dispatch({ type: 'LOGOUT_SUCCESS' });
-    } catch (error) {
+    } catch (error: any) {
       dispatch({ type: 'LOGOUT_FAILURE', error: error.message });
     }
   };

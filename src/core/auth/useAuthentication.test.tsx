@@ -3,12 +3,12 @@ import Axios from 'axios';
 import { Storage } from '@capacitor/storage';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useAuthentication } from './useAuthentication';
-import { AuthProvider } from './AuthContext';
+import { SessionProvider } from './SessionContext';
 import { mockSession } from './__mocks__/mockSession';
 
 jest.mock('@capacitor/storage');
 
-const wrapper = ({ children }: any) => <AuthProvider>{children}</AuthProvider>;
+const wrapper = ({ children }: any) => <SessionProvider>{children}</SessionProvider>;
 
 describe('useAuthentication', () => {
   beforeEach(() => {
