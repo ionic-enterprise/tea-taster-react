@@ -15,7 +15,7 @@ describe('<App />', () => {
   beforeEach(() => (SplashScreen.hide = jest.fn()));
 
   describe('in an Android context', () => {
-    beforeEach(() => (isPlatform as any).mockImplementation(() => true));
+    beforeEach(() => (isPlatform as jest.Mock).mockImplementation(() => true));
     it('should hide the splash screen', async () => {
       const { container } = render(<App />);
       await waitFor(() => waitForIonicReact());
@@ -25,7 +25,7 @@ describe('<App />', () => {
   });
 
   describe('in an iOS context', () => {
-    beforeEach(() => (isPlatform as any).mockImplementation(() => true));
+    beforeEach(() => (isPlatform as jest.Mock).mockImplementation(() => true));
     it('should hide the splash screen', async () => {
       const { container } = render(<App />);
       await waitFor(() => waitForIonicReact());
@@ -35,7 +35,7 @@ describe('<App />', () => {
   });
 
   describe('in a web context', () => {
-    beforeEach(() => (isPlatform as any).mockImplementation(() => false));
+    beforeEach(() => (isPlatform as jest.Mock).mockImplementation(() => false));
     it('should not hide the splash screen', async () => {
       const { container } = render(<App />);
       await waitFor(() => waitForIonicReact());
