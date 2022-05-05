@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
+import { setupIonicReact } from '@ionic/react';
 import { mockIonicReact } from '@ionic/react-test-utils';
 
 window.matchMedia =
@@ -10,4 +11,5 @@ window.matchMedia =
       removeListener: function () {},
     };
   };
+setupIonicReact();
 mockIonicReact();

@@ -37,7 +37,9 @@ describe('useTea', () => {
   });
 
   describe('get all teas', () => {
-    beforeEach(() => (mockInstanceVerb = jest.fn(async () => ({ data: resultTeas() }))));
+    beforeEach(() => {
+      mockInstanceVerb = jest.fn(async () => ({ data: resultTeas() }));
+    });
 
     it('gets the teas', async () => {
       const { result } = renderHook(() => useTea());
@@ -58,7 +60,9 @@ describe('useTea', () => {
   });
 
   describe('get a specific tea', () => {
-    beforeEach(() => (mockInstanceVerb = jest.fn(async () => ({ data: resultTeas()[0] }))));
+    beforeEach(() => {
+      mockInstanceVerb = jest.fn(async () => ({ data: resultTeas()[0] }));
+    });
 
     it('gets the specific tea', async () => {
       const { result } = renderHook(() => useTea());

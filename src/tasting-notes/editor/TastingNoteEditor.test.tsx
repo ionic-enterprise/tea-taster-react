@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
+import { ionFireEvent as fireEvent, waitForIonicReact } from '@ionic/react-test-utils';
 import TastingNoteEditor from './TastingNoteEditor';
 import { mockNotes } from '../__mocks__/mockNotes';
 import { resultTeas } from '../../tea/__mocks__/mockTeas';
@@ -32,17 +32,19 @@ describe('<TastingNoteEditor />', () => {
 
   describe('initialization', () => {
     it('binds the tea select', async () => {
-      const { getByTestId } = render(component);
-      const options = await waitFor(() => getByTestId(/category-select/));
-      expect(options.children.length).toEqual(8);
-      expect(options.children[0].textContent).toEqual('Green');
-      expect(options.children[1].textContent).toEqual('Black');
+      const { getAllByRole } = render(component);
+      await waitFor(() => waitForIonicReact());
+      const options = getAllByRole('option');
+      expect(options.length).toEqual(8);
+      expect(options[0].textContent).toEqual('Green');
+      expect(options[1].textContent).toEqual('Black');
     });
   });
 
   describe('cancel button', () => {
     it('calls the dismiss function', async () => {
       const { getByTestId } = render(component);
+      await waitFor(() => waitForIonicReact());
       const button = await waitFor(() => getByTestId(/cancel-button/) as HTMLIonButtonElement);
       fireEvent.click(button);
       expect(mockDismiss).toHaveBeenCalledTimes(1);
@@ -52,17 +54,20 @@ describe('<TastingNoteEditor />', () => {
   describe('save', () => {
     it('renders consistently', async () => {
       const { asFragment, container } = render(component);
+      await waitFor(() => waitForIonicReact());
       await waitFor(() => expect(container).toHaveTextContent(/Add New Tasting Note/));
       expect(asFragment()).toMatchSnapshot();
     });
 
     it('has the add title', async () => {
       const { container } = render(component);
+      await waitFor(() => waitForIonicReact());
       await waitFor(() => expect(container).toHaveTextContent(/Add New Tasting Note/));
     });
 
     it('has the add button label', async () => {
       const { getByTestId } = render(component);
+      await waitFor(() => waitForIonicReact());
       const submit = await waitFor(() => getByTestId(/submit-button/));
       expect(submit.textContent).toEqual('Add');
     });
@@ -72,6 +77,7 @@ describe('<TastingNoteEditor />', () => {
       // @ts-ignore
       delete expected.id;
       const { getByTestId } = render(component);
+      await waitFor(() => waitForIonicReact());
       const brand = await waitFor(() => getByTestId(/brand-input/));
       const name = await waitFor(() => getByTestId(/name-input/));
       const rating = await waitFor(() => getByTestId(/Rate 4 stars/));
@@ -97,23 +103,27 @@ describe('<TastingNoteEditor />', () => {
 
     it('renders consistently', async () => {
       const { asFragment, container } = render(component);
+      await waitFor(() => waitForIonicReact());
       await waitFor(() => expect(container).toHaveTextContent(/Update Tasting Note/));
       expect(asFragment()).toMatchSnapshot();
     });
 
     it('has the update title', async () => {
       const { container } = render(component);
+      await waitFor(() => waitForIonicReact());
       await waitFor(() => expect(container).toHaveTextContent(/Update Tasting Note/));
     });
 
     it('has the update button label', async () => {
       const { getByTestId } = render(component);
+      await waitFor(() => waitForIonicReact());
       const submit = await waitFor(() => getByTestId(/submit-button/));
       expect(submit.textContent).toEqual('Update');
     });
 
     it('sets the properties', async () => {
       const { getByTestId } = render(component);
+      await waitFor(() => waitForIonicReact());
       const brand = await waitFor(() => getByTestId(/brand-input/));
       const name = await waitFor(() => getByTestId(/name-input/));
       const notes = await waitFor(() => getByTestId(/notes-input/));
@@ -127,6 +137,7 @@ describe('<TastingNoteEditor />', () => {
       expected.notes = "It's not good";
       expected.rating = 1;
       const { getByTestId } = render(component);
+      await waitFor(() => waitForIonicReact());
       const brand = await waitFor(() => getByTestId(/brand-input/));
       const name = await waitFor(() => getByTestId(/name-input/));
       const rating = await waitFor(() => getByTestId(/Rate 1 stars/));

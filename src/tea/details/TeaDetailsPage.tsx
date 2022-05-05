@@ -11,11 +11,12 @@ const TeaDetailsPage: React.FC = () => {
   const [tea, setTea] = useState<Tea | undefined>(undefined);
 
   useEffect(() => {
-    (async () => {
-      const tea = await getTeaById(parseInt(id, 10));
+    const fetchTea = async (id: number) => {
+      const tea = await getTeaById(id);
       setTea(tea);
-    })();
-  }, [id, getTeaById]);
+    };
+    fetchTea(parseInt(id, 10));
+  }, [id]);
 
   return (
     <IonPage>

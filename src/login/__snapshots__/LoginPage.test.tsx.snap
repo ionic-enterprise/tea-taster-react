@@ -5,21 +5,36 @@ exports[`<LoginPage /> renders consistently 1`] = `
   <div
     class="ion-page"
   >
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>
+    <ion-header
+      class="md header-md header-collapse-none"
+      role="banner"
+    >
+      <!---->
+      <ion-toolbar
+        class="toolbar-title-default md in-toolbar"
+      >
+        <ion-title
+          class="md title-default"
+        >
           Login
         </ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content
-      class="main-content"
+      class="main-content md"
+      style="--offset-top: 0px; --offset-bottom: 0px;"
     >
       <ion-header
+        class="md header-md header-collapse-condense"
         collapse="condense"
+        role="banner"
       >
-        <ion-toolbar>
+        <!---->
+        <ion-toolbar
+          class="toolbar-title-large md in-toolbar"
+        >
           <ion-title
+            class="md title-large"
             size="large"
           >
             Login
@@ -27,28 +42,62 @@ exports[`<LoginPage /> renders consistently 1`] = `
         </ion-toolbar>
       </ion-header>
       <form>
-        <ion-list>
-          <ion-item>
+        <ion-list
+          class="md list-md"
+        >
+          <ion-item
+            class="item-interactive item-input item md item-fill-none in-list ion-focusable item-label item-label-floating"
+          >
             <ion-label
+              class="sc-ion-label-md-h sc-ion-label-md-s md label-floating label-no-animate"
+              id="ion-input-2-lbl"
               position="floating"
             >
               E-Mail Address
             </ion-label>
             <ion-input
+              class="sc-ion-input-md-h sc-ion-input-md-s md"
               data-testid="email-input"
               type="email"
-            />
+            >
+              <input
+                aria-labelledby="ion-input-2-lbl"
+                autocapitalize="off"
+                autocomplete="off"
+                autocorrect="off"
+                class="native-input sc-ion-input-md"
+                name="ion-input-2"
+                placeholder=""
+                type="email"
+              />
+            </ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item
+            class="item-interactive item-input item md item-fill-none in-list ion-focusable item-label item-label-floating"
+          >
             <ion-label
+              class="sc-ion-label-md-h sc-ion-label-md-s md label-floating label-no-animate"
+              id="ion-input-3-lbl"
               position="floating"
             >
               Password
             </ion-label>
             <ion-input
+              class="sc-ion-input-md-h sc-ion-input-md-s md"
               data-testid="password-input"
               type="password"
-            />
+            >
+              <input
+                aria-labelledby="ion-input-3-lbl"
+                autocapitalize="off"
+                autocomplete="off"
+                autocorrect="off"
+                class="native-input sc-ion-input-md"
+                name="ion-input-3"
+                placeholder=""
+                type="password"
+              />
+            </ion-input>
           </ion-item>
         </ion-list>
         <div
@@ -61,18 +110,27 @@ exports[`<LoginPage /> renders consistently 1`] = `
         </div>
       </form>
     </ion-content>
-    <ion-footer>
+    <ion-footer
+      class="md footer-md"
+      role="contentinfo"
+    >
+      <!---->
       <ion-toolbar
+        class="ion-color ion-color-secondary md in-toolbar"
         color="secondary"
       >
         <ion-button
+          aria-disabled="true"
+          class="md button button-full button-solid in-toolbar in-toolbar-color button-disabled ion-activatable ion-focusable"
           data-testid="submit-button"
-          disabled="true"
+          disabled=""
           expand="full"
         >
           Sign In
           <ion-icon
+            class="md"
             icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Log In</title><path d='M192 176v-40a40 40 0 0140-40h160a40 40 0 0140 40v240a40 40 0 01-40 40H240c-22.09 0-48-17.91-48-40v-40' stroke-linecap='round' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/><path stroke-linecap='round' stroke-linejoin='round' d='M288 336l80-80-80-80M80 256h272' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            role="img"
             slot="end"
           />
         </ion-button>

@@ -2,19 +2,31 @@
 
 exports[`<TastingNoteEditor /> save renders consistently 1`] = `
 <DocumentFragment>
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>
+  <ion-header
+    class="md header-md header-collapse-none"
+    role="banner"
+  >
+    <!---->
+    <ion-toolbar
+      class="toolbar-title-default md in-toolbar"
+    >
+      <ion-title
+        class="md title-default"
+      >
         Add New Tasting Note
       </ion-title>
       <ion-buttons
+        class="buttons-last-slot sc-ion-buttons-md-h sc-ion-buttons-md-s md"
         slot="primary"
       >
         <ion-button
+          class="md button button-clear in-toolbar button-has-icon-only ion-activatable ion-focusable"
           data-testid="cancel-button"
         >
           <ion-icon
+            class="md"
             icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Close</title><path d='M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z'/></svg>"
+            role="img"
             slot="icon-only"
           />
         </ion-button>
@@ -22,84 +34,163 @@ exports[`<TastingNoteEditor /> save renders consistently 1`] = `
     </ion-toolbar>
   </ion-header>
   <ion-content
-    class="main-content"
+    class="main-content md"
+    style="--offset-top: 0px; --offset-bottom: 0px;"
   >
     <form>
-      <ion-list>
-        <ion-item>
+      <ion-list
+        class="md list-md"
+      >
+        <ion-item
+          class="item-interactive item-input item md item-fill-none in-list ion-focusable item-label item-label-floating"
+        >
           <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md label-floating label-no-animate"
+            id="ion-input-4-lbl"
             position="floating"
           >
             Brand
           </ion-label>
           <ion-input
+            class="sc-ion-input-md-h sc-ion-input-md-s md"
             data-testid="brand-input"
             value=""
-          />
+          >
+            <input
+              aria-labelledby="ion-input-4-lbl"
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              class="native-input sc-ion-input-md"
+              name="ion-input-4"
+              placeholder=""
+              type="text"
+            />
+          </ion-input>
         </ion-item>
-        <ion-item>
+        <ion-item
+          class="item-interactive item-input item md item-fill-none in-list ion-focusable item-label item-label-floating"
+        >
           <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md label-floating label-no-animate"
+            id="ion-input-5-lbl"
             position="floating"
           >
             Name
           </ion-label>
           <ion-input
+            class="sc-ion-input-md-h sc-ion-input-md-s md"
             data-testid="name-input"
             value=""
-          />
+          >
+            <input
+              aria-labelledby="ion-input-5-lbl"
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              class="native-input sc-ion-input-md"
+              name="ion-input-5"
+              placeholder=""
+              type="text"
+            />
+          </ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label>
+        <ion-item
+          class="item-interactive item-select item-has-value item md item-fill-none in-list ion-activatable ion-focusable item-label"
+        >
+          <ion-label
+            aria-hidden="true"
+            class="sc-ion-label-md-h sc-ion-label-md-s md"
+            id="ion-sel-2-lbl"
+          >
             Category
           </ion-label>
           <ion-select
+            aria-haspopup="listbox"
+            aria-label="Green, Category"
+            class="md in-item"
             data-testid="category-select"
+            role="button"
             value="1"
           >
             <ion-select-option
+              class="md"
+              id="ion-selopt-16"
+              role="option"
               value="1"
             >
               Green
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-17"
+              role="option"
               value="2"
             >
               Black
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-18"
+              role="option"
               value="3"
             >
               Herbal
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-19"
+              role="option"
               value="4"
             >
               Oolong
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-20"
+              role="option"
               value="5"
             >
               Dark
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-21"
+              role="option"
               value="6"
             >
               Puer
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-22"
+              role="option"
               value="7"
             >
               White
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-23"
+              role="option"
               value="8"
             >
               Yellow
             </ion-select-option>
+            <input
+              class="aux-input"
+              name="ion-sel-2"
+              type="hidden"
+              value="1"
+            />
           </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-label>
+        <ion-item
+          class="item md item-fill-none in-list ion-focusable item-label"
+        >
+          <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md"
+          >
             Rating
           </ion-label>
           <div
@@ -107,47 +198,83 @@ exports[`<TastingNoteEditor /> save renders consistently 1`] = `
             style="opacity: 1;"
           >
             <ion-icon
+              class="md"
               data-testid="Rate 1 stars"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+              role="img"
             />
             <ion-icon
+              class="md"
               data-testid="Rate 2 stars"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+              role="img"
             />
             <ion-icon
+              class="md"
               data-testid="Rate 3 stars"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+              role="img"
             />
             <ion-icon
+              class="md"
               data-testid="Rate 4 stars"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+              role="img"
             />
             <ion-icon
+              class="md"
               data-testid="Rate 5 stars"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+              role="img"
             />
           </div>
         </ion-item>
-        <ion-item>
+        <ion-item
+          class="item-interactive item-textarea item-input item md item-fill-none in-list ion-focusable item-label item-label-floating"
+        >
           <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md label-floating label-no-animate"
+            id="ion-textarea-2-lbl"
             position="floating"
           >
             Notes
           </ion-label>
           <ion-textarea
+            class="sc-ion-textarea-md-h sc-ion-textarea-md-s md"
             data-testid="notes-input"
             rows="5"
             value=""
-          />
+          >
+            <div
+              class="textarea-wrapper sc-ion-textarea-md"
+            >
+              <textarea
+                aria-labelledby="ion-textarea-2-lbl"
+                autocapitalize="none"
+                class="native-textarea sc-ion-textarea-md"
+                name="ion-textarea-2"
+                placeholder=""
+                rows="5"
+              />
+            </div>
+          </ion-textarea>
         </ion-item>
       </ion-list>
     </form>
   </ion-content>
-  <ion-footer>
-    <ion-toolbar>
+  <ion-footer
+    class="md footer-md"
+    role="contentinfo"
+  >
+    <!---->
+    <ion-toolbar
+      class="md in-toolbar"
+    >
       <ion-button
+        aria-disabled="true"
+        class="md button button-full button-solid in-toolbar button-disabled ion-activatable ion-focusable"
         data-testid="submit-button"
-        disabled="false"
+        disabled=""
         expand="full"
         type="submit"
       >
@@ -160,19 +287,31 @@ exports[`<TastingNoteEditor /> save renders consistently 1`] = `
 
 exports[`<TastingNoteEditor /> update renders consistently 1`] = `
 <DocumentFragment>
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>
+  <ion-header
+    class="md header-md header-collapse-none"
+    role="banner"
+  >
+    <!---->
+    <ion-toolbar
+      class="toolbar-title-default md in-toolbar"
+    >
+      <ion-title
+        class="md title-default"
+      >
         Update Tasting Note
       </ion-title>
       <ion-buttons
+        class="buttons-last-slot sc-ion-buttons-md-h sc-ion-buttons-md-s md"
         slot="primary"
       >
         <ion-button
+          class="md button button-clear in-toolbar button-has-icon-only ion-activatable ion-focusable"
           data-testid="cancel-button"
         >
           <ion-icon
+            class="md"
             icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Close</title><path d='M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z'/></svg>"
+            role="img"
             slot="icon-only"
           />
         </ion-button>
@@ -180,84 +319,163 @@ exports[`<TastingNoteEditor /> update renders consistently 1`] = `
     </ion-toolbar>
   </ion-header>
   <ion-content
-    class="main-content"
+    class="main-content md"
+    style="--offset-top: 0px; --offset-bottom: 0px;"
   >
     <form>
-      <ion-list>
-        <ion-item>
+      <ion-list
+        class="md list-md"
+      >
+        <ion-item
+          class="item-interactive item-input item-has-value item md item-fill-none in-list ion-focusable item-label item-label-floating"
+        >
           <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md label-floating label-no-animate"
+            id="ion-input-14-lbl"
             position="floating"
           >
             Brand
           </ion-label>
           <ion-input
+            class="sc-ion-input-md-h sc-ion-input-md-s md has-value"
             data-testid="brand-input"
             value="Lipton"
-          />
+          >
+            <input
+              aria-labelledby="ion-input-14-lbl"
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              class="native-input sc-ion-input-md"
+              name="ion-input-14"
+              placeholder=""
+              type="text"
+            />
+          </ion-input>
         </ion-item>
-        <ion-item>
+        <ion-item
+          class="item-interactive item-input item-has-value item md item-fill-none in-list ion-focusable item-label item-label-floating"
+        >
           <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md label-floating label-no-animate"
+            id="ion-input-15-lbl"
             position="floating"
           >
             Name
           </ion-label>
           <ion-input
+            class="sc-ion-input-md-h sc-ion-input-md-s md has-value"
             data-testid="name-input"
             value="Yellow Label"
-          />
+          >
+            <input
+              aria-labelledby="ion-input-15-lbl"
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              class="native-input sc-ion-input-md"
+              name="ion-input-15"
+              placeholder=""
+              type="text"
+            />
+          </ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label>
+        <ion-item
+          class="item-interactive item-select item-has-value item md item-fill-none in-list ion-activatable ion-focusable item-label"
+        >
+          <ion-label
+            aria-hidden="true"
+            class="sc-ion-label-md-h sc-ion-label-md-s md"
+            id="ion-sel-7-lbl"
+          >
             Category
           </ion-label>
           <ion-select
+            aria-haspopup="listbox"
+            aria-label="Green, Category"
+            class="md in-item"
             data-testid="category-select"
+            role="button"
             value="1"
           >
             <ion-select-option
+              class="md"
+              id="ion-selopt-56"
+              role="option"
               value="1"
             >
               Green
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-57"
+              role="option"
               value="2"
             >
               Black
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-58"
+              role="option"
               value="3"
             >
               Herbal
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-59"
+              role="option"
               value="4"
             >
               Oolong
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-60"
+              role="option"
               value="5"
             >
               Dark
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-61"
+              role="option"
               value="6"
             >
               Puer
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-62"
+              role="option"
               value="7"
             >
               White
             </ion-select-option>
             <ion-select-option
+              class="md"
+              id="ion-selopt-63"
+              role="option"
               value="8"
             >
               Yellow
             </ion-select-option>
+            <input
+              class="aux-input"
+              name="ion-sel-7"
+              type="hidden"
+              value="1"
+            />
           </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-label>
+        <ion-item
+          class="item md item-fill-none in-list ion-focusable item-label"
+        >
+          <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md"
+          >
             Rating
           </ion-label>
           <div
@@ -265,45 +483,82 @@ exports[`<TastingNoteEditor /> update renders consistently 1`] = `
             style="opacity: 1;"
           >
             <ion-icon
+              class="md"
               data-testid="Rate 1 stars"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-29.2h160.38l48.4-148.95a16 16 0 0130.44 0l48.4 149H480a16 16 0 019.05 29.2L359 310.35l50.13 148.53A16 16 0 01394 480z'/></svg>"
+              role="img"
             />
             <ion-icon
+              class="md"
               data-testid="Rate 2 stars"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-29.2h160.38l48.4-148.95a16 16 0 0130.44 0l48.4 149H480a16 16 0 019.05 29.2L359 310.35l50.13 148.53A16 16 0 01394 480z'/></svg>"
+              role="img"
             />
             <ion-icon
+              class="md"
               data-testid="Rate 3 stars"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-29.2h160.38l48.4-148.95a16 16 0 0130.44 0l48.4 149H480a16 16 0 019.05 29.2L359 310.35l50.13 148.53A16 16 0 01394 480z'/></svg>"
+              role="img"
             />
             <ion-icon
+              class="md"
               data-testid="Rate 4 stars"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-29.2h160.38l48.4-148.95a16 16 0 0130.44 0l48.4 149H480a16 16 0 019.05 29.2L359 310.35l50.13 148.53A16 16 0 01394 480z'/></svg>"
+              role="img"
             />
             <ion-icon
+              class="md"
               data-testid="Rate 5 stars"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+              role="img"
             />
           </div>
         </ion-item>
-        <ion-item>
+        <ion-item
+          class="item-interactive item-textarea item-input item-has-value item md item-fill-none in-list ion-focusable item-label item-label-floating"
+        >
           <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md label-floating label-no-animate"
+            id="ion-textarea-7-lbl"
             position="floating"
           >
             Notes
           </ion-label>
           <ion-textarea
+            class="sc-ion-textarea-md-h sc-ion-textarea-md-s md"
             data-testid="notes-input"
             rows="5"
             value="Overly acidic, highly tannic flavor"
-          />
+          >
+            <div
+              class="textarea-wrapper sc-ion-textarea-md"
+            >
+              <textarea
+                aria-labelledby="ion-textarea-7-lbl"
+                autocapitalize="none"
+                class="native-textarea sc-ion-textarea-md"
+                name="ion-textarea-7"
+                placeholder=""
+                rows="5"
+              >
+                Overly acidic, highly tannic flavor
+              </textarea>
+            </div>
+          </ion-textarea>
         </ion-item>
       </ion-list>
     </form>
   </ion-content>
-  <ion-footer>
-    <ion-toolbar>
+  <ion-footer
+    class="md footer-md"
+    role="contentinfo"
+  >
+    <!---->
+    <ion-toolbar
+      class="md in-toolbar"
+    >
       <ion-button
+        class="md button button-full button-solid in-toolbar ion-activatable ion-focusable"
         data-testid="submit-button"
         disabled="false"
         expand="full"

@@ -5,28 +5,46 @@ exports[`<TeaDetailsPage /> renders consistently 1`] = `
   <div
     class="ion-page"
   >
-    <ion-header>
-      <ion-toolbar>
+    <ion-header
+      class="md header-md header-collapse-none"
+      role="banner"
+    >
+      <!---->
+      <ion-toolbar
+        class="toolbar-title-default md in-toolbar"
+      >
         <ion-buttons
+          class="buttons-first-slot sc-ion-buttons-md-h sc-ion-buttons-md-s md"
           slot="start"
         >
           <ion-back-button
+            class="md button back-button-has-icon-only in-toolbar ion-activatable ion-focusable show-back-button"
             default-href="/tabs/tea"
+            defaulthref="/tabs/tea"
           />
         </ion-buttons>
-        <ion-title>
+        <ion-title
+          class="md title-default"
+        >
           Details
         </ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content
-      class="main-content"
+      class="main-content md"
+      style="--offset-top: 0px; --offset-bottom: 0px;"
     >
       <ion-header
+        class="md header-md header-collapse-condense"
         collapse="condense"
+        role="banner"
       >
-        <ion-toolbar>
+        <!---->
+        <ion-toolbar
+          class="toolbar-title-large md in-toolbar"
+        >
           <ion-title
+            class="md title-large"
             size="large"
           >
             Details
@@ -39,7 +57,9 @@ exports[`<TeaDetailsPage /> renders consistently 1`] = `
         <div
           class="ion-justify-content-center"
         >
-          <ion-img />
+          <ion-img
+            class="md"
+          />
         </div>
         <h1>
           Green
@@ -52,24 +72,34 @@ exports[`<TeaDetailsPage /> renders consistently 1`] = `
           style="opacity: 1;"
         >
           <ion-icon
+            class="md"
             data-testid="Rate 1 stars"
             icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            role="img"
           />
           <ion-icon
+            class="md"
             data-testid="Rate 2 stars"
             icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            role="img"
           />
           <ion-icon
+            class="md"
             data-testid="Rate 3 stars"
             icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            role="img"
           />
           <ion-icon
+            class="md"
             data-testid="Rate 4 stars"
             icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            role="img"
           />
           <ion-icon
+            class="md"
             data-testid="Rate 5 stars"
             icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            role="img"
           />
         </div>
       </div>

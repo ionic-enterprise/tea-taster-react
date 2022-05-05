@@ -7,24 +7,34 @@ exports[`<Rating /> when disabled renders consistently 1`] = `
     style="opacity: 0.25;"
   >
     <ion-icon
+      class="md"
       data-testid="Rate 1 stars"
       icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+      role="img"
     />
     <ion-icon
+      class="md"
       data-testid="Rate 2 stars"
       icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+      role="img"
     />
     <ion-icon
+      class="md"
       data-testid="Rate 3 stars"
       icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+      role="img"
     />
     <ion-icon
+      class="md"
       data-testid="Rate 4 stars"
       icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+      role="img"
     />
     <ion-icon
+      class="md"
       data-testid="Rate 5 stars"
       icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+      role="img"
     />
   </div>
 </DocumentFragment>
@@ -37,24 +47,34 @@ exports[`<Rating /> when enabled renders consistently 1`] = `
     style="opacity: 1;"
   >
     <ion-icon
+      class="md"
       data-testid="Rate 1 stars"
       icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+      role="img"
     />
     <ion-icon
+      class="md"
       data-testid="Rate 2 stars"
       icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+      role="img"
     />
     <ion-icon
+      class="md"
       data-testid="Rate 3 stars"
       icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+      role="img"
     />
     <ion-icon
+      class="md"
       data-testid="Rate 4 stars"
       icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+      role="img"
     />
     <ion-icon
+      class="md"
       data-testid="Rate 5 stars"
       icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Star</title><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+      role="img"
     />
   </div>
 </DocumentFragment>

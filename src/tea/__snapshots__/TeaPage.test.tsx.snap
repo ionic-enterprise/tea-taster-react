@@ -5,22 +5,37 @@ exports[`<TeaPage /> renders consistently 1`] = `
   <div
     class="ion-page"
   >
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>
+    <ion-header
+      class="md header-md header-collapse-none"
+      role="banner"
+    >
+      <!---->
+      <ion-toolbar
+        class="toolbar-title-default md in-toolbar"
+      >
+        <ion-title
+          class="md title-default"
+        >
           Tea
         </ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content
-      class="main-content"
+      class="main-content md"
       fullscreen="true"
+      style="--offset-top: 0px; --offset-bottom: 0px;"
     >
       <ion-header
+        class="md header-md header-collapse-condense"
         collapse="condense"
+        role="banner"
       >
-        <ion-toolbar>
+        <!---->
+        <ion-toolbar
+          class="toolbar-title-large md in-toolbar"
+        >
           <ion-title
+            class="md title-large"
             size="large"
           >
             Tea
@@ -28,163 +43,283 @@ exports[`<TeaPage /> renders consistently 1`] = `
         </ion-toolbar>
       </ion-header>
       <ion-grid
-        class="tea-grid"
+        class="tea-grid md"
       >
         <ion-row
-          class="ion-justify-content-center ion-align-items-stretch"
+          class="ion-justify-content-center ion-align-items-stretch md"
         >
           <ion-col
+            class="md"
             size="12"
             size-md="6"
             size-xl="3"
+            sizemd="6"
+            sizexl="3"
+            style="flex: 0 0 100%; width: 100%; max-width: 100%;"
           >
             <ion-card
               button="true"
+              class="md ion-activatable"
             >
-              <ion-img />
-              <ion-card-header>
-                <ion-card-title>
+              <ion-img
+                class="md"
+              />
+              <ion-card-header
+                class="ion-inherit-color md"
+              >
+                <ion-card-title
+                  aria-level="2"
+                  class="ion-inherit-color md"
+                  role="heading"
+                >
                   Green
                 </ion-card-title>
               </ion-card-header>
-              <ion-card-content>
+              <ion-card-content
+                class="md card-content-md"
+              >
                 Green tea description.
               </ion-card-content>
             </ion-card>
           </ion-col>
           <ion-col
+            class="md"
             size="12"
             size-md="6"
             size-xl="3"
+            sizemd="6"
+            sizexl="3"
+            style="flex: 0 0 100%; width: 100%; max-width: 100%;"
           >
             <ion-card
               button="true"
+              class="md ion-activatable"
             >
-              <ion-img />
-              <ion-card-header>
-                <ion-card-title>
+              <ion-img
+                class="md"
+              />
+              <ion-card-header
+                class="ion-inherit-color md"
+              >
+                <ion-card-title
+                  aria-level="2"
+                  class="ion-inherit-color md"
+                  role="heading"
+                >
                   Black
                 </ion-card-title>
               </ion-card-header>
-              <ion-card-content>
+              <ion-card-content
+                class="md card-content-md"
+              >
                 Black tea description.
               </ion-card-content>
             </ion-card>
           </ion-col>
           <ion-col
+            class="md"
             size="12"
             size-md="6"
             size-xl="3"
+            sizemd="6"
+            sizexl="3"
+            style="flex: 0 0 100%; width: 100%; max-width: 100%;"
           >
             <ion-card
               button="true"
+              class="md ion-activatable"
             >
-              <ion-img />
-              <ion-card-header>
-                <ion-card-title>
+              <ion-img
+                class="md"
+              />
+              <ion-card-header
+                class="ion-inherit-color md"
+              >
+                <ion-card-title
+                  aria-level="2"
+                  class="ion-inherit-color md"
+                  role="heading"
+                >
                   Herbal
                 </ion-card-title>
               </ion-card-header>
-              <ion-card-content>
+              <ion-card-content
+                class="md card-content-md"
+              >
                 Herbal Infusion description.
               </ion-card-content>
             </ion-card>
           </ion-col>
           <ion-col
+            class="md"
             size="12"
             size-md="6"
             size-xl="3"
+            sizemd="6"
+            sizexl="3"
+            style="flex: 0 0 100%; width: 100%; max-width: 100%;"
           >
             <ion-card
               button="true"
+              class="md ion-activatable"
             >
-              <ion-img />
-              <ion-card-header>
-                <ion-card-title>
+              <ion-img
+                class="md"
+              />
+              <ion-card-header
+                class="ion-inherit-color md"
+              >
+                <ion-card-title
+                  aria-level="2"
+                  class="ion-inherit-color md"
+                  role="heading"
+                >
                   Oolong
                 </ion-card-title>
               </ion-card-header>
-              <ion-card-content>
+              <ion-card-content
+                class="md card-content-md"
+              >
                 Oolong tea description.
               </ion-card-content>
             </ion-card>
           </ion-col>
         </ion-row>
         <ion-row
-          class="ion-justify-content-center ion-align-items-stretch"
+          class="ion-justify-content-center ion-align-items-stretch md"
         >
           <ion-col
+            class="md"
             size="12"
             size-md="6"
             size-xl="3"
+            sizemd="6"
+            sizexl="3"
+            style="flex: 0 0 100%; width: 100%; max-width: 100%;"
           >
             <ion-card
               button="true"
+              class="md ion-activatable"
             >
-              <ion-img />
-              <ion-card-header>
-                <ion-card-title>
+              <ion-img
+                class="md"
+              />
+              <ion-card-header
+                class="ion-inherit-color md"
+              >
+                <ion-card-title
+                  aria-level="2"
+                  class="ion-inherit-color md"
+                  role="heading"
+                >
                   Dark
                 </ion-card-title>
               </ion-card-header>
-              <ion-card-content>
+              <ion-card-content
+                class="md card-content-md"
+              >
                 Dark tea description.
               </ion-card-content>
             </ion-card>
           </ion-col>
           <ion-col
+            class="md"
             size="12"
             size-md="6"
             size-xl="3"
+            sizemd="6"
+            sizexl="3"
+            style="flex: 0 0 100%; width: 100%; max-width: 100%;"
           >
             <ion-card
               button="true"
+              class="md ion-activatable"
             >
-              <ion-img />
-              <ion-card-header>
-                <ion-card-title>
+              <ion-img
+                class="md"
+              />
+              <ion-card-header
+                class="ion-inherit-color md"
+              >
+                <ion-card-title
+                  aria-level="2"
+                  class="ion-inherit-color md"
+                  role="heading"
+                >
                   Puer
                 </ion-card-title>
               </ion-card-header>
-              <ion-card-content>
+              <ion-card-content
+                class="md card-content-md"
+              >
                 Puer tea description.
               </ion-card-content>
             </ion-card>
           </ion-col>
           <ion-col
+            class="md"
             size="12"
             size-md="6"
             size-xl="3"
+            sizemd="6"
+            sizexl="3"
+            style="flex: 0 0 100%; width: 100%; max-width: 100%;"
           >
             <ion-card
               button="true"
+              class="md ion-activatable"
             >
-              <ion-img />
-              <ion-card-header>
-                <ion-card-title>
+              <ion-img
+                class="md"
+              />
+              <ion-card-header
+                class="ion-inherit-color md"
+              >
+                <ion-card-title
+                  aria-level="2"
+                  class="ion-inherit-color md"
+                  role="heading"
+                >
                   White
                 </ion-card-title>
               </ion-card-header>
-              <ion-card-content>
+              <ion-card-content
+                class="md card-content-md"
+              >
                 White tea description.
               </ion-card-content>
             </ion-card>
           </ion-col>
           <ion-col
+            class="md"
             size="12"
             size-md="6"
             size-xl="3"
+            sizemd="6"
+            sizexl="3"
+            style="flex: 0 0 100%; width: 100%; max-width: 100%;"
           >
             <ion-card
               button="true"
+              class="md ion-activatable"
             >
-              <ion-img />
-              <ion-card-header>
-                <ion-card-title>
+              <ion-img
+                class="md"
+              />
+              <ion-card-header
+                class="ion-inherit-color md"
+              >
+                <ion-card-title
+                  aria-level="2"
+                  class="ion-inherit-color md"
+                  role="heading"
+                >
                   Yellow
                 </ion-card-title>
               </ion-card-header>
-              <ion-card-content>
+              <ion-card-content
+                class="md card-content-md"
+              >
                 Yellow tea description.
               </ion-card-content>
             </ion-card>

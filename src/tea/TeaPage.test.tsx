@@ -1,4 +1,5 @@
 import React from 'react';
+import { waitForIonicReact } from '@ionic/react-test-utils';
 import { render, waitFor } from '@testing-library/react';
 import TeaPage, { listToMatrix } from './TeaPage';
 import { expectedTeas } from './__mocks__/mockTeas';
@@ -14,11 +15,13 @@ jest.mock('./useTea', () => ({
 describe('<TeaPage />', () => {
   it('displays the header', async () => {
     const { container } = render(<TeaPage />);
+    await waitFor(() => waitForIonicReact());
     await waitFor(() => expect(container).toHaveTextContent(/Tea/));
   });
 
   it('renders consistently', async () => {
     const { asFragment, container } = render(<TeaPage />);
+    await waitFor(() => waitForIonicReact());
     await waitFor(() => expect(container).toHaveTextContent(/Tea/));
     expect(asFragment()).toMatchSnapshot();
   });

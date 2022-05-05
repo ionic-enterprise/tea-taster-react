@@ -5,19 +5,31 @@ exports[`<AboutPage /> renders consistently 1`] = `
   <div
     class="ion-page"
   >
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>
+    <ion-header
+      class="md header-md header-collapse-none"
+      role="banner"
+    >
+      <!---->
+      <ion-toolbar
+        class="toolbar-title-default md in-toolbar"
+      >
+        <ion-title
+          class="md title-default"
+        >
           About Tea Taster
         </ion-title>
         <ion-buttons
+          class="buttons-last-slot sc-ion-buttons-md-h sc-ion-buttons-md-s md"
           slot="end"
         >
           <ion-button
+            class="md button button-clear in-toolbar button-has-icon-only ion-activatable ion-focusable"
             data-testid="logout-button"
           >
             <ion-icon
+              class="md"
               icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Log Out</title><path d='M304 336v40a40 40 0 01-40 40H104a40 40 0 01-40-40V136a40 40 0 0140-40h152c22.09 0 48 17.91 48 40v40M368 336l80-80-80-80M176 256h256' stroke-linecap='round' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+              role="img"
               slot="icon-only"
             />
           </ion-button>
@@ -25,55 +37,84 @@ exports[`<AboutPage /> renders consistently 1`] = `
       </ion-toolbar>
     </ion-header>
     <ion-content
-      class="main-content"
+      class="main-content md"
+      style="--offset-top: 0px; --offset-bottom: 0px;"
     >
       <ion-header
+        class="md header-md header-collapse-condense"
         collapse="condense"
+        role="banner"
       >
-        <ion-toolbar>
+        <!---->
+        <ion-toolbar
+          class="toolbar-title-large md in-toolbar"
+        >
           <ion-title
+            class="md title-large"
             size="large"
           >
             About Tea Taster
           </ion-title>
         </ion-toolbar>
       </ion-header>
-      <ion-list>
-        <ion-item>
-          <ion-label>
+      <ion-list
+        class="md list-md"
+      >
+        <ion-item
+          class="item md item-fill-none in-list ion-focusable item-label"
+        >
+          <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md"
+          >
             Name
           </ion-label>
           <ion-note
+            class="md"
             slot="end"
           >
             tea-taster
           </ion-note>
         </ion-item>
-        <ion-item>
-          <ion-label>
+        <ion-item
+          class="item md item-fill-none in-list ion-focusable item-label"
+        >
+          <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md"
+          >
             Description
           </ion-label>
           <ion-note
+            class="md"
             slot="end"
           >
             Tea Tasting Notes
           </ion-note>
         </ion-item>
-        <ion-item>
-          <ion-label>
+        <ion-item
+          class="item md item-fill-none in-list ion-focusable item-label"
+        >
+          <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md"
+          >
             Version
           </ion-label>
           <ion-note
+            class="md"
             slot="end"
           >
             1.0.0
           </ion-note>
         </ion-item>
-        <ion-item>
-          <ion-label>
+        <ion-item
+          class="item md item-fill-none in-list ion-focusable item-label"
+        >
+          <ion-label
+            class="sc-ion-label-md-h sc-ion-label-md-s md"
+          >
             Author
           </ion-label>
           <ion-note
+            class="md"
             slot="end"
           >
             Ionic

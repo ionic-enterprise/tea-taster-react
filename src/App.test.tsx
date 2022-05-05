@@ -1,4 +1,5 @@
 import React from 'react';
+import { waitForIonicReact } from '@ionic/react-test-utils';
 import { render, waitFor } from '@testing-library/react';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { isPlatform } from '@ionic/react';
@@ -17,6 +18,7 @@ describe('<App />', () => {
     beforeEach(() => (isPlatform as any).mockImplementation(() => true));
     it('should hide the splash screen', async () => {
       const { container } = render(<App />);
+      await waitFor(() => waitForIonicReact());
       await waitFor(() => expect(container).toBeDefined());
       expect(SplashScreen.hide).toHaveBeenCalledTimes(1);
     });
@@ -26,6 +28,7 @@ describe('<App />', () => {
     beforeEach(() => (isPlatform as any).mockImplementation(() => true));
     it('should hide the splash screen', async () => {
       const { container } = render(<App />);
+      await waitFor(() => waitForIonicReact());
       await waitFor(() => expect(container).toBeDefined());
       expect(SplashScreen.hide).toHaveBeenCalledTimes(1);
     });
@@ -35,6 +38,7 @@ describe('<App />', () => {
     beforeEach(() => (isPlatform as any).mockImplementation(() => false));
     it('should not hide the splash screen', async () => {
       const { container } = render(<App />);
+      await waitFor(() => waitForIonicReact());
       await waitFor(() => expect(container).toBeDefined());
       expect(SplashScreen.hide).not.toHaveBeenCalled();
     });
