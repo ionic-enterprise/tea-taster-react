@@ -15,6 +15,7 @@ import {
   IonItemOption,
   IonItemOptions,
   useIonModal,
+  isPlatform,
 } from '@ionic/react';
 import { Share } from '@capacitor/share';
 import TastingNoteEditor, { TastingNoteEditorProps } from './editor/TastingNoteEditor';
@@ -96,14 +97,17 @@ const TastingNotesPage: React.FC = () => {
                 </IonLabel>
               </IonItem>
               <IonItemOptions>
-                <IonItemOption
-                  data-testid={`share${idx}`}
-                  color="secondary"
-                  onClick={() => handleShareNote(note)}
-                  slot="icon-only"
-                >
-                  <IonIcon icon={share} />
-                </IonItemOption>
+                {isPlatform('capacitor') && (
+                  <IonItemOption
+                    data-testid={`share${idx}`}
+                    color="secondary"
+                    onClick={() => handleShareNote(note)}
+                    slot="icon-only"
+                  >
+                    <IonIcon icon={share} />
+                  </IonItemOption>
+                )}
+
                 <IonItemOption
                   color="danger"
                   onClick={() => {
