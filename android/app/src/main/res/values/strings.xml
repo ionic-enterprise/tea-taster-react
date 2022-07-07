@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tea Tasting Notes</string>
+    <string name="title_activity_main">Tea Tasting Notes</string>
+    <string name="package_name">io.ionic.teataster</string>
+    <string name="custom_url_scheme">io.ionic.teataster</string>
+</resources>
