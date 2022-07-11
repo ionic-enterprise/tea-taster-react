@@ -3,6 +3,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { isPlatform, IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { SessionProvider } from './core/session';
 import TeaPage from './tea/TeaPage';
 import LoginPage from './login/LoginPage';
 
@@ -35,19 +36,21 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route exact path="/login">
-            <LoginPage />
-          </Route>
-          <Route exact path="/tea">
-            <TeaPage />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tea" />
-          </Route>
-        </IonRouterOutlet>
-      </IonReactRouter>
+      <SessionProvider>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route exact path="/login">
+              <LoginPage />
+            </Route>
+            <Route exact path="/tea">
+              <TeaPage />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/tea" />
+            </Route>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </SessionProvider>
     </IonApp>
   );
 };

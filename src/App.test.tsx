@@ -8,6 +8,7 @@ jest.mock('@ionic/react', () => {
   const actual = jest.requireActual('@ionic/react');
   return { ...actual, isPlatform: jest.fn() };
 });
+jest.mock('./core/session/SessionProvider');
 
 describe('<App />', () => {
   beforeEach(() => (SplashScreen.hide = jest.fn()));
