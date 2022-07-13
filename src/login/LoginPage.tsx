@@ -13,7 +13,10 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { logInOutline } from 'ionicons/icons';
+import { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useHistory } from 'react-router';
+import { useSession } from '../core/session';
 
 type LoginInputs = {
   email: string;
@@ -21,11 +24,21 @@ type LoginInputs = {
 };
 
 const LoginPage: React.FC = () => {
+  const { login, session, error } = useSession();
+  const history = useHistory();
+
+  useEffect(() => session && history.replace('/tea'), [history, session]);
+
   const {
     handleSubmit,
     control,
     formState: { errors, isDirty, isValid },
   } = useForm<LoginInputs>({ mode: 'onChange' });
+
+  const handleLogin = async (data: LoginInputs) => {
+    await login(data.email, data.password);
+    history.replace('/tea');
+  };
 
   return (
     <IonPage>
@@ -81,6 +94,7 @@ const LoginPage: React.FC = () => {
             <div>{errors.email?.type === 'required' && 'E-Mail Address is required'}</div>
             <div>{errors.email?.type === 'pattern' && errors.email.message}</div>
             <div>{errors.password?.type === 'required' && 'Password is required'}</div>
+            {error && <div>{error}</div>}
           </div>
         </form>
       </IonContent>
@@ -90,7 +104,7 @@ const LoginPage: React.FC = () => {
             expand="full"
             disabled={!isDirty || !isValid}
             data-testid="submit-button"
-            onClick={handleSubmit((data) => console.log(data))}
+            onClick={handleSubmit((data) => handleLogin(data))}
           >
             Sign In
             <IonIcon slot="end" icon={logInOutline} />
