@@ -19,12 +19,13 @@ export const useSession = () => {
       if (!data.success) throw new Error('Failed to log in.');
 
       const { token, user } = data;
-      Preferences.set({ key: 'auth-token', value: token });
+      await Preferences.set({ key: 'auth-token', value: token });
       dispatch({ type: 'LOGIN_SUCCESS', session: { token, user } });
     } catch (error: any) {
       dispatch({ type: 'LOGIN_FAILURE', error: error.message });
     }
   };
+
   const logout = async (): Promise<void> => {
     dispatch({ type: 'LOGOUT' });
     try {
@@ -32,11 +33,16 @@ export const useSession = () => {
       const headers = { Authorization: 'Bearer ' + state.session!.token };
 
       await axios.post(url, null, { headers });
-      Preferences.remove({ key: 'auth-token' });
+      await Preferences.remove({ key: 'auth-token' });
       dispatch({ type: 'LOGOUT_SUCCESS' });
     } catch (error: any) {
       dispatch({ type: 'LOGOUT_FAILURE', error: error.message });
     }
+  };
+
+  const invalidate = async (): Promise<void> => {
+    await Preferences.remove({ key: 'auth-token' });
+    dispatch({ type: 'CLEAR_SESSION' });
   };
 
   return {
@@ -45,5 +51,6 @@ export const useSession = () => {
     error: state.error,
     login,
     logout,
+    invalidate,
   };
 };

@@ -106,5 +106,31 @@ describe('useSession()', () => {
     });
   });
 
+  describe('invalidate', () => {
+    beforeEach(() => {
+      Preferences.remove = jest.fn(async () => void 0);
+      Preferences.set = jest.fn(async () => void 0);
+      const { token, user } = mockSession;
+      mockedAxios.post.mockResolvedValue({ data: { success: true, token, user } });
+    });
+
+    it('removes the token from storage', async () => {
+      const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
+      await waitForNextUpdate();
+      await act(() => result.current.login('test@ionic.io', 'P@ssword!'));
+      await act(() => result.current.invalidate());
+      expect(Preferences.remove).toHaveBeenCalledTimes(1);
+      expect(Preferences.remove).toHaveBeenCalledWith({ key: 'auth-token' });
+    });
+
+    it('clears the session', async () => {
+      const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
+      await waitForNextUpdate();
+      await act(() => result.current.login('test@ionic.io', 'P@ssword!'));
+      await act(() => result.current.invalidate());
+      expect(result.current.session).toBeUndefined();
+    });
+  });
+
   afterEach(() => jest.restoreAllMocks());
 });

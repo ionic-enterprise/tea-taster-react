@@ -3,7 +3,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { isPlatform, IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { PrivateRoute, SessionProvider } from './core/session';
+import { AuthInterceptorProvider, PrivateRoute, SessionProvider } from './core/session';
 import TeaPage from './tea/TeaPage';
 import LoginPage from './login/LoginPage';
 
@@ -26,6 +26,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/global.css';
+import { TeaProvider } from './tea/TeaProvider';
 
 setupIonicReact();
 
@@ -37,21 +38,25 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <SessionProvider>
-        <IonReactRouter>
-          <IonRouterOutlet>
-            <Route exact path="/login">
-              <LoginPage />
-            </Route>
-            <Route exact path="/tea">
-              <PrivateRoute>
-                <TeaPage />
-              </PrivateRoute>
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/tea" />
-            </Route>
-          </IonRouterOutlet>
-        </IonReactRouter>
+        <AuthInterceptorProvider>
+          <TeaProvider>
+            <IonReactRouter>
+              <IonRouterOutlet>
+                <Route exact path="/login">
+                  <LoginPage />
+                </Route>
+                <Route exact path="/tea">
+                  <PrivateRoute>
+                    <TeaPage />
+                  </PrivateRoute>
+                </Route>
+                <Route exact path="/">
+                  <Redirect to="/tea" />
+                </Route>
+              </IonRouterOutlet>
+            </IonReactRouter>
+          </TeaProvider>
+        </AuthInterceptorProvider>
       </SessionProvider>
     </IonApp>
   );
