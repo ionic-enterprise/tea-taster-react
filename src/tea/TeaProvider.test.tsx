@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 import { TeaProvider, useTea } from './TeaProvider';
 import { resultTeas, expectedTeas } from './__fixtures__/mockTeas';
 
@@ -17,15 +17,14 @@ describe('useTea()', () => {
     beforeEach(() => mockedAxios.get.mockResolvedValue({ data: resultTeas() }));
 
     it('GETs the teas from the backend', async () => {
-      const { result } = renderHook(() => useTea(), { wrapper });
-      await act(() => result.current.getTeas());
-      expect(mockedAxios.get).toHaveBeenCalledTimes(1);
+      const { waitForNextUpdate } = renderHook(() => useTea(), { wrapper });
+      await waitForNextUpdate();
       expect(mockedAxios.get).toHaveBeenCalledWith('/tea-categories');
     });
 
     it('adds an image to each tea item', async () => {
-      const { result } = renderHook(() => useTea(), { wrapper });
-      await act(() => result.current.getTeas());
+      const { result, waitForNextUpdate } = renderHook(() => useTea(), { wrapper });
+      await waitForNextUpdate();
       expect(result.current.teas).toEqual(expectedTeas);
     });
   });

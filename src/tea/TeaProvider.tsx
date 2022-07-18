@@ -1,5 +1,5 @@
-import { createContext, useCallback, useContext, useState } from 'react';
-import { useAuthInterceptor } from '../core/session';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { useAuthInterceptor, useSession } from '../core/session';
 import { Tea } from '../shared/models';
 
 const images: string[] = ['green', 'black', 'herbal', 'oolong', 'dark', 'puer', 'white', 'yellow'];
@@ -15,8 +15,13 @@ export const TeaContext = createContext<{
 });
 
 export const TeaProvider: React.FC = ({ children }) => {
+  const { session } = useSession();
   const { api } = useAuthInterceptor();
   const [teas, setTeas] = useState<Tea[]>([]);
+
+  useEffect(() => {
+    session === undefined && setTeas([]);
+  }, [session]);
 
   const getTeas = useCallback(async () => {
     const { data } = await api.get('/tea-categories');
@@ -36,5 +41,9 @@ export const useTea = () => {
     throw new Error('useTea must be used within a TeaProvider');
   }
 
-  return { teas, getTeas };
+  useEffect(() => {
+    !teas.length && getTeas();
+  }, [teas, getTeas]);
+
+  return { teas };
 };
