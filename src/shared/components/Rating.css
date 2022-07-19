@@ -1,0 +1,9 @@
+.rating ion-icon {
+  font-size: 1.5em;
+  padding-right: 0.5em;
+  color: var(--ion-color-primary);
+}
+
+.rating ion-icon:last-child {
+  padding-right: 0px;
+}

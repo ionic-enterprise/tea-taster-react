@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Rating /> when disabled renders consistently 1`] = `
+<DocumentFragment>
+  <div
+    class="rating"
+    data-testid="rating"
+    style="opacity: 0.25;"
+  >
+    Object {
+      "hasAriaHidden": [Function],
+      "iconName": null,
+      "inheritedAttributes": Object {},
+    }
+    Object {
+      "hasAriaHidden": [Function],
+      "iconName": null,
+      "inheritedAttributes": Object {},
+    }
+    Object {
+      "hasAriaHidden": [Function],
+      "iconName": null,
+      "inheritedAttributes": Object {},
+    }
+    Object {
+      "hasAriaHidden": [Function],
+      "iconName": null,
+      "inheritedAttributes": Object {},
+    }
+    Object {
+      "hasAriaHidden": [Function],
+      "iconName": null,
+      "inheritedAttributes": Object {},
+    }
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<Rating /> when enabled renders consistently 1`] = `
+<DocumentFragment>
+  <div
+    class="rating"
+    data-testid="rating"
+    style="opacity: 1;"
+  >
+    Object {
+      "hasAriaHidden": [Function],
+      "iconName": null,
+      "inheritedAttributes": Object {},
+    }
+    Object {
+      "hasAriaHidden": [Function],
+      "iconName": null,
+      "inheritedAttributes": Object {},
+    }
+    Object {
+      "hasAriaHidden": [Function],
+      "iconName": null,
+      "inheritedAttributes": Object {},
+    }
+    Object {
+      "hasAriaHidden": [Function],
+      "iconName": null,
+      "inheritedAttributes": Object {},
+    }
+    Object {
+      "hasAriaHidden": [Function],
+      "iconName": null,
+      "inheritedAttributes": Object {},
+    }
+  </div>
+</DocumentFragment>
+`;

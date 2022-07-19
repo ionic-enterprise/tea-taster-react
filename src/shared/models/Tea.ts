@@ -3,4 +3,5 @@ export interface Tea {
   name: string;
   description: string;
   image: string;
+  rating?: number;
 }
