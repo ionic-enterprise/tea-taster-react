@@ -49,6 +49,10 @@ const TeaPage: React.FC = () => {
     history.replace('/login');
   };
 
+  const navToDetailsPage = (id: number) => {
+    history.push(`/tea/details/${id}`);
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -72,7 +76,7 @@ const TeaPage: React.FC = () => {
             <IonRow key={idx} className="ion-justify-content-center ion-align-items-stretch">
               {row.map((tea) => (
                 <IonCol size="12" sizeMd="6" sizeXl="3" key={tea.id}>
-                  <IonCard>
+                  <IonCard button onClick={() => navToDetailsPage(tea.id)}>
                     <IonImg src={tea.image} />
                     <IonCardHeader>
                       <IonCardTitle>{tea.name}</IonCardTitle>
