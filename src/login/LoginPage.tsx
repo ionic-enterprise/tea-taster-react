@@ -27,7 +27,7 @@ const LoginPage: React.FC = () => {
   const { login, session, error } = useSession();
   const history = useHistory();
 
-  useEffect(() => session && history.replace('/tea'), [history, session]);
+  useEffect(() => session && history.replace('/tabs'), [history, session]);
 
   const {
     handleSubmit,

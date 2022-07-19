@@ -19,7 +19,7 @@ const TeaDetailsPage: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/tea" />
+            <IonBackButton defaultHref="/tabs/tea" />
           </IonButtons>
           <IonTitle>Details</IonTitle>
         </IonToolbar>
