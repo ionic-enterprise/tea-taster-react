@@ -6,6 +6,7 @@ import TeaPage from './tea/TeaPage';
 import TastingNotesPage from './tasting-notes/TastingNotesPage';
 import AboutPage from './about/AboutPage';
 import { leaf, documentText, informationCircle } from 'ionicons/icons';
+import { TastingNotesProvider } from './tasting-notes/TastingNotesProvider';
 
 const Tabs: React.FC = () => {
   const { url } = useRouteMatch();
@@ -23,7 +24,9 @@ const Tabs: React.FC = () => {
           <TeaDetailsPage />
         </Route>
         <Route exact path={`${url}/tasting-notes`}>
-          <TastingNotesPage />
+          <TastingNotesProvider>
+            <TastingNotesPage />
+          </TastingNotesProvider>
         </Route>
         <Route exact path={`${url}/about`}>
           <AboutPage />

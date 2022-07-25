@@ -1,5 +1,5 @@
 import { render, waitFor, screen } from '@testing-library/react';
-import { ionFireEvent as fireEvent, waitForIonicReact } from '@ionic/react-test-utils';
+import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import LoginPage from './LoginPage';
 
 describe('<LoginPage />', () => {
