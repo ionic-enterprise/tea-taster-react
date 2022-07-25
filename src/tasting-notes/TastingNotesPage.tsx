@@ -16,7 +16,8 @@ import {
   IonItemOption,
   IonItemOptions,
 } from '@ionic/react';
-import { add } from 'ionicons/icons';
+import { add, share, trashBin } from 'ionicons/icons';
+import { Share } from '@capacitor/share';
 import TastingNoteEditor from './editor/TastingNoteEditor';
 import { useTastingNotes } from './TastingNotesProvider';
 import { TastingNote } from '../shared/models';
@@ -53,6 +54,16 @@ const TastingNotesPage: React.FC = () => {
     await getNotes();
   };
 
+  const handleShareNote = async (note: TastingNote) => {
+    const { brand, name, rating, notes } = note;
+    await Share.share({
+      title: `${brand}: ${name}`,
+      text: `${notes} Rated ${rating}/5 stars`,
+      dialogTitle: `Share ${name}'s tasting note`,
+      url: 'https://tea-taster-training.web.app',
+    });
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -77,8 +88,16 @@ const TastingNotesPage: React.FC = () => {
                 </IonLabel>
               </IonItem>
               <IonItemOptions>
-                <IonItemOption color="danger" onClick={() => handleDeleteNote(note.id!)}>
-                  Delete
+                <IonItemOption
+                  data-testid={`share${idx}`}
+                  color="secondary"
+                  onClick={() => handleShareNote(note)}
+                  slot="icon-only"
+                >
+                  <IonIcon icon={share} />
+                </IonItemOption>
+                <IonItemOption color="danger" onClick={() => handleDeleteNote(note.id!)} slot="icon-only">
+                  <IonIcon icon={trashBin} />
                 </IonItemOption>
               </IonItemOptions>
             </IonItemSliding>
