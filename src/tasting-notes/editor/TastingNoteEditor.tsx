@@ -56,7 +56,7 @@ const TastingNoteEditor: React.FC<TastingNoteEditorProps> = ({ onDismiss, note =
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="main-content">
         <IonList>
           <IonItem>
             <IonLabel position="floating">Brand</IonLabel>
@@ -129,7 +129,7 @@ const TastingNoteEditor: React.FC<TastingNoteEditorProps> = ({ onDismiss, note =
         </IonList>
       </IonContent>
       <IonFooter>
-        <IonToolbar>
+        <IonToolbar color="secondary">
           <IonButton
             data-testid="submit-button"
             type="submit"

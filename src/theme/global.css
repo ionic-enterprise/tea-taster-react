@@ -3,3 +3,42 @@
   color: var(--ion-color-danger);
   text-align: center;
 }
+.main-content {
+  --background: linear-gradient(white, var(--ion-color-secondary));
+}
+
+@media (prefers-color-scheme: dark) {
+  .main-content {
+    --background: linear-gradient(var(--ion-background-color), var(--ion-color-secondary));
+  }
+}
+
+.list-ios {
+  background: transparent;
+}
+
+.list-md {
+  background: transparent;
+}
+
+.item {
+  --background: transparent;
+}
+
+ion-list-header {
+  --background: transparent;
+}
+
+ion-card {
+  border-radius: 20px;
+}
+
+ion-select::part(icon) {
+  width: 20px;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+ion-select::part(text) {
+  margin-right: 1em;
+}

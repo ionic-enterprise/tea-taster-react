@@ -47,7 +47,7 @@ const LoginPage: React.FC = () => {
           <IonTitle>Login</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="main-content">
         <form>
           <IonList>
             <IonItem>
@@ -99,7 +99,7 @@ const LoginPage: React.FC = () => {
         </form>
       </IonContent>
       <IonFooter>
-        <IonToolbar>
+        <IonToolbar color="secondary">
           <IonButton
             expand="full"
             disabled={!isDirty || !isValid}

@@ -60,7 +60,7 @@ const TastingNotesPage: React.FC = () => {
           <IonTitle>Tasting Notes</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="main-content">
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Tasting Notes</IonTitle>

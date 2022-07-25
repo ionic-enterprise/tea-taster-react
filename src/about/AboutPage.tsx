@@ -8,7 +8,7 @@ const AboutPage: React.FC = () => {
           <IonTitle>About</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="main-content">
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">About</IonTitle>
