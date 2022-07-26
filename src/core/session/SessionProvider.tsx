@@ -1,8 +1,7 @@
-import { Preferences } from '@capacitor/preferences';
 import { IonSpinner } from '@ionic/react';
-import { createContext, useEffect, useReducer, useState } from 'react';
-import axios from 'axios';
+import { createContext, useCallback, useEffect, useReducer, useState } from 'react';
 import { Session } from '../models';
+import { useSessionVault } from './SessionVaultProvider';
 
 interface SessionState {
   session?: Session;
@@ -60,24 +59,25 @@ export const SessionContext = createContext<{
 export const SessionProvider: React.FC = ({ children }) => {
   const [initializing, setInitializing] = useState<boolean>(true);
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { getSessionData, isLocked } = useSessionVault();
 
-  useEffect(() => {
-    attemptSessionRestore().finally(() => setInitializing(false));
-  }, []);
-
-  const attemptSessionRestore = async () => {
+  const attemptSessionRestore = useCallback(async () => {
     try {
-      const { value: token } = await Preferences.get({ key: 'auth-token' });
-      if (!token) throw new Error('Token not found.');
-
-      const headers = { Authorization: 'Bearer ' + token };
-      const url = `${process.env.REACT_APP_DATA_SERVICE}/users/current`;
-      const { data: user } = await axios.get(url, { headers });
-      dispatch({ type: 'RESTORE_SESSION', session: { token, user } });
+      const session = await getSessionData();
+      if (!session) throw new Error('Session not found.');
+      dispatch({ type: 'RESTORE_SESSION', session });
     } catch (error) {
       dispatch({ type: 'CLEAR_SESSION' });
     }
-  };
+  }, [getSessionData]);
+
+  useEffect(() => {
+    attemptSessionRestore().finally(() => setInitializing(false));
+  }, [attemptSessionRestore]);
+
+  useEffect(() => {
+    isLocked && dispatch({ type: 'CLEAR_SESSION' });
+  }, [isLocked]);
 
   return (
     <SessionContext.Provider value={{ state, dispatch }}>

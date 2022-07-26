@@ -19,3 +19,5 @@ window.matchMedia =
       removeListener: function () {},
     };
   };
+
+jest.mock('./core/session/SessionVaultProvider');

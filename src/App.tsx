@@ -3,7 +3,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { isPlatform, IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { AuthInterceptorProvider, PrivateRoute, SessionProvider } from './core/session';
+import { AuthInterceptorProvider, PrivateRoute, SessionProvider, SessionVaultProvider } from './core/session';
 import { TeaProvider } from './tea/TeaProvider';
 import Tabs from './Tabs';
 import LoginPage from './login/LoginPage';
@@ -37,27 +37,29 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      <SessionProvider>
-        <AuthInterceptorProvider>
-          <IonReactRouter>
-            <IonRouterOutlet>
-              <Route exact path="/login">
-                <LoginPage />
-              </Route>
-              <Route path="/tabs">
-                <PrivateRoute>
-                  <TeaProvider>
-                    <Tabs />
-                  </TeaProvider>
-                </PrivateRoute>
-              </Route>
-              <Route exact path="/">
-                <Redirect to="/login" />
-              </Route>
-            </IonRouterOutlet>
-          </IonReactRouter>
-        </AuthInterceptorProvider>
-      </SessionProvider>
+      <SessionVaultProvider>
+        <SessionProvider>
+          <AuthInterceptorProvider>
+            <IonReactRouter>
+              <IonRouterOutlet>
+                <Route exact path="/login">
+                  <LoginPage />
+                </Route>
+                <Route path="/tabs">
+                  <PrivateRoute>
+                    <TeaProvider>
+                      <Tabs />
+                    </TeaProvider>
+                  </PrivateRoute>
+                </Route>
+                <Route exact path="/">
+                  <Redirect to="/login" />
+                </Route>
+              </IonRouterOutlet>
+            </IonReactRouter>
+          </AuthInterceptorProvider>
+        </SessionProvider>
+      </SessionVaultProvider>
     </IonApp>
   );
 };

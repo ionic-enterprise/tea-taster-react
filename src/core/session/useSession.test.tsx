@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { Preferences } from '@capacitor/preferences';
-import { renderHook, act, cleanup } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 import { useSession } from './useSession';
 import { SessionProvider } from './SessionProvider';
 import { mockSession } from './__fixtures__/mockSession';
+import { useSessionVault } from './SessionVaultProvider';
 
 jest.mock('@capacitor/preferences');
 jest.mock('axios');
@@ -12,14 +12,12 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 const wrapper = ({ children }: any) => <SessionProvider>{children}</SessionProvider>;
 
 describe('useSession()', () => {
-  beforeEach(() => {
-    Preferences.get = jest.fn(async () => ({ value: null }));
-    Preferences.set = jest.fn(async () => void 0);
-    const { token, user } = mockSession;
-    mockedAxios.post.mockResolvedValue({ data: { success: true, token, user } });
-  });
-
   describe('login', () => {
+    beforeEach(() => {
+      const { token, user } = mockSession;
+      mockedAxios.post.mockResolvedValue({ data: { success: true, token, user } });
+    });
+
     it('POSTs the login request', async () => {
       const url = `${process.env.REACT_APP_DATA_SERVICE}/login`;
       const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
@@ -31,12 +29,12 @@ describe('useSession()', () => {
     });
 
     describe('on success', () => {
-      it('stores the token in storage', async () => {
+      it('stores the session in the vault', async () => {
         const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
         await waitForNextUpdate();
         await act(() => result.current.login('test@test.com', 'P@ssword!'));
-        expect(Preferences.set).toHaveBeenCalledTimes(1);
-        expect(Preferences.set).toHaveBeenCalledWith({ key: 'auth-token', value: mockSession.token });
+        expect(useSessionVault().setSessionData).toHaveBeenCalledTimes(1);
+        expect(useSessionVault().setSessionData).toHaveBeenCalledWith(mockSession);
       });
 
       it('sets the session', async () => {
@@ -60,11 +58,7 @@ describe('useSession()', () => {
   });
 
   describe('logout', () => {
-    beforeEach(() => {
-      Preferences.remove = jest.fn(async () => void 0);
-      Preferences.get = jest.fn(async () => ({ value: mockSession.token }));
-      mockedAxios.get.mockResolvedValue({ data: mockSession.user });
-    });
+    beforeEach(() => (useSessionVault as jest.Mock)().getSessionData.mockResolvedValue(mockSession));
 
     it('POSTs the logout request', async () => {
       const url = `${process.env.REACT_APP_DATA_SERVICE}/logout`;
@@ -77,12 +71,11 @@ describe('useSession()', () => {
     });
 
     describe('on success', () => {
-      it('removes the token from storage', async () => {
+      it('removes the session from the vault', async () => {
         const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
         await waitForNextUpdate();
         await act(() => result.current.logout());
-        expect(Preferences.remove).toHaveBeenCalledTimes(1);
-        expect(Preferences.remove).toHaveBeenCalledWith({ key: 'auth-token' });
+        expect(useSessionVault().clearSessionData).toHaveBeenCalledTimes(1);
       });
 
       it('clears the session', async () => {
@@ -107,28 +100,60 @@ describe('useSession()', () => {
   });
 
   describe('invalidate', () => {
-    beforeEach(() => {
-      Preferences.remove = jest.fn(async () => void 0);
-      Preferences.set = jest.fn(async () => void 0);
-      const { token, user } = mockSession;
-      mockedAxios.post.mockResolvedValue({ data: { success: true, token, user } });
-    });
+    beforeEach(() => (useSessionVault as jest.Mock)().getSessionData.mockResolvedValue(mockSession));
 
-    it('removes the token from storage', async () => {
+    it('removes the session from the vault', async () => {
       const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
       await waitForNextUpdate();
-      await act(() => result.current.login('test@ionic.io', 'P@ssword!'));
       await act(() => result.current.invalidate());
-      expect(Preferences.remove).toHaveBeenCalledTimes(1);
-      expect(Preferences.remove).toHaveBeenCalledWith({ key: 'auth-token' });
+      expect(useSessionVault().clearSessionData).toHaveBeenCalledTimes(1);
     });
 
     it('clears the session', async () => {
       const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
       await waitForNextUpdate();
-      await act(() => result.current.login('test@ionic.io', 'P@ssword!'));
       await act(() => result.current.invalidate());
       expect(result.current.session).toBeUndefined();
+    });
+  });
+
+  describe('restoreSession', () => {
+    describe('on success', () => {
+      beforeEach(() => (useSessionVault as jest.Mock)().getSessionData.mockResolvedValue(mockSession));
+
+      it('gets the session from the vault', async () => {
+        const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
+        await waitForNextUpdate();
+        await act(() => result.current.restoreSession());
+        // This method is called once in the provider, so it will be called twice overall.
+        expect(useSessionVault().getSessionData).toHaveBeenCalledTimes(2);
+      });
+
+      it('sets the session', async () => {
+        const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
+        await waitForNextUpdate();
+        await act(() => result.current.restoreSession());
+        expect(result.current.session).toEqual(mockSession);
+      });
+    });
+
+    describe('on failure', () => {
+      beforeEach(() => (useSessionVault as jest.Mock)().getSessionData.mockResolvedValue(undefined));
+
+      it('gets the session from the vault', async () => {
+        const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
+        await waitForNextUpdate();
+        await act(() => result.current.restoreSession());
+        // This method is called once in the provider, so it will be called twice overall.
+        expect(useSessionVault().getSessionData).toHaveBeenCalledTimes(2);
+      });
+
+      it('sets the session', async () => {
+        const { result, waitForNextUpdate } = renderHook(() => useSession(), { wrapper });
+        await waitForNextUpdate();
+        await act(() => result.current.restoreSession());
+        expect(result.current.session).toBeUndefined();
+      });
     });
   });
 
