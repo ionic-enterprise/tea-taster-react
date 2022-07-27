@@ -133,5 +133,7 @@ export const useSessionVault = () => {
     await vault.clear();
   };
 
-  return { isLocked, canUnlock, setUnlockMode, setSessionData, getSessionData, clearSessionData };
+  // Please note, the `vault` object is only returned here for use with Auth Connect.
+  // Ionic recommends writing abstraction layers around storage mechanisms as a best practice.
+  return { isLocked, canUnlock, setUnlockMode, setSessionData, getSessionData, clearSessionData, vault };
 };

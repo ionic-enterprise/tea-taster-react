@@ -21,13 +21,13 @@ export const TastingNotesContext = createContext<{
 });
 
 export const TastingNotesProvider: React.FC = ({ children }) => {
-  const { session } = useSession();
+  const { user } = useSession();
   const { api } = useAuthInterceptor();
   const [notes, setNotes] = useState<TastingNote[]>([]);
 
   useEffect(() => {
-    session === undefined && setNotes([]);
-  }, [session]);
+    user === undefined && setNotes([]);
+  }, [user]);
 
   const getNotes = useCallback(async () => {
     const { data } = await api.get('/user-tasting-notes');

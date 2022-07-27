@@ -1,11 +1,8 @@
 import { Device } from '@ionic-enterprise/identity-vault';
 import {
-  IonButton,
   IonContent,
-  IonFooter,
   IonHeader,
   IonIcon,
-  IonInput,
   IonItem,
   IonLabel,
   IonList,
@@ -22,19 +19,17 @@ import { useHistory } from 'react-router';
 import { UnlockMode, useSession, useSessionVault } from '../core/session';
 
 type LoginInputs = {
-  email: string;
-  password: string;
   unlockMode: UnlockMode;
 };
 
 const LoginPage: React.FC = () => {
-  const { login, invalidate, session, error, restoreSession } = useSession();
+  const { login, invalidate, user, error, restoreSession } = useSession();
   const { canUnlock } = useSessionVault();
   const history = useHistory();
   const [canUnlockVault, setCanUnlockVault] = useState<boolean>(false);
   const [hasDeviceSecurity, setHasDeviceSecurity] = useState<boolean>(false);
 
-  useEffect(() => session && history.replace('/tabs'), [history, session]);
+  useEffect(() => user && history.replace('/tabs'), [history, user]);
 
   useEffect(() => {
     Device.isSystemPasscodeSet().then((res) => setHasDeviceSecurity(res));
@@ -44,20 +39,16 @@ const LoginPage: React.FC = () => {
     canUnlock().then((res) => setCanUnlockVault(res));
   }, [canUnlock]);
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors, isDirty, isValid },
-  } = useForm<LoginInputs>({ mode: 'onChange' });
+  const { handleSubmit, control } = useForm<LoginInputs>({ mode: 'onChange' });
 
   const handleLogin = async (data: LoginInputs) => {
-    await login(data.email, data.password, data.unlockMode);
-    session && history.replace('/tabs');
+    await login(data.unlockMode);
+    user && history.replace('/tabs');
   };
 
   const handleSessionRestore = async () => {
     await restoreSession();
-    session && history.replace('/tabs');
+    user && history.replace('/tabs');
   };
 
   const handleRedoSignIn = async () => {
@@ -107,69 +98,17 @@ const LoginPage: React.FC = () => {
                   defaultValue="NeverLock"
                 />
               </IonItem>
-              <IonItem>
-                <IonLabel position="floating">E-Mail Address</IonLabel>
-                <Controller
-                  render={({ field: { onChange, value } }) => (
-                    <IonInput
-                      data-testid="email-input"
-                      onIonChange={(e) => onChange(e.detail.value!)}
-                      value={value}
-                      type="email"
-                    />
-                  )}
-                  control={control}
-                  name="email"
-                  rules={{
-                    required: true,
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                      message: 'E-Mail Address must have a valid format',
-                    },
-                  }}
-                />
-              </IonItem>
-              <IonItem>
-                <IonLabel position="floating">Password</IonLabel>
-                <Controller
-                  render={({ field: { onChange, value } }) => (
-                    <IonInput
-                      data-testid="password-input"
-                      onIonChange={(e) => onChange(e.detail.value!)}
-                      value={value}
-                      type="password"
-                    />
-                  )}
-                  control={control}
-                  name="password"
-                  rules={{ required: true }}
-                />
-              </IonItem>
+              <div className="unlock-app ion-text-center" onClick={handleSubmit((data) => handleLogin(data))}>
+                <IonIcon icon={logInOutline} />
+                Sign In
+              </div>
             </IonList>
           </form>
         )}
         <div className="error-message" data-testid="errors">
-          <div>{errors.email?.type === 'required' && 'E-Mail Address is required'}</div>
-          <div>{errors.email?.type === 'pattern' && errors.email.message}</div>
-          <div>{errors.password?.type === 'required' && 'Password is required'}</div>
           {error && <div>{error}</div>}
         </div>
       </IonContent>
-      {!canUnlockVault && (
-        <IonFooter>
-          <IonToolbar color="secondary">
-            <IonButton
-              expand="full"
-              disabled={!isDirty || !isValid}
-              data-testid="submit-button"
-              onClick={handleSubmit((data) => handleLogin(data))}
-            >
-              Sign In
-              <IonIcon slot="end" icon={logInOutline} />
-            </IonButton>
-          </IonToolbar>
-        </IonFooter>
-      )}
     </IonPage>
   );
 };

@@ -5,18 +5,15 @@ import { useSession } from './useSession';
 const AuthInterceptorContext = createContext<{ api: AxiosInstance }>({ api: axios });
 
 export const AuthInterceptorProvider: React.FC = ({ children }) => {
-  const { session, invalidate } = useSession();
+  const { getAccessToken, invalidate } = useSession();
 
   const instance = useRef(axios.create());
   const api = instance.current;
   api.defaults.baseURL = process.env.REACT_APP_DATA_SERVICE;
 
-  api.interceptors.request.use((config: AxiosRequestConfig) => {
-    if (session) {
-      if (!config) config = {};
-      if (!config.headers) config.headers = {};
-      config.headers.Authorization = `Bearer ${session.token}`;
-    }
+  api.interceptors.request.use(async (config: AxiosRequestConfig) => {
+    const accessToken = await getAccessToken();
+    if (accessToken) config!.headers!.Authorization = `Bearer ${accessToken}`;
     return config;
   });
 

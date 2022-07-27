@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<LoginPage /> signing in renders consistently 1`] = `[Function]`;
-
-exports[`<LoginPage /> unlocking the Vault renders consistently 1`] = `[Function]`;

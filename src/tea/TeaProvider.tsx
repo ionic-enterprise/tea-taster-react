@@ -20,13 +20,13 @@ export const TeaContext = createContext<{
 });
 
 export const TeaProvider: React.FC = ({ children }) => {
-  const { session } = useSession();
+  const { user } = useSession();
   const { api } = useAuthInterceptor();
   const [teas, setTeas] = useState<Tea[]>([]);
 
   useEffect(() => {
-    session === undefined && setTeas([]);
-  }, [session]);
+    user === undefined && setTeas([]);
+  }, [user]);
 
   const getTeas = useCallback(async () => {
     const { data } = await api.get('/tea-categories');
