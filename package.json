@@ -83,6 +83,7 @@
     ]
   },
   "devDependencies": {
+    "@capacitor/assets": "~1.0.10",
     "@capacitor/cli": "~4.3.0",
     "@ionic/prettier-config": "~2.0.0",
     "husky": "~8.0.1",
