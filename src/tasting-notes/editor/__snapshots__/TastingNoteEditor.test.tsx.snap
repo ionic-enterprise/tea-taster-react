@@ -43,6 +43,7 @@ exports[`<TastingNoteEditor /> save renders consistently 1`] = `
   }
   Object {
     "checkCollapsibleFooter": [Function],
+    "keyboardCtrl": null,
     "setupFadeFooter": [Function],
   }
 </DocumentFragment>
@@ -91,6 +92,7 @@ exports[`<TastingNoteEditor /> update renders consistently 1`] = `
   }
   Object {
     "checkCollapsibleFooter": [Function],
+    "keyboardCtrl": null,
     "setupFadeFooter": [Function],
   }
 </DocumentFragment>
