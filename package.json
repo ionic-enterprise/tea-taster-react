@@ -8,19 +8,19 @@
     "email": "support@ionic.io"
   },
   "dependencies": {
-    "@capacitor/android": "~4.3.0",
-    "@capacitor/app": "~4.0.0",
-    "@capacitor/core": "~4.3.0",
-    "@capacitor/haptics": "~4.0.0",
-    "@capacitor/ios": "~4.3.0",
-    "@capacitor/keyboard": "~4.0.0",
+    "@capacitor/android": "~4.5.0",
+    "@capacitor/app": "~4.1.1",
+    "@capacitor/core": "~4.5.0",
+    "@capacitor/haptics": "~4.1.0",
+    "@capacitor/ios": "~4.5.0",
+    "@capacitor/keyboard": "~4.1.0",
     "@capacitor/preferences": "~4.0.0",
-    "@capacitor/share": "~4.0.0",
+    "@capacitor/share": "~4.1.0",
     "@capacitor/splash-screen": "~4.1.0",
-    "@capacitor/status-bar": "~4.0.0",
+    "@capacitor/status-bar": "~4.1.0",
     "@ionic/react": "^6.2.0",
     "@ionic/react-router": "^6.2.0",
-    "@ionic/react-test-utils": "^0.3.0",
+    "@ionic/react-test-utils": "~0.4.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/react-hooks": "~8.0.1",
@@ -55,6 +55,7 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
+    "assets": "capacitor-assets generate --iconBackgroundColor '#f1ebe1' --splashBackgroundColor '#f1ebe1' --iconBackgroundColorDark '#110b00' --splashBackgroundColorDark '#110b00'",
     "start": "react-scripts start",
     "build": "react-scripts build && cap copy",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons|axios)/)'",
@@ -83,8 +84,8 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/assets": "~1.0.10",
-    "@capacitor/cli": "~4.3.0",
+    "@capacitor/assets": "~2.0.4",
+    "@capacitor/cli": "~4.5.0",
     "@ionic/prettier-config": "~2.0.0",
     "husky": "~8.0.1",
     "prettier": "~2.7.1",
