@@ -19,7 +19,7 @@
     "@capacitor/splash-screen": "~4.1.0",
     "@capacitor/status-bar": "~4.1.0",
     "@ionic-enterprise/auth": "~3.9.5",
-    "@ionic-enterprise/identity-vault": "~5.9.1",
+    "@ionic-enterprise/identity-vault": "^5.9.6",
     "@ionic/react": "^6.2.0",
     "@ionic/react-router": "^6.2.0",
     "@ionic/react-test-utils": "~0.4.0",
