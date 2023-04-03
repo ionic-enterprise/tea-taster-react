@@ -15,7 +15,7 @@ const vault: BrowserVault | Vault = createVault({
   unlockVaultOnLoad: false,
 });
 
-export type UnlockMode = 'Device' | 'SessionPin' | 'NeverLock' | 'ForceLogin';
+export type UnlockMode = 'Device' | 'SessionPin' | 'NeverLock' | 'ForceLogin' | 'Biometric';
 
 const SessionVaultContext = createContext<{
   vault: Vault | BrowserVault | undefined;
@@ -99,13 +99,50 @@ export const SessionVaultProvider: React.FC = ({ children }) => {
         deviceSecurityType = DeviceSecurityType.None;
         break;
 
+      case 'Biometric':
+        type = VaultType.DeviceSecurity;
+        deviceSecurityType = DeviceSecurityType.Biometrics;
+
+        console.log('Biometrics selected');
+        break;
+
       default:
         type = VaultType.SecureStorage;
         deviceSecurityType = DeviceSecurityType.None;
         break;
     }
 
-    await vault.updateConfig({ ...vault.config, type, deviceSecurityType });
+    console.log('updating config');
+
+    try {
+      await vault.updateConfig({ ...vault.config, type, deviceSecurityType });
+    } catch (e) {
+      console.log('error updating config', e);
+      await vault.clear();
+
+      const newVault = createVault({
+        key: 'io.ionic.teataster.session_version2',
+        type: VaultType.SecureStorage,
+        deviceSecurityType: DeviceSecurityType.None,
+        lockAfterBackgrounded: 5000,
+        shouldClearVaultAfterTooManyFailedAttempts: true,
+        customPasscodeInvalidUnlockAttempts: 2,
+        unlockVaultOnLoad: false,
+      });
+
+      console.log('updating new config to system passcode');
+
+      await newVault.updateConfig({
+        ...newVault.config,
+        type: VaultType.DeviceSecurity,
+        deviceSecurityType: DeviceSecurityType.SystemPasscode,
+      });
+      console.log('finished updating new config to system passcode ');
+
+      console.log('new config', newVault.config);
+
+      throw new Error('error updating config');
+    }
   };
 
   return (

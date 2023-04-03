@@ -91,6 +91,7 @@ const LoginPage: React.FC = () => {
                       <IonSelectOption value="SessionPin">Session PIN Unlock</IonSelectOption>
                       <IonSelectOption value="NeverLock">Never Lock Session</IonSelectOption>
                       <IonSelectOption value="ForceLogin">Force Login</IonSelectOption>
+                      <IonSelectOption value="Biometric">Biometric</IonSelectOption>
                     </IonSelect>
                   )}
                   control={control}
