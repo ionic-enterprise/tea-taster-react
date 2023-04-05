@@ -1,3 +1,5 @@
+/// <reference types="@capacitor/splash-screen" />
+
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
@@ -5,6 +7,11 @@ const config: CapacitorConfig = {
   appName: 'Tea Tasting Notes',
   webDir: 'dist',
   bundledWebRuntime: false,
+  plugins: {
+    SplashScreen: {
+      launchAutoHide: false,
+    },
+  },
 };
 
 export default config;
