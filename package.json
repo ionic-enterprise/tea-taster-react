@@ -5,8 +5,9 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "assets": "capacitor-assets generate --iconBackgroundColor '#f1ebe1' --splashBackgroundColor '#f1ebe1' --iconBackgroundColorDark '#110b00' --splashBackgroundColorDark '#110b00'",
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && cap copy",
     "prepare": "husky install",
     "preview": "vite preview",
     "test.e2e": "cypress run",
@@ -14,9 +15,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@capacitor/android": "4.7.3",
     "@capacitor/app": "4.1.1",
     "@capacitor/core": "4.7.3",
     "@capacitor/haptics": "4.1.0",
+    "@capacitor/ios": "4.7.3",
     "@capacitor/keyboard": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
     "@ionic/react": "^7.0.0",
@@ -30,6 +33,7 @@
     "react-router-dom": "^5.3.4"
   },
   "devDependencies": {
+    "@capacitor/assets": "~2.0.4",
     "@capacitor/cli": "4.7.3",
     "@ionic/prettier-config": "~2.0.0",
     "@testing-library/jest-dom": "^5.16.5",
