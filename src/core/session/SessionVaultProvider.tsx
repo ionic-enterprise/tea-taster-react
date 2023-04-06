@@ -33,6 +33,14 @@ const SessionVaultContext = createContext<{
   },
 });
 
+function sleep(milliseconds: number) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
 type CustomPasscodeCallback = (opts: { data: any; role?: string }) => void;
 let handlePasscodeRequest: CustomPasscodeCallback = () => {};
 export const SessionVaultProvider: React.FC = ({ children }) => {
@@ -130,8 +138,9 @@ export const SessionVaultProvider: React.FC = ({ children }) => {
         unlockVaultOnLoad: false,
       });
 
-      console.log('updating new config to system passcode');
+      sleep(5000);
 
+      console.log('updating new config to system passcode');
       await newVault.updateConfig({
         ...newVault.config,
         type: VaultType.DeviceSecurity,
