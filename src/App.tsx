@@ -3,6 +3,7 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import SplashContainer from './splash/SplashContainer';
 import TeaListPage from './tea/TeaListPage';
+import LoginPage from './login/LoginPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -30,6 +31,9 @@ const App: React.FC = () => (
     <SplashContainer>
       <IonReactRouter>
         <IonRouterOutlet>
+          <Route exact path="/login">
+            <LoginPage />
+          </Route>
           <Route exact path="/tea">
             <TeaListPage />
           </Route>

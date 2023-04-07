@@ -1,0 +1,56 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<LoginPage /> > renders consistently 1`] = `
+<DocumentFragment>
+  <div
+    class="ion-page"
+  >
+    {
+      "inheritedAttributes": {},
+      "setupFadeHeader": [Function],
+    }
+    {
+      "cBottom": -1,
+      "cTop": -1,
+      "detail": {
+        "currentTime": 0,
+        "currentX": 0,
+        "currentY": 0,
+        "data": undefined,
+        "deltaX": 0,
+        "deltaY": 0,
+        "event": undefined,
+        "isScrolling": true,
+        "scrollLeft": 0,
+        "scrollTop": 0,
+        "startTime": 0,
+        "startX": 0,
+        "startY": 0,
+        "type": "scroll",
+        "velocityX": 0,
+        "velocityY": 0,
+      },
+      "ionScroll": {
+        "emit": [Function],
+      },
+      "ionScrollEnd": {
+        "emit": [Function],
+      },
+      "ionScrollStart": {
+        "emit": [Function],
+      },
+      "isMainContent": true,
+      "isScrolling": false,
+      "lastScroll": 0,
+      "queued": false,
+      "resizeTimeout": null,
+      "watchDog": null,
+    }
+    {
+      "checkCollapsibleFooter": [Function],
+      "keyboardCtrl": null,
+      "setupFadeFooter": [Function],
+    }
+  </div>
+</DocumentFragment>
+`;
