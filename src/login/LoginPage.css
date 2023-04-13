@@ -1,0 +1,4 @@
+.error-message {
+  color: var(--ion-color-danger, #ff0000);
+  font-size: small;
+}

@@ -1,6 +1,11 @@
-import { vi } from 'vitest';
+import { Mock, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useAuth } from '../auth/AuthProvider';
+import { useHistory } from 'react-router';
 import LoginPage from './LoginPage';
+
+vi.mock('../auth/AuthProvider.tsx');
+vi.mock('react-router');
 
 describe('<LoginPage />', () => {
   beforeEach(() => vi.clearAllMocks());
@@ -59,7 +64,62 @@ describe('<LoginPage />', () => {
       await waitFor(() => fireEvent.input(email, { target: { value: 'test@test.com' } }));
       expect(button.disabled).toBeTruthy();
       await waitFor(() => fireEvent.input(password, { target: { value: 'password' } }));
-      expect(button.disabled).toBeFalsy();
+      await waitFor(() => expect(button.disabled).toBeFalsy());
+    });
+  });
+
+  describe('clicking the sign in button', () => {
+    const errorMessage = 'Invalid email and/or password';
+
+    beforeEach(async () => {
+      render(<LoginPage />);
+      const email = await waitFor(() => screen.getByLabelText('Email Address'));
+      const password = await waitFor(() => screen.getByLabelText('Password'));
+      await waitFor(() => fireEvent.input(email, { target: { value: 'test@test.com' } }));
+      await waitFor(() => fireEvent.input(password, { target: { value: 'password' } }));
+    });
+
+    it('performs the login', async () => {
+      const { login } = useAuth();
+      const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
+      fireEvent.click(button);
+      await waitFor(() => expect(login).toHaveBeenCalledTimes(1));
+      expect(login).toHaveBeenCalledWith('test@test.com', 'password');
+    });
+
+    describe('if the login succeeds', () => {
+      beforeEach(() => (useAuth().login as Mock).mockResolvedValue(true));
+
+      it('does not show an error', async () => {
+        const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
+        fireEvent.click(button);
+        await waitFor(() => expect(screen.queryByText(errorMessage)).not.toBeInTheDocument());
+      });
+
+      it('navigates to the root page', async () => {
+        const history = useHistory();
+        const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
+        fireEvent.click(button);
+        await waitFor(() => expect(history.replace).toBeCalledTimes(1));
+        expect(history.replace).toHaveBeenCalledWith('/');
+      });
+    });
+
+    describe('if the login fails', () => {
+      beforeEach(() => (useAuth().login as Mock).mockResolvedValue(false));
+
+      it('shows an error', async () => {
+        const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
+        fireEvent.click(button);
+        await waitFor(() => expect(screen.queryByText(errorMessage)).toBeInTheDocument());
+      });
+
+      it('does not navigate', async () => {
+        const history = useHistory();
+        const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
+        fireEvent.click(button);
+        await waitFor(() => expect(history.replace).not.toHaveBeenCalled());
+      });
     });
   });
 });

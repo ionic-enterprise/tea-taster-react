@@ -2,6 +2,8 @@
 
 exports[`<App /> > renders consistently 1`] = `
 <DocumentFragment>
-  {}
+  <ion-app>
+    <ion-spinner />
+  </ion-app>
 </DocumentFragment>
 `;
