@@ -26,6 +26,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import TeaProvider from './tea/TeaProvider';
 
 setupIonicReact();
 
@@ -40,7 +41,9 @@ const App: React.FC = () => (
             </Route>
             <Route exact path="/tea">
               <PrivateRoute>
-                <TeaListPage />
+                <TeaProvider>
+                  <TeaListPage />
+                </TeaProvider>
               </PrivateRoute>
             </Route>
             <Route exact path="/">
