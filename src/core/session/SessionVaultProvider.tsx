@@ -5,7 +5,7 @@ import { Session } from '../models';
 import { useIonModal } from '@ionic/react';
 import { PinDialog } from '../../pin-dialog/PinDialog';
 
-const vault: BrowserVault | Vault = createVault({
+let vault: BrowserVault | Vault = createVault({
   key: 'io.ionic.teataster.session',
   type: VaultType.SecureStorage,
   deviceSecurityType: DeviceSecurityType.None,
@@ -128,8 +128,8 @@ export const SessionVaultProvider: React.FC = ({ children }) => {
       console.log('error updating config', e);
       await vault.clear();
 
-      const newVault = createVault({
-        key: 'io.ionic.teataster.session_version2',
+      vault = createVault({
+        key: 'io.ionic.teataster.session',
         type: VaultType.SecureStorage,
         deviceSecurityType: DeviceSecurityType.None,
         lockAfterBackgrounded: 5000,
@@ -140,15 +140,20 @@ export const SessionVaultProvider: React.FC = ({ children }) => {
 
       sleep(5000);
 
+      await vault.setValue('hello', 'world');
+
+      console.log('current vault config', vault.config);
+
       console.log('updating new config to system passcode');
-      await newVault.updateConfig({
-        ...newVault.config,
+      await vault.updateConfig({
+        ...vault.config,
         type: VaultType.DeviceSecurity,
         deviceSecurityType: DeviceSecurityType.SystemPasscode,
       });
+
       console.log('finished updating new config to system passcode ');
 
-      console.log('new config', newVault.config);
+      console.log('new config', vault.config);
 
       throw new Error('error updating config');
     }
