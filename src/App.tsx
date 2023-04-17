@@ -6,7 +6,10 @@ import { PrivateRoute } from './auth/PrivateRoute';
 
 import TeaListPage from './tea/TeaListPage';
 import LoginPage from './login/LoginPage';
+import TeaDetailsPage from './tea/TeaDetailsPage';
+
 import AuthProvider from './auth/AuthProvider';
+import TeaProvider from './tea/TeaProvider';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -26,7 +29,6 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import TeaProvider from './tea/TeaProvider';
 
 setupIonicReact();
 
@@ -43,6 +45,13 @@ const App: React.FC = () => (
               <PrivateRoute>
                 <TeaProvider>
                   <TeaListPage />
+                </TeaProvider>
+              </PrivateRoute>
+            </Route>
+            <Route exact path="/tea/:id">
+              <PrivateRoute>
+                <TeaProvider>
+                  <TeaDetailsPage />
                 </TeaProvider>
               </PrivateRoute>
             </Route>

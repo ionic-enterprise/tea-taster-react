@@ -66,7 +66,7 @@ const TeaListPage: React.FC = () => {
             <IonRow key={idx} className="ion-align-items-stretch">
               {row.map((tea) => (
                 <IonCol size="12" sizeMd="6" sizeXl="3" key={tea.id}>
-                  <IonCard>
+                  <IonCard onClick={() => history.push(`/tea/${tea.id}`)}>
                     <IonImg src={tea.image} />
                     <IonCardHeader>
                       <IonCardTitle>{tea.name}</IonCardTitle>
