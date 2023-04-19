@@ -3,14 +3,21 @@ import { useTea } from './TeaProvider';
 import { useParams } from 'react-router';
 import { Tea } from '../models';
 import { Rating } from '../shared/Rating';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const TeaDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { teas } = useTea();
-  const tea: Tea | undefined = teas.find((t) => t.id === parseInt(id, 10));
+  const { teas, rate } = useTea();
+  const [tea, setTea] = useState<Tea>();
 
-  const [rating, setRating] = useState<number>(2);
+  useEffect(() => {
+    setTea(teas.find((t) => t.id === parseInt(id, 10)));
+  }, [teas]);
+
+  const handleRatingChange = async (rating: number) => {
+    await rate(tea!.id, rating);
+    setTea({ ...tea!, rating });
+  };
 
   return (
     <IonPage>
@@ -30,7 +37,7 @@ const TeaDetailsPage: React.FC = () => {
             </div>
             <h1 data-testid="name">{tea.name}</h1>
             <p data-testid="description">{tea.description}</p>
-            <Rating rating={rating} onRatingChange={(r) => setRating(r)} />
+            <Rating rating={tea.rating} onRatingChange={handleRatingChange} />
           </div>
         )}
       </IonContent>

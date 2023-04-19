@@ -1,3 +1,4 @@
 import { vi } from 'vitest';
 
-export const useTea = vi.fn(() => ({ teas: [] }));
+const rate = vi.fn().mockResolvedValue(undefined);
+export const useTea = vi.fn(() => ({ teas: [], rate }));
