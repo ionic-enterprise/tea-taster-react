@@ -3,13 +3,11 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import SplashContainer from './splash/SplashContainer';
 import { PrivateRoute } from './auth/PrivateRoute';
-
-import TeaListPage from './tea/TeaListPage';
-import LoginPage from './login/LoginPage';
-import TeaDetailsPage from './tea/TeaDetailsPage';
-
 import AuthProvider from './auth/AuthProvider';
 import TeaProvider from './tea/TeaProvider';
+
+import Tabs from './Tabs';
+import LoginPage from './login/LoginPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -41,22 +39,15 @@ const App: React.FC = () => (
             <Route exact path="/login">
               <LoginPage />
             </Route>
-            <Route exact path="/tea">
+            <Route path="/tabs">
               <PrivateRoute>
                 <TeaProvider>
-                  <TeaListPage />
-                </TeaProvider>
-              </PrivateRoute>
-            </Route>
-            <Route exact path="/tea/:id">
-              <PrivateRoute>
-                <TeaProvider>
-                  <TeaDetailsPage />
+                  <Tabs />
                 </TeaProvider>
               </PrivateRoute>
             </Route>
             <Route exact path="/">
-              <Redirect to="/tea" />
+              <Redirect to="/tabs" />
             </Route>
           </IonRouterOutlet>
         </IonReactRouter>
