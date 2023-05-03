@@ -1,0 +1,118 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<TastingNoteEditor /> > renders consistently 1`] = `
+<DocumentFragment>
+  <ion-header>
+    <!---->
+    <ion-toolbar>
+      <ion-buttons
+        slot="start"
+      >
+        <ion-button
+          data-testid="cancel-button"
+        >
+          Cancel
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons
+        slot="end"
+      >
+        <ion-button
+          data-testid="submit-button"
+          disabled="true"
+          strong="true"
+        >
+          Add
+        </ion-button>
+      </ion-buttons>
+      <ion-title
+        class="ion-text-center"
+      >
+        Add New Tasting Note
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <form>
+      <ion-list
+        lines="none"
+      >
+        <ion-item>
+          <ion-input
+            class="ion-valid ion-untouched ion-pristine"
+            label="Brand"
+            label-placement="floating"
+          />
+        </ion-item>
+        <ion-item>
+          <ion-input
+            class="ion-valid ion-untouched ion-pristine"
+            label="Name"
+            label-placement="floating"
+          />
+        </ion-item>
+        <ion-item>
+          <ion-select
+            data-testid="tea-categories"
+            label="Type"
+            label-placement="floating"
+          >
+            <ion-select-option
+              value="1"
+            >
+              Green
+            </ion-select-option>
+            <ion-select-option
+              value="2"
+            >
+              Black
+            </ion-select-option>
+            <ion-select-option
+              value="3"
+            >
+              Herbal
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Rating
+          </ion-label>
+          <div
+            class="rating"
+          >
+            <ion-icon
+              data-testid="outline"
+              icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            />
+            <ion-icon
+              data-testid="outline"
+              icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            />
+            <ion-icon
+              data-testid="outline"
+              icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            />
+            <ion-icon
+              data-testid="outline"
+              icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            />
+            <ion-icon
+              data-testid="outline"
+              icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><path d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+            />
+          </div>
+        </ion-item>
+        <ion-item>
+          <ion-textarea
+            class="ion-valid ion-untouched ion-pristine"
+            label="Notes"
+            label-placement="floating"
+            rows="4"
+          />
+        </ion-item>
+      </ion-list>
+    </form>
+  </ion-content>
+</DocumentFragment>
+`;

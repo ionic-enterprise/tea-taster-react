@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<TastingNoteEditor /> > renders consistently 1`] = `
+<DocumentFragment>
+  <ion-header>
+    <!---->
+    <ion-toolbar>
+      <ion-title>
+        Tasting Note Editor
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <p>
+      Hello!!!
+    </p>
+  </ion-content>
+</DocumentFragment>
+`;
