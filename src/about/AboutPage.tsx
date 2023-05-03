@@ -8,7 +8,7 @@ const AboutPage: React.FC = () => {
           <IonTitle>About Page</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent></IonContent>
+      <IonContent className="main-content"></IonContent>
     </IonPage>
   );
 };

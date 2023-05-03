@@ -30,7 +30,7 @@ const Tabs: React.FC = () => {
           </Route>
         </IonRouterOutlet>
 
-        <IonTabBar slot="bottom">
+        <IonTabBar color="tertiary" slot="bottom">
           <IonTabButton tab="tea" href={`${url}/tea`}>
             <IonIcon icon={leaf} />
             <IonLabel>Tea</IonLabel>

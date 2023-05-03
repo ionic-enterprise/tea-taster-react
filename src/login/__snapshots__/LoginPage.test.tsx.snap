@@ -14,6 +14,7 @@ exports[`<LoginPage /> > renders consistently 1`] = `
       </ion-toolbar>
     </ion-header>
     <ion-content
+      class="main-content"
       fullscreen="true"
     >
       <ion-header
@@ -53,7 +54,9 @@ exports[`<LoginPage /> > renders consistently 1`] = `
     </ion-content>
     <ion-footer>
       <!---->
-      <ion-toolbar>
+      <ion-toolbar
+        color="secondary"
+      >
         <ion-button
           disabled="true"
           expand="full"

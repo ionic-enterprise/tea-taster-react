@@ -16,6 +16,7 @@ exports[`<TastingNotesPage /> > renders consistently 1`] = `
       </ion-toolbar>
     </ion-header>
     <ion-content
+      class="main-content"
       fullscreen="true"
     >
       <ion-header
