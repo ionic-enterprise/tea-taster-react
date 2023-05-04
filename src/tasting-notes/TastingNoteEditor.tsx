@@ -3,6 +3,7 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
@@ -12,6 +13,7 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
+  isPlatform,
 } from '@ionic/react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'Yup';
@@ -19,7 +21,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { TastingNote, Tea } from '../models';
 import { Rating } from '../shared/Rating';
 import { useTastingNotes } from './useTastingNotes';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { shareOutline } from 'ionicons/icons';
+import { Share } from '@capacitor/share';
 
 type Props = { onDismiss: () => void; teas: Tea[]; note?: TastingNote };
 
@@ -32,17 +36,20 @@ const validationSchema = yup.object({
 });
 
 export const TastingNoteEditor: React.FC<Props> = ({ onDismiss, teas, note }) => {
+  const sharingIsAvailable = isPlatform('hybrid');
   const { merge } = useTastingNotes();
   const {
     handleSubmit,
     control,
     formState: { errors, isValid, touchedFields, dirtyFields },
-    reset,
-  } = useForm<TastingNote>({ mode: 'onTouched', resolver: yupResolver(validationSchema) });
-
-  useEffect(() => {
-    note && reset(note);
-  }, [note]);
+    watch,
+    getValues,
+  } = useForm<TastingNote>({
+    mode: 'onTouched',
+    resolver: yupResolver(validationSchema),
+    defaultValues: note || undefined,
+  });
+  const allowShare = watch(['brand', 'name', 'rating']).every((el) => !!el);
 
   const getClassNames = (field: keyof TastingNote) =>
     [
@@ -58,6 +65,16 @@ export const TastingNoteEditor: React.FC<Props> = ({ onDismiss, teas, note }) =>
     onDismiss();
   };
 
+  const share = async (): Promise<void> => {
+    const [brand, name, rating] = getValues(['brand', 'name', 'rating']);
+    await Share.share({
+      title: `${brand}: ${name}`,
+      text: `I gave ${brand}: ${name} ${rating} stars on the Tea Taster app`,
+      dialogTitle: 'Share your tasting note',
+      url: 'https://tea-taster-training.web.app',
+    });
+  };
+
   return (
     <>
       <IonHeader>
@@ -68,6 +85,11 @@ export const TastingNoteEditor: React.FC<Props> = ({ onDismiss, teas, note }) =>
             </IonButton>
           </IonButtons>
           <IonButtons slot="end">
+            {sharingIsAvailable && (
+              <IonButton data-testid="share-button" disabled={!allowShare} onClick={() => share()}>
+                <IonIcon slot="icon-only" icon={shareOutline} />
+              </IonButton>
+            )}
             <IonButton
               strong={true}
               data-testid="submit-button"
