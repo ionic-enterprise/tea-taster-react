@@ -1,8 +1,13 @@
 {
   "name": "tea-taster",
   "description": "Tea Tasting Notes",
+  "author": {
+    "name": "Ionic Customer Success Team",
+    "email": "support@ionic.io",
+    "url": "https://ionic.io"
+  },
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "assets": "capacitor-assets generate --iconBackgroundColor '#f1ebe1' --splashBackgroundColor '#f1ebe1' --iconBackgroundColorDark '#110b00' --splashBackgroundColorDark '#110b00'",
