@@ -4,6 +4,7 @@ import TastingNotesPage from './TastingNotesPage';
 import { useTastingNotes } from './useTastingNotes';
 
 const present = vi.fn();
+const mockRemove = vi.fn();
 vi.mock('@ionic/react', async (getOriginal) => {
   const original: any = await getOriginal();
   return { ...original, useIonModal: vi.fn(() => [present, vi.fn()]) };
@@ -41,6 +42,7 @@ describe('<TastingNotesPage />', () => {
         },
       ],
       refresh: vi.fn(),
+      remove: mockRemove,
     });
     vi.clearAllMocks();
   });
@@ -81,6 +83,53 @@ describe('<TastingNotesPage />', () => {
       render(<TastingNotesPage />);
       fireEvent.click(screen.getByTestId('add-note-button'));
       await waitFor(() => expect(present).toHaveBeenCalledTimes(1));
+    });
+  });
+
+  describe('editing a note', () => {
+    it('displays the modal', async () => {
+      const { baseElement } = render(<TastingNotesPage />);
+      fireEvent.click(baseElement.querySelectorAll('ion-item')[0]);
+      await waitFor(() => expect(present).toHaveBeenCalledTimes(1));
+    });
+  });
+
+  describe('removing a note', () => {
+    it('launches a confirmation alert', async () => {
+      const { baseElement } = render(<TastingNotesPage />);
+      await waitFor(() => fireEvent.click(screen.getAllByTestId('delete-button')[0]));
+      await waitFor(() => expect(screen.getByRole('alertdialog')).toBeInTheDocument());
+
+      const button = baseElement.querySelector('.alert-button-role-confirm');
+      console.error(button?.innerHTML);
+    });
+
+    describe('cancelling the alert', () => {
+      it('does not remove a note', async () => {
+        const { remove } = useTastingNotes();
+        const { baseElement } = render(<TastingNotesPage />);
+        await waitFor(() => fireEvent.click(screen.getAllByTestId('delete-button')[0]));
+        await waitFor(() => fireEvent.click(baseElement.querySelector('.alert-button-role-cancel')!));
+        await waitFor(() => expect(remove).not.toBeCalled());
+      });
+    });
+
+    describe('confirming the alert', () => {
+      it('removes a note from the list', async () => {
+        const { remove } = useTastingNotes();
+        const { baseElement } = render(<TastingNotesPage />);
+        await waitFor(() => fireEvent.click(screen.getAllByTestId('delete-button')[0]));
+        await waitFor(() => fireEvent.click(baseElement.querySelector('.alert-button-role-confirm')!));
+        await waitFor(() => expect(remove).toHaveBeenCalledTimes(1));
+        expect(remove).toHaveBeenCalledWith({
+          id: 42,
+          brand: 'Lipton',
+          name: 'Green Tea',
+          teaCategoryId: 3,
+          rating: 3,
+          notes: 'A basic green tea, very passable but nothing special',
+        });
+      });
     });
   });
 });

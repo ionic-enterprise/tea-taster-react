@@ -59,7 +59,7 @@ exports[`<AboutPage /> > renders consistently 1`] = `
           <ion-note
             slot="end"
           >
-            0.0.1
+            1.0.0
           </ion-note>
         </ion-item>
         <ion-item>
