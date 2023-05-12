@@ -1,16 +1,27 @@
 import { vi, Mock } from 'vitest';
 import { DeviceSecurityType, VaultType } from '@ionic-enterprise/identity-vault';
 import { createVault } from '../api/vault-factory-api';
-import { Session } from '../models';
+import { Session, UnlockMode } from '../models';
+import SessionVaultProvider, { useSessionVault } from './SessionVaultProvider';
+import { renderHook, waitFor } from '@testing-library/react';
+import { Preferences } from '@capacitor/preferences';
 
 vi.mock('@capacitor/preferences');
-vi.mock('@ionic/react', async (getOriginal) => {
-  const original: any = await getOriginal();
-  return { ...original, isPlatform: vi.fn() };
-});
 vi.mock('../api/vault-factory-api');
 
+const MockChildComponent = () => {
+  return <div data-testid="session-vault"></div>;
+};
+
+const mockComponent = (
+  <SessionVaultProvider>
+    <MockChildComponent />
+  </SessionVaultProvider>
+);
+
 describe('SessionVaultProvider', () => {
+  const wrapper = ({ children }: any) => <SessionVaultProvider>{children}</SessionVaultProvider>;
+
   let mockVault: any;
   const testSession: Session = {
     user: { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@test.com' },
@@ -70,92 +81,58 @@ describe('SessionVaultProvider', () => {
     });
   });
 
-  // describe('setUnlockMode', () => {
-  //   describe.each([['Biometrics' as UnlockMode], ['BiometricsWithPasscode' as UnlockMode]])(
-  //     'Biometrics security',
-  //     (unlockMode: UnlockMode) => {
-  //       beforeEach(() => {
-  //         Device.showBiometricPrompt = vi.fn();
-  //       });
+  describe('setUnlockMode', () => {
+    it.each([
+      ['Biometrics' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.Biometrics],
+      ['BiometricsWithPasscode' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.Both],
+      ['SystemPasscode' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.SystemPasscode],
+      ['CustomPasscode' as UnlockMode, VaultType.CustomPasscode, DeviceSecurityType.None],
+      ['SecureStorage' as UnlockMode, VaultType.SecureStorage, DeviceSecurityType.None],
+    ])(
+      'sets the unlock mode for %s',
+      async (mode: UnlockMode, type: VaultType, deviceSecurityType: DeviceSecurityType) => {
+        const expected = { ...mockVault.config, type, deviceSecurityType };
 
-  //       it('shows a bio prompt if provisioning the permission is required', async () => {
-  //         Device.isBiometricsAllowed = vi.fn().mockResolvedValue(BiometricPermissionState.Prompt);
-  //         const { setUnlockMode } = useSessionVault();
-  //         await setUnlockMode(unlockMode);
-  //         expect(Device.showBiometricPrompt).toHaveBeenCalledTimes(1);
-  //         expect(Device.showBiometricPrompt).toHaveBeenCalledWith({
-  //           iosBiometricsLocalizedReason: 'Please authenticate to continue',
-  //         });
-  //       });
+        const { result } = renderHook(() => useSessionVault(), { wrapper });
+        await waitFor(() => result.current.setUnlockMode(mode));
+        expect(mockVault.updateConfig).toHaveBeenCalledTimes(1);
+        expect(mockVault.updateConfig).toHaveBeenCalledWith(expected);
+        expect(Preferences.set).toHaveBeenCalledTimes(1);
+        expect(Preferences.set).toHaveBeenCalledWith({ key: 'last-unlock-mode', value: mode });
+      }
+    );
+  });
 
-  //       it('does not show a bio prompt if the permission has already been granted', async () => {
-  //         Device.isBiometricsAllowed = vi.fn().mockResolvedValue(BiometricPermissionState.Granted);
-  //         const { setUnlockMode } = useSessionVault();
-  //         await setUnlockMode(unlockMode);
-  //         expect(Device.showBiometricPrompt).not.toHaveBeenCalled();
-  //       });
+  describe('canUnlock', () => {
+    it.each([
+      [false, 'SecureStorage' as UnlockMode, false, true],
+      [false, 'SecureStorage' as UnlockMode, true, true],
+      [false, 'SecureStorage' as UnlockMode, false, false],
+      [true, 'Biometrics' as UnlockMode, false, true],
+      [false, 'Biometrics' as UnlockMode, true, true],
+      [false, 'Biometrics' as UnlockMode, false, false],
+      [true, 'BiometricsWithPasscode' as UnlockMode, false, true],
+      [false, 'BiometricsWithPasscode' as UnlockMode, true, true],
+      [false, 'BiometricsWithPasscode' as UnlockMode, false, false],
+      [true, 'SystemPasscode' as UnlockMode, false, true],
+      [false, 'SystemPasscode' as UnlockMode, true, true],
+      [false, 'SystemPasscode' as UnlockMode, false, false],
+      [true, 'CustomPasscode' as UnlockMode, false, true],
+      [false, 'CustomPasscode' as UnlockMode, true, true],
+      [false, 'CustomPasscode' as UnlockMode, false, false],
+    ])(
+      'is %s for %s, empty: %s, locked: %s',
+      async (expected: boolean, mode: UnlockMode, empty: boolean, locked: boolean) => {
+        (mockVault.isEmpty as Mock).mockResolvedValue(empty);
+        (mockVault.isLocked as Mock).mockResolvedValue(locked);
+        (Preferences.get as Mock).mockResolvedValue({ value: mode });
 
-  //       it('does not show a bio prompt if the permission has already been denied', async () => {
-  //         Device.isBiometricsAllowed = vi.fn().mockResolvedValue(BiometricPermissionState.Denied);
-  //         const { setUnlockMode } = useSessionVault();
-  //         await setUnlockMode(unlockMode);
-  //         expect(Device.showBiometricPrompt).not.toHaveBeenCalled();
-  //       });
-  //     }
-  //   );
-
-  //   it.each([
-  //     ['Biometrics' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.Biometrics],
-  //     ['BiometricsWithPasscode' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.Both],
-  //     ['SystemPasscode' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.SystemPasscode],
-  //     ['CustomPasscode' as UnlockMode, VaultType.CustomPasscode, DeviceSecurityType.None],
-  //     ['SecureStorage' as UnlockMode, VaultType.SecureStorage, DeviceSecurityType.None],
-  //   ])(
-  //     'Sets the unlock mode for %s',
-  //     async (unlockMode: UnlockMode, type: VaultType, deviceSecurityType: DeviceSecurityType) => {
-  //       const expectedConfig = {
-  //         ...mockVault.config,
-  //         type,
-  //         deviceSecurityType,
-  //       };
-  //       const { setUnlockMode } = useSessionVault();
-  //       await setUnlockMode(unlockMode);
-  //       expect(mockVault.updateConfig).toHaveBeenCalledTimes(1);
-  //       expect(mockVault.updateConfig).toHaveBeenCalledWith(expectedConfig);
-  //       expect(Preferences.set).toHaveBeenCalledTimes(1);
-  //       expect(Preferences.set).toHaveBeenCalledWith({ key: 'LastUnlockMode', value: unlockMode });
-  //     }
-  //   );
-  // });
-
-  // describe('canUnlock', () => {
-  //   it.each([
-  //     [false, 'SecureStorage' as UnlockMode, false, true],
-  //     [false, 'SecureStorage' as UnlockMode, true, true],
-  //     [false, 'SecureStorage' as UnlockMode, false, false],
-  //     [true, 'Biometrics' as UnlockMode, false, true],
-  //     [false, 'Biometrics' as UnlockMode, true, true],
-  //     [false, 'Biometrics' as UnlockMode, false, false],
-  //     [true, 'BiometricsWithPasscode' as UnlockMode, false, true],
-  //     [false, 'BiometricsWithPasscode' as UnlockMode, true, true],
-  //     [false, 'BiometricsWithPasscode' as UnlockMode, false, false],
-  //     [true, 'SystemPasscode' as UnlockMode, false, true],
-  //     [false, 'SystemPasscode' as UnlockMode, true, true],
-  //     [false, 'SystemPasscode' as UnlockMode, false, false],
-  //     [true, 'CustomPasscode' as UnlockMode, false, true],
-  //     [false, 'CustomPasscode' as UnlockMode, true, true],
-  //     [false, 'CustomPasscode' as UnlockMode, false, false],
-  //   ])(
-  //     'is %s for %s, empty: %s, locked: %s',
-  //     async (expected: boolean, mode: UnlockMode, empty: boolean, locked: boolean) => {
-  //       (mockVault.isEmpty as Mock).mockResolvedValue(empty);
-  //       (mockVault.isLocked as Mock).mockResolvedValue(locked);
-  //       (Preferences.get as Mock).mockResolvedValue({ value: mode });
-  //       const { canUnlock } = useSessionVault();
-  //       expect(await canUnlock()).toBe(expected);
-  //     }
-  //   );
-  // });
+        const { result } = renderHook(() => useSessionVault(), { wrapper });
+        const canUnlock = await waitFor(() => result.current.canUnlock());
+        expect(canUnlock).toBe(expected);
+      }
+    );
+  });
 
   // describe('on lock', () => {
   //   beforeEach(async () => {
