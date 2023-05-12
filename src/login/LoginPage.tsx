@@ -53,7 +53,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen className="main-content">
+      <IonContent fullscreen className="main-content login-page">
         <form>
           <IonCard>
             <IonCardHeader>

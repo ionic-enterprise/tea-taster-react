@@ -1,33 +1,33 @@
 @media (min-width: 0px) {
-  ion-card {
+  .login-page ion-card {
     margin-top: 25%;
     margin-left: 5%;
     margin-right: 5%;
   }
 }
 @media (min-width: 576px) {
-  ion-card {
+  .login-page ion-card {
     margin-top: 20%;
     margin-left: 10%;
     margin-right: 10%;
   }
 }
 @media (min-width: 768px) {
-  ion-card {
+  .login-page ion-card {
     margin-top: 10%;
     margin-left: 20%;
     margin-right: 20%;
   }
 }
 @media (min-width: 992px) {
-  ion-card {
+  .login-page ion-card {
     margin-top: 10%;
     margin-left: 25%;
     margin-right: 25%;
   }
 }
 @media (min-width: 1200px) {
-  ion-card {
+  .login-page ion-card {
     margin-top: 10%;
     margin-left: 30%;
     margin-right: 30%;

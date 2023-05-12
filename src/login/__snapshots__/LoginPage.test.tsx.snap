@@ -6,7 +6,7 @@ exports[`<LoginPage /> > renders consistently 1`] = `
     class="ion-page"
   >
     <ion-content
-      class="main-content"
+      class="main-content login-page"
       fullscreen="true"
     >
       <form>
