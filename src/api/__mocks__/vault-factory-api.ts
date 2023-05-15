@@ -12,6 +12,7 @@ const mockVault = {
   updateConfig: vi.fn().mockResolvedValue(undefined),
   isEmpty: vi.fn().mockResolvedValue(false),
   isLocked: vi.fn().mockResolvedValue(false),
+  onConfigChanged: vi.fn().mockResolvedValue(undefined),
   onLock: vi.fn().mockImplementation((cb: () => Promise<void>) => (onLockCallback = cb)),
   onPasscodeRequested: vi.fn().mockResolvedValue(undefined),
   onUnlock: vi.fn().mockImplementation((cb: () => Promise<void>) => (onUnlockCallback = cb)),

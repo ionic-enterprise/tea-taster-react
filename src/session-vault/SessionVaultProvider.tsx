@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext } from 'react';
+import { ReactNode, createContext, useContext, useState } from 'react';
 import { Preferences } from '@capacitor/preferences';
 import { UnlockMode } from '../models';
 import { createVault } from '../api/vault-factory-api';
@@ -40,15 +40,21 @@ const getUnlockModeConfig = async (unlockMode: UnlockMode): Promise<VaultUnlockT
 };
 
 type Context = {
+  isLocked: boolean;
   setUnlockMode: (mode: UnlockMode) => Promise<void>;
   canUnlock: () => Promise<boolean>;
 };
 const SessionVaultContext = createContext<Context | undefined>(undefined);
 const SessionVaultProvider = ({ children }: Props) => {
+  const [isLocked, setIsLocked] = useState<boolean>(false);
   const canUnlock = async (): Promise<boolean> => {
     const { value } = await Preferences.get({ key: keys.mode });
     return (value || 'SecureStorage') !== 'SecureStorage' && !(await vault.isEmpty()) && (await vault.isLocked());
   };
+
+  vault.onLock(() => setIsLocked(true));
+  vault.onUnlock(() => setIsLocked(false));
+  vault.onConfigChanged(() => vault.isLocked().then((isLocked) => setIsLocked(isLocked)));
 
   const setUnlockMode = async (unlockMode: UnlockMode) => {
     const { type, deviceSecurityType } = await getUnlockModeConfig(unlockMode);
@@ -56,7 +62,11 @@ const SessionVaultProvider = ({ children }: Props) => {
     await Preferences.set({ key: keys.mode, value: unlockMode });
   };
 
-  return <SessionVaultContext.Provider value={{ setUnlockMode, canUnlock }}>{children}</SessionVaultContext.Provider>;
+  return (
+    <SessionVaultContext.Provider value={{ isLocked, setUnlockMode, canUnlock }}>
+      {children}
+    </SessionVaultContext.Provider>
+  );
 };
 export const useSessionVault = () => {
   const context = useContext(SessionVaultContext);
