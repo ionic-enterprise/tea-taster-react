@@ -41,8 +41,9 @@ const getUnlockModeConfig = async (unlockMode: UnlockMode): Promise<VaultUnlockT
 
 type Context = {
   isLocked: boolean;
-  setUnlockMode: (mode: UnlockMode) => Promise<void>;
   canUnlock: () => Promise<boolean>;
+  getUnlockMode: () => Promise<UnlockMode>;
+  setUnlockMode: (mode: UnlockMode) => Promise<void>;
 };
 const SessionVaultContext = createContext<Context | undefined>(undefined);
 const SessionVaultProvider = ({ children }: Props) => {
@@ -62,8 +63,13 @@ const SessionVaultProvider = ({ children }: Props) => {
     await Preferences.set({ key: keys.mode, value: unlockMode });
   };
 
+  const getUnlockMode = async (): Promise<UnlockMode> => {
+    const { value } = await Preferences.get({ key: keys.mode });
+    return (value as UnlockMode | null) || 'SecureStorage';
+  };
+
   return (
-    <SessionVaultContext.Provider value={{ isLocked, setUnlockMode, canUnlock }}>
+    <SessionVaultContext.Provider value={{ isLocked, canUnlock, getUnlockMode, setUnlockMode }}>
       {children}
     </SessionVaultContext.Provider>
   );

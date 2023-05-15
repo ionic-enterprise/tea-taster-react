@@ -81,28 +81,6 @@ describe('SessionVaultProvider', () => {
     });
   });
 
-  describe('setUnlockMode', () => {
-    it.each([
-      ['Biometrics' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.Biometrics],
-      ['BiometricsWithPasscode' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.Both],
-      ['SystemPasscode' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.SystemPasscode],
-      ['CustomPasscode' as UnlockMode, VaultType.CustomPasscode, DeviceSecurityType.None],
-      ['SecureStorage' as UnlockMode, VaultType.SecureStorage, DeviceSecurityType.None],
-    ])(
-      'sets the unlock mode for %s',
-      async (mode: UnlockMode, type: VaultType, deviceSecurityType: DeviceSecurityType) => {
-        const expected = { ...mockVault.config, type, deviceSecurityType };
-
-        const { result } = renderHook(() => useSessionVault(), { wrapper });
-        await waitFor(() => result.current.setUnlockMode(mode));
-        expect(mockVault.updateConfig).toHaveBeenCalledTimes(1);
-        expect(mockVault.updateConfig).toHaveBeenCalledWith(expected);
-        expect(Preferences.set).toHaveBeenCalledTimes(1);
-        expect(Preferences.set).toHaveBeenCalledWith({ key: 'last-unlock-mode', value: mode });
-      }
-    );
-  });
-
   describe('canUnlock', () => {
     it.each([
       [false, 'SecureStorage' as UnlockMode, false, true],
@@ -130,6 +108,44 @@ describe('SessionVaultProvider', () => {
         const { result } = renderHook(() => useSessionVault(), { wrapper });
         const canUnlock = await waitFor(() => result.current.canUnlock());
         expect(canUnlock).toBe(expected);
+      }
+    );
+  });
+
+  describe('getUnlockMode', () => {
+    it('resolves the saved preference', async () => {
+      (Preferences.get as Mock).mockResolvedValue({ value: 'BiometricsWithPasscode' });
+      const { result } = renderHook(() => useSessionVault(), { wrapper });
+      const unlockMode = await waitFor(() => result.current.getUnlockMode());
+      expect(unlockMode).toBe('BiometricsWithPasscode');
+    });
+
+    it('resolves to SecureStorage by default', async () => {
+      (Preferences.get as Mock).mockResolvedValue({ value: null });
+      const { result } = renderHook(() => useSessionVault(), { wrapper });
+      const unlockMode = await waitFor(() => result.current.getUnlockMode());
+      expect(unlockMode).toBe('SecureStorage');
+    });
+  });
+
+  describe('setUnlockMode', () => {
+    it.each([
+      ['Biometrics' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.Biometrics],
+      ['BiometricsWithPasscode' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.Both],
+      ['SystemPasscode' as UnlockMode, VaultType.DeviceSecurity, DeviceSecurityType.SystemPasscode],
+      ['CustomPasscode' as UnlockMode, VaultType.CustomPasscode, DeviceSecurityType.None],
+      ['SecureStorage' as UnlockMode, VaultType.SecureStorage, DeviceSecurityType.None],
+    ])(
+      'sets the unlock mode for %s',
+      async (mode: UnlockMode, type: VaultType, deviceSecurityType: DeviceSecurityType) => {
+        const expected = { ...mockVault.config, type, deviceSecurityType };
+
+        const { result } = renderHook(() => useSessionVault(), { wrapper });
+        await waitFor(() => result.current.setUnlockMode(mode));
+        expect(mockVault.updateConfig).toHaveBeenCalledTimes(1);
+        expect(mockVault.updateConfig).toHaveBeenCalledWith(expected);
+        expect(Preferences.set).toHaveBeenCalledTimes(1);
+        expect(Preferences.set).toHaveBeenCalledWith({ key: 'last-unlock-mode', value: mode });
       }
     );
   });

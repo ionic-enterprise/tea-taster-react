@@ -11,6 +11,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { useHistory } from 'react-router';
+import { canUseBiometrics } from '../api/device-api';
 import { useAuth } from '../auth/AuthProvider';
 
 type Props = { onDismiss: () => void };
@@ -18,6 +19,8 @@ type Props = { onDismiss: () => void };
 export const PreferencesEditor: React.FC<Props> = ({ onDismiss }) => {
   const { logout } = useAuth();
   const history = useHistory();
+
+  //const
 
   const handleLogout = async (): Promise<void> => {
     await logout();
