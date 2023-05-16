@@ -96,12 +96,9 @@ describe('<TastingNotesPage />', () => {
 
   describe('removing a note', () => {
     it('launches a confirmation alert', async () => {
-      const { baseElement } = render(<TastingNotesPage />);
+      render(<TastingNotesPage />);
       await waitFor(() => fireEvent.click(screen.getAllByTestId('delete-button')[0]));
       await waitFor(() => expect(screen.getByRole('alertdialog')).toBeInTheDocument());
-
-      const button = baseElement.querySelector('.alert-button-role-confirm');
-      console.error(button?.innerHTML);
     });
 
     describe('cancelling the alert', () => {
