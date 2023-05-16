@@ -19,38 +19,71 @@ import {
   hideContentsInBackground,
   isHidingContentsInBackground,
 } from '../api/device-api';
-import { useAuth } from '../auth/AuthProvider';
 import { useEffect, useState } from 'react';
-import { UnlockMode } from '../models';
+import { useAuth } from '../auth/AuthProvider';
+import { useSessionVault } from '../session-vault/SessionVaultProvider';
 
 type Props = { onDismiss: () => void };
 
 export const PreferencesEditor: React.FC<Props> = ({ onDismiss }) => {
   const { logout } = useAuth();
+  const { setUnlockMode, getUnlockMode } = useSessionVault();
   const history = useHistory();
-  //const { getUnlockMode } = useSessionVault();
 
   const [disableBiometrics, setDisableBiometrics] = useState<boolean>(true);
   const [disableSystemPasscode, setDisableSystemPasscode] = useState<boolean>(true);
+  const disableCustomPasscode = !canUseCustomPasscode();
+  const disableHideInBackground = !canHideContentsInBackground();
 
-  const [unlockMode, setUnlockMode] = useState<UnlockMode>();
   const [hideInBackground, setHideInBackground] = useState<boolean>(false);
 
-  const useBiometrics = unlockMode === 'Biometrics' || unlockMode === 'BiometricsWithPasscode';
-  const useSystemPasscode = unlockMode === 'SystemPasscode' || unlockMode === 'BiometricsWithPasscode';
-  const useCustomPasscode = unlockMode === 'CustomPasscode';
+  const [useBiometrics, setUseBiometrics] = useState<boolean>(false);
+  const [useSystemPasscode, setUseSystemPasscode] = useState<boolean>(false);
+  const [useCustomPasscode, setUseCustomPasscode] = useState<boolean>(false);
 
   useEffect(() => {
     isHidingContentsInBackground().then((isHiding) => setHideInBackground(isHiding));
-    //getUnlockMode().then((mode) => setUnlockMode(mode));
-
-    //canUseBiometrics().then((enabled) => setDisableBiometrics(!enabled));
-    //canUseSystemPasscode().then((enabled) => setDisableSystemPasscode(!enabled));
+    canUseBiometrics().then((enabled) => setDisableBiometrics(!enabled));
+    canUseSystemPasscode().then((enabled) => setDisableSystemPasscode(!enabled));
+    getUnlockMode().then((mode) => {
+      setUseBiometrics(mode === 'Biometrics' || mode === 'BiometricsWithPasscode');
+      setUseSystemPasscode(mode === 'SystemPasscode' || mode === 'BiometricsWithPasscode');
+      setUseCustomPasscode(mode === 'CustomPasscode');
+    });
   }, []);
 
-  const hideInBackgroundChanged = async () => {
-    await hideContentsInBackground(!hideInBackground);
-    setHideInBackground(!hideInBackground);
+  const handleInBackgroundToggle = async (updatedValue: boolean) => {
+    await hideContentsInBackground(updatedValue);
+    setHideInBackground(updatedValue);
+  };
+
+  const handleCustomPasscodeToggle = async (updatedValue: boolean) => {
+    if (updatedValue) {
+      setUseBiometrics(false);
+      setUseSystemPasscode(false);
+    }
+    setUseCustomPasscode(updatedValue);
+    await setVaultLockMode(updatedValue, false, false);
+  };
+
+  const handleBiometricToggle = async (updatedValue: boolean) => {
+    updatedValue && setUseCustomPasscode(false);
+    setUseBiometrics(updatedValue);
+    await setVaultLockMode(false, updatedValue, useSystemPasscode);
+  };
+
+  const handleSystemPasscodeToggle = async (updatedValue: boolean) => {
+    updatedValue && setUseCustomPasscode(false);
+    setUseSystemPasscode(updatedValue);
+    await setVaultLockMode(false, useBiometrics, updatedValue);
+  };
+
+  const setVaultLockMode = (useCustomPasscode: boolean, useBiometrics: boolean, useSystemPasscode: boolean) => {
+    if (useCustomPasscode) return setUnlockMode('CustomPasscode');
+    if (useBiometrics && useSystemPasscode) return setUnlockMode('BiometricsWithPasscode');
+    if (useBiometrics) return setUnlockMode('Biometrics');
+    if (useSystemPasscode) return setUnlockMode('SystemPasscode');
+    return setUnlockMode('SecureStorage');
   };
 
   const handleLogout = async (): Promise<void> => {
@@ -74,22 +107,46 @@ export const PreferencesEditor: React.FC<Props> = ({ onDismiss }) => {
         <IonList>
           <IonListHeader>Session Locking</IonListHeader>
           <IonItem>
-            <IonToggle>Use Biometrics</IonToggle>
+            <IonToggle
+              data-testid="use-biometrics-toggle"
+              enableOnOffLabels={true}
+              disabled={disableBiometrics}
+              checked={useBiometrics}
+              onIonChange={() => handleBiometricToggle(!useBiometrics)}
+            >
+              Use Biometrics
+            </IonToggle>
           </IonItem>
           <IonItem>
-            <IonToggle>Use System Passcode</IonToggle>
+            <IonToggle
+              data-testid="use-system-passcode-toggle"
+              enableOnOffLabels={true}
+              disabled={disableSystemPasscode}
+              checked={useSystemPasscode}
+              onIonChange={() => handleSystemPasscodeToggle(!useSystemPasscode)}
+            >
+              Use System Passcode
+            </IonToggle>
           </IonItem>
           <IonItem>
-            <IonToggle disabled={!canUseCustomPasscode()}>Use Custom Passcode</IonToggle>
+            <IonToggle
+              data-testid="use-custom-passcode-toggle"
+              enableOnOffLabels={true}
+              disabled={disableCustomPasscode}
+              checked={useCustomPasscode}
+              onIonChange={() => handleCustomPasscodeToggle(!useCustomPasscode)}
+            >
+              Use Custom Passcode
+            </IonToggle>
           </IonItem>
           <IonListHeader>Privacy</IonListHeader>
           <IonItem>
             <IonToggle
               data-testid="hide-contents-toggle"
               enableOnOffLabels={true}
-              disabled={!canHideContentsInBackground()}
+              disabled={disableHideInBackground}
               checked={hideInBackground}
-              onIonChange={() => hideInBackgroundChanged()}
+              onIonChange={() => handleInBackgroundToggle(!hideInBackground)}
             >
               Hide contents in background
             </IonToggle>
