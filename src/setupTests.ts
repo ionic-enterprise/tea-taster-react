@@ -2,8 +2,12 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
+
+import { vi } from 'vitest';
 import { setupIonicReact } from '@ionic/react';
 import '@testing-library/jest-dom/extend-expect';
+
+vi.mock('./api/vault-factory-api');
 
 setupIonicReact();
 
