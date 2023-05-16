@@ -30,32 +30,35 @@ import './theme/variables.css';
 
 /* Application Global Theming */
 import './theme/global.css';
+import SessionVaultProvider from './session-vault/SessionVaultProvider';
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <AuthProvider>
-      <SplashContainer>
-        <IonReactRouter>
-          <IonRouterOutlet>
-            <Route exact path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/tabs">
-              <PrivateRoute>
-                <TeaProvider>
-                  <Tabs />
-                </TeaProvider>
-              </PrivateRoute>
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/tabs" />
-            </Route>
-          </IonRouterOutlet>
-        </IonReactRouter>
-      </SplashContainer>
-    </AuthProvider>
+    <SessionVaultProvider>
+      <AuthProvider>
+        <SplashContainer>
+          <IonReactRouter>
+            <IonRouterOutlet>
+              <Route exact path="/login">
+                <LoginPage />
+              </Route>
+              <Route path="/tabs">
+                <PrivateRoute>
+                  <TeaProvider>
+                    <Tabs />
+                  </TeaProvider>
+                </PrivateRoute>
+              </Route>
+              <Route exact path="/">
+                <Redirect to="/tabs" />
+              </Route>
+            </IonRouterOutlet>
+          </IonReactRouter>
+        </SplashContainer>
+      </AuthProvider>
+    </SessionVaultProvider>
   </IonApp>
 );
 

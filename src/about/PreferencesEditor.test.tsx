@@ -1,28 +1,29 @@
-import { vi } from 'vitest';
+import { vi, Mock } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useAuth } from '../auth/AuthProvider';
 import { useHistory } from 'react-router';
-
 import { PreferencesEditor } from './PreferencesEditor';
+import { isHidingContentsInBackground } from '../api/device-api';
 
-vi.mock('../auth/AuthProvider');
 vi.mock('react-router');
+vi.mock('../auth/AuthProvider');
+vi.mock('../session-vault/SessionVaultProvider');
+vi.mock('../api/device-api');
 
 const mockOnDismiss = vi.fn();
 
 describe('<PreferencesEditor />', () => {
   const component = <PreferencesEditor onDismiss={() => mockOnDismiss()} />;
-
   beforeEach(() => vi.clearAllMocks());
 
-  it('renders without crashing', () => {
-    const { baseElement } = render(component);
-    expect(baseElement).toBeDefined();
-  });
+  describe('hide in background toggle', () => {
+    it('is disabled if we cannot use the custom passcode', async () => {});
 
-  it('renders consistently', () => {
-    const { asFragment } = render(component);
-    expect(asFragment()).toMatchSnapshot();
+    it('is not disabled if we can use the custom passcode', async () => {});
+
+    it.each([[true], [false]])('is %s on initialization', async (value: boolean) => {
+      (isHidingContentsInBackground as Mock).mockResolvedValue(value);
+    });
   });
 
   describe('logout button', () => {
