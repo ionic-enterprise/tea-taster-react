@@ -85,6 +85,7 @@ export const PreferencesEditor: React.FC<Props> = ({ onDismiss }) => {
           <IonListHeader>Privacy</IonListHeader>
           <IonItem>
             <IonToggle
+              data-testid="hide-contents-toggle"
               enableOnOffLabels={true}
               disabled={!canHideContentsInBackground()}
               checked={hideInBackground}

@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useAuth } from '../auth/AuthProvider';
 import { useHistory } from 'react-router';
 import { PreferencesEditor } from './PreferencesEditor';
-import { isHidingContentsInBackground } from '../api/device-api';
+import { canHideContentsInBackground, hideContentsInBackground, isHidingContentsInBackground } from '../api/device-api';
 
 vi.mock('react-router');
 vi.mock('../auth/AuthProvider');
@@ -17,12 +17,34 @@ describe('<PreferencesEditor />', () => {
   beforeEach(() => vi.clearAllMocks());
 
   describe('hide in background toggle', () => {
-    it('is disabled if we cannot use the custom passcode', async () => {});
+    it('is disabled if we cannot use the custom passcode', async () => {
+      (canHideContentsInBackground as Mock).mockReturnValue(false);
+      render(component);
+      const toggle = await waitFor(() => screen.getByTestId('hide-contents-toggle'));
+      expect((toggle as HTMLIonToggleElement).disabled).toBe(true);
+    });
 
-    it('is not disabled if we can use the custom passcode', async () => {});
+    it('is not disabled if we can use the custom passcode', async () => {
+      (canHideContentsInBackground as Mock).mockReturnValue(true);
+      render(component);
+      const toggle = await waitFor(() => screen.getByTestId('hide-contents-toggle'));
+      expect((toggle as HTMLIonToggleElement).disabled).toBe(false);
+    });
 
     it.each([[true], [false]])('is %s on initialization', async (value: boolean) => {
       (isHidingContentsInBackground as Mock).mockResolvedValue(value);
+      render(component);
+      const toggle = await waitFor(() => screen.getByTestId('hide-contents-toggle'));
+      expect((toggle as HTMLIonToggleElement).checked).toBe(value);
+    });
+
+    it.each([[true], [false]])('sets the hide to %s', async (value: boolean) => {
+      (isHidingContentsInBackground as Mock).mockResolvedValue(!value);
+      render(component);
+      const toggle = await waitFor(() => screen.getByTestId('hide-contents-toggle'));
+      await waitFor(() => fireEvent(toggle, new CustomEvent('ionChange', {})));
+      expect(hideContentsInBackground).toHaveBeenCalledTimes(1);
+      expect(hideContentsInBackground).toHaveBeenCalledWith(value);
     });
   });
 
