@@ -1,78 +1,50 @@
-import { ReactNode, createContext, useContext, useState } from 'react';
-import { Preferences } from '@capacitor/preferences';
-import { UnlockMode } from '../models';
-import { createVault } from '../api/vault-factory-api';
-import { DeviceSecurityType, IdentityVaultConfig, Vault, VaultType } from '@ionic-enterprise/identity-vault';
-import { provisionBiometricPermission } from '../api/device-api';
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useIonModal } from '@ionic/react';
+import { PinDialog } from '../shared/PinDialog';
+import { vault } from '../api/session-vault-api';
 
 type Props = { children?: ReactNode };
-type VaultUnlockType = Pick<IdentityVaultConfig, 'type' | 'deviceSecurityType'>;
 type CustomPasscodeCallback = (opts: { data: any; role?: string }) => void;
 let handlePasscodeRequest: CustomPasscodeCallback = () => {};
 
-const keys = { session: 'session', mode: 'last-unlock-mode' };
-const vault = createVault({
-  key: 'io.ionic.teatastereact',
-  type: VaultType.SecureStorage,
-  deviceSecurityType: DeviceSecurityType.None,
-  lockAfterBackgrounded: 5000,
-  shouldClearVaultAfterTooManyFailedAttempts: true,
-  customPasscodeInvalidUnlockAttempts: 2,
-  unlockVaultOnLoad: false,
-});
-
-const getUnlockModeConfig = async (unlockMode: UnlockMode): Promise<VaultUnlockType> => {
-  switch (unlockMode) {
-    case 'Biometrics':
-      await provisionBiometricPermission();
-      return { type: VaultType.DeviceSecurity, deviceSecurityType: DeviceSecurityType.Biometrics };
-    case 'BiometricsWithPasscode':
-      await provisionBiometricPermission();
-      return { type: VaultType.DeviceSecurity, deviceSecurityType: DeviceSecurityType.Both };
-    case 'SystemPasscode':
-      return { type: VaultType.DeviceSecurity, deviceSecurityType: DeviceSecurityType.SystemPasscode };
-    case 'CustomPasscode':
-      return { type: VaultType.CustomPasscode, deviceSecurityType: DeviceSecurityType.None };
-    case 'SecureStorage':
-    default:
-      return { type: VaultType.SecureStorage, deviceSecurityType: DeviceSecurityType.None };
-  }
-};
-
-type Context = {
-  isLocked: boolean;
-  canUnlock: () => Promise<boolean>;
-  getUnlockMode: () => Promise<UnlockMode>;
-  setUnlockMode: (mode: UnlockMode) => Promise<void>;
-};
+type Context = { isLocked: boolean };
 const SessionVaultContext = createContext<Context | undefined>(undefined);
 const SessionVaultProvider = ({ children }: Props) => {
   const [isLocked, setIsLocked] = useState<boolean>(false);
-  const canUnlock = async (): Promise<boolean> => {
-    const { value } = await Preferences.get({ key: keys.mode });
-    return (value || 'SecureStorage') !== 'SecureStorage' && !(await vault.isEmpty()) && (await vault.isLocked());
-  };
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isSetPasscodeMode, setIsSetPasscodeMode] = useState<boolean>(false);
+  const [present, dismiss] = useIonModal(PinDialog, {
+    setPasscodeMode: isSetPasscodeMode,
+    onDismiss: (opts: { data: any; role?: string }) => handlePasscodeRequest(opts),
+  });
 
-  vault.onLock(() => setIsLocked(true));
-  vault.onUnlock(() => setIsLocked(false));
-  vault.onConfigChanged(() => vault.isLocked().then((isLocked) => setIsLocked(isLocked)));
+  useMemo(() => {
+    vault.onLock(() => setIsLocked(true) /* Send to unlock page */);
+    vault.onUnlock(() => setIsLocked(false));
+    vault.onConfigChanged(() => vault.isLocked().then((isLocked) => setIsLocked(isLocked)));
+    vault.onPasscodeRequested(async (isPasscodeSetRequest) => {
+      return new Promise((resolve) => {
+        handlePasscodeRequest = (opts) => {
+          vault.setCustomPasscode(opts.role === 'cancel' ? '' : opts.data);
+          setIsSetPasscodeMode(false);
+          setShowModal(false);
+          resolve();
+        };
+        setIsSetPasscodeMode(isPasscodeSetRequest);
+        setShowModal(true);
+      });
+    });
+  }, []);
 
-  const setUnlockMode = async (unlockMode: UnlockMode) => {
-    const { type, deviceSecurityType } = await getUnlockModeConfig(unlockMode);
-    await vault.updateConfig({ ...vault.config, type, deviceSecurityType });
-    await Preferences.set({ key: keys.mode, value: unlockMode });
-  };
+  useEffect(() => {
+    showModal ? present() : dismiss();
+  }, [showModal]);
 
-  const getUnlockMode = async (): Promise<UnlockMode> => {
-    const { value } = await Preferences.get({ key: keys.mode });
-    return (value as UnlockMode | null) || 'SecureStorage';
-  };
+  useEffect(() => {
+    vault.isLocked().then((isLocked) => setIsLocked(isLocked));
+  }, []);
 
-  return (
-    <SessionVaultContext.Provider value={{ isLocked, canUnlock, getUnlockMode, setUnlockMode }}>
-      {children}
-    </SessionVaultContext.Provider>
-  );
+  return <SessionVaultContext.Provider value={{ isLocked }}>{children}</SessionVaultContext.Provider>;
 };
 export const useSessionVault = () => {
   const context = useContext(SessionVaultContext);

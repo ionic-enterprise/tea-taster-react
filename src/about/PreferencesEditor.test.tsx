@@ -12,12 +12,12 @@ import {
   isHidingContentsInBackground,
 } from '../api/device-api';
 import { UnlockMode } from '../models';
-import { useSessionVault } from '../session-vault/SessionVaultProvider';
+import { getUnlockMode, setUnlockMode } from '../api/session-vault-api';
 
 vi.mock('react-router');
 vi.mock('../auth/AuthProvider');
-vi.mock('../session-vault/SessionVaultProvider');
 vi.mock('../api/device-api');
+vi.mock('../api/session-vault-api');
 
 const mockOnDismiss = vi.fn();
 
@@ -47,7 +47,6 @@ describe('<PreferencesEditor />', () => {
       [false, 'CustomPasscode' as UnlockMode],
       [false, 'SecureStorage' as UnlockMode],
     ])('is %s if the unlock mode is %s', async (value: boolean, unlockMode: UnlockMode) => {
-      const { getUnlockMode } = useSessionVault();
       (getUnlockMode as Mock).mockResolvedValue(unlockMode);
       render(component);
       const toggle = await waitFor(() => screen.getByTestId('use-biometrics-toggle'));
@@ -68,7 +67,6 @@ describe('<PreferencesEditor />', () => {
       [true, false, 'Biometrics'],
       [true, true, 'BiometricsWithPasscode'],
     ])('sets the unlock mode correctly when checked', async (bio: boolean, sys: boolean, mode: string) => {
-      const { setUnlockMode } = useSessionVault();
       render(component);
       const bioToggle = await waitFor(() => screen.getByTestId('use-biometrics-toggle') as HTMLIonToggleElement);
       const sysToggle = await waitFor(() => screen.getByTestId('use-system-passcode-toggle') as HTMLIonToggleElement);
@@ -81,7 +79,6 @@ describe('<PreferencesEditor />', () => {
       [true, 'SecureStorage'],
       [false, 'SystemPasscode'],
     ])('sets the unlock mode correctly when unchecked', async (sys: boolean, mode: string) => {
-      const { setUnlockMode } = useSessionVault();
       render(component);
       const bioToggle = await waitFor(() => screen.getByTestId('use-biometrics-toggle') as HTMLIonToggleElement);
       const sysToggle = await waitFor(() => screen.getByTestId('use-system-passcode-toggle') as HTMLIonToggleElement);
@@ -115,7 +112,6 @@ describe('<PreferencesEditor />', () => {
       [false, 'CustomPasscode' as UnlockMode],
       [false, 'SecureStorage' as UnlockMode],
     ])('is %s if the unlock mode is %s', async (value: boolean, unlockMode: UnlockMode) => {
-      const { getUnlockMode } = useSessionVault();
       (getUnlockMode as Mock).mockResolvedValue(unlockMode);
       render(component);
       const toggle = await waitFor(() => screen.getByTestId('use-system-passcode-toggle'));
@@ -136,7 +132,6 @@ describe('<PreferencesEditor />', () => {
       [false, true, 'SystemPasscode'],
       [true, true, 'BiometricsWithPasscode'],
     ])('sets the unlock mode correctly when checked', async (bio: boolean, sys: boolean, mode: string) => {
-      const { setUnlockMode } = useSessionVault();
       render(component);
       const bioToggle = await waitFor(() => screen.getByTestId('use-biometrics-toggle') as HTMLIonToggleElement);
       const sysToggle = await waitFor(() => screen.getByTestId('use-system-passcode-toggle') as HTMLIonToggleElement);
@@ -149,7 +144,6 @@ describe('<PreferencesEditor />', () => {
       [true, 'SecureStorage'],
       [false, 'Biometrics'],
     ])('sets the unlock mode correctly when unchecked', async (bio: boolean, mode: string) => {
-      const { setUnlockMode } = useSessionVault();
       render(component);
       const bioToggle = await waitFor(() => screen.getByTestId('use-biometrics-toggle') as HTMLIonToggleElement);
       const sysToggle = await waitFor(() => screen.getByTestId('use-system-passcode-toggle') as HTMLIonToggleElement);
@@ -183,7 +177,6 @@ describe('<PreferencesEditor />', () => {
       [true, 'CustomPasscode' as UnlockMode],
       [false, 'SecureStorage' as UnlockMode],
     ])('is %s if the unlock mode is %s', async (value: boolean, unlockMode: UnlockMode) => {
-      const { getUnlockMode } = useSessionVault();
       (getUnlockMode as Mock).mockResolvedValue(unlockMode);
       render(component);
       const toggle = await waitFor(() => screen.getByTestId('use-custom-passcode-toggle'));
@@ -205,7 +198,6 @@ describe('<PreferencesEditor />', () => {
     });
 
     it('sets the vault type to use custom passcode when set', async () => {
-      const { setUnlockMode } = useSessionVault();
       render(component);
       const toggle = await waitFor(() => screen.getByTestId('use-custom-passcode-toggle') as HTMLIonToggleElement);
       await waitFor(() => fireEvent(toggle, new CustomEvent('ionChange', {})));
@@ -214,7 +206,6 @@ describe('<PreferencesEditor />', () => {
     });
 
     it('sets the vault type to secure storage when unset', async () => {
-      const { setUnlockMode } = useSessionVault();
       render(component);
       const toggle = await waitFor(() => screen.getByTestId('use-custom-passcode-toggle') as HTMLIonToggleElement);
       await waitFor(() => fireEvent(toggle, new CustomEvent('ionChange', {})));

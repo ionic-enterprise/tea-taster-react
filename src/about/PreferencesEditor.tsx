@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   IonButton,
   IonButtons,
@@ -19,15 +20,13 @@ import {
   hideContentsInBackground,
   isHidingContentsInBackground,
 } from '../api/device-api';
-import { useEffect, useState } from 'react';
+import { getUnlockMode, setUnlockMode } from '../api/session-vault-api';
 import { useAuth } from '../auth/AuthProvider';
-import { useSessionVault } from '../session-vault/SessionVaultProvider';
 
 type Props = { onDismiss: () => void };
 
 export const PreferencesEditor: React.FC<Props> = ({ onDismiss }) => {
   const { logout } = useAuth();
-  const { setUnlockMode, getUnlockMode } = useSessionVault();
   const history = useHistory();
 
   const [disableBiometrics, setDisableBiometrics] = useState<boolean>(true);
