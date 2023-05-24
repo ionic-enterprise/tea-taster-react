@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useIonModal } from '@ionic/react';
-import { PinDialog } from '../shared/PinDialog';
+import { PinDialog } from './PinDialog';
 import { vault } from '../api/session-vault-api';
 
 type Props = { children?: ReactNode };

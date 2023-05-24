@@ -1,0 +1,42 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<UnlockPage /> > renders consistently 1`] = `
+<DocumentFragment>
+  <div
+    class="ion-page"
+  >
+    <ion-content
+      class="unlock-page ion-text-center main-content"
+    >
+      <ion-card>
+        <ion-card-content>
+          <ion-card-title>
+            The Tasting Room is Locked
+          </ion-card-title>
+          <ion-button
+            class="unlock-button"
+            expand="full"
+            fill="clear"
+          >
+            <ion-icon
+              icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><path d='M336 112a80 80 0 00-160 0v96' stroke-linecap='round' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/><rect x='96' y='208' width='320' height='272' rx='48' ry='48' stroke-linecap='round' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+              slot="end"
+            />
+            Unlock
+          </ion-button>
+          <ion-button
+            color="secondary"
+            expand="full"
+          >
+            <ion-icon
+              icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><path d='M448 256L272 88v96C103.57 184 64 304.77 64 424c48.61-62.24 91.6-96 208-96v96z' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+              slot="end"
+            />
+            Redo Sign In
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-content>
+  </div>
+</DocumentFragment>
+`;

@@ -3,11 +3,13 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import SplashContainer from './splash/SplashContainer';
 import { PrivateRoute } from './auth/PrivateRoute';
+import SessionVaultProvider from './session-vault/SessionVaultProvider';
 import AuthProvider from './auth/AuthProvider';
 import TeaProvider from './tea/TeaProvider';
 
 import Tabs from './Tabs';
 import LoginPage from './login/LoginPage';
+import UnlockPage from './session-vault/UnlockPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -30,7 +32,6 @@ import './theme/variables.css';
 
 /* Application Global Theming */
 import './theme/global.css';
-import SessionVaultProvider from './session-vault/SessionVaultProvider';
 
 setupIonicReact();
 
@@ -41,6 +42,9 @@ const App: React.FC = () => (
         <SplashContainer>
           <IonReactRouter>
             <IonRouterOutlet>
+              <Route exact path="/unlock">
+                <UnlockPage />
+              </Route>
               <Route exact path="/login">
                 <LoginPage />
               </Route>
