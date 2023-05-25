@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import * as auth from '../api/auth-api';
-import { canUnlock } from '../api/session-vault-api';
+import { canUnlock, getSession } from '../api/session-vault-api';
 import { IonSpinner } from '@ionic/react';
 
 type Props = { children?: ReactNode };
@@ -33,7 +33,7 @@ const AuthProvider = ({ children }: Props) => {
       // to get the session.
       // router.replace('/tabs/teas');
     */
-    canUnlock().then((res) => setIsAuthenticated(!!res));
+    canUnlock().then((res) => setIsAuthenticated(res));
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
