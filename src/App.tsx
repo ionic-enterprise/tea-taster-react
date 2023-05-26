@@ -37,10 +37,10 @@ setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <SessionVaultProvider>
-      <AuthProvider>
-        <SplashContainer>
-          <IonReactRouter>
+    <SplashContainer>
+      <IonReactRouter>
+        <SessionVaultProvider>
+          <AuthProvider>
             <IonRouterOutlet>
               <Route exact path="/unlock">
                 <UnlockPage />
@@ -59,10 +59,10 @@ const App: React.FC = () => (
                 <Redirect to="/tabs" />
               </Route>
             </IonRouterOutlet>
-          </IonReactRouter>
-        </SplashContainer>
-      </AuthProvider>
-    </SessionVaultProvider>
+          </AuthProvider>
+        </SessionVaultProvider>
+      </IonReactRouter>
+    </SplashContainer>
   </IonApp>
 );
 

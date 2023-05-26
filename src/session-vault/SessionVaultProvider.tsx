@@ -1,16 +1,16 @@
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useIonModal } from '@ionic/react';
 import { PinDialog } from './PinDialog';
-import { vault } from '../api/session-vault-api';
+import { clearSessionCache, vault } from '../api/session-vault-api';
+import { useHistory } from 'react-router';
 
 type Props = { children?: ReactNode };
 type CustomPasscodeCallback = (opts: { data: any; role?: string }) => void;
 let handlePasscodeRequest: CustomPasscodeCallback = () => {};
 
-type Context = { isLocked: boolean };
-const SessionVaultContext = createContext<Context | undefined>(undefined);
+const SessionVaultContext = createContext<any>({});
 const SessionVaultProvider = ({ children }: Props) => {
-  const [isLocked, setIsLocked] = useState<boolean>(false);
+  const history = useHistory();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isSetPasscodeMode, setIsSetPasscodeMode] = useState<boolean>(false);
   const [present, dismiss] = useIonModal(PinDialog, {
@@ -19,9 +19,10 @@ const SessionVaultProvider = ({ children }: Props) => {
   });
 
   useMemo(() => {
-    vault.onLock(() => setIsLocked(true) /* Send to unlock page */);
-    vault.onUnlock(() => setIsLocked(false));
-    vault.onConfigChanged(() => vault.isLocked().then((isLocked) => setIsLocked(isLocked)));
+    vault.onLock(() => {
+      clearSessionCache();
+      history.replace('/unlock');
+    });
     vault.onPasscodeRequested(async (isPasscodeSetRequest) => {
       return new Promise((resolve) => {
         handlePasscodeRequest = (opts) => {
@@ -40,11 +41,7 @@ const SessionVaultProvider = ({ children }: Props) => {
     showModal ? present() : dismiss();
   }, [showModal]);
 
-  useEffect(() => {
-    vault.isLocked().then((isLocked) => setIsLocked(isLocked));
-  }, []);
-
-  return <SessionVaultContext.Provider value={{ isLocked }}>{children}</SessionVaultContext.Provider>;
+  return <SessionVaultContext.Provider value={{}}>{children}</SessionVaultContext.Provider>;
 };
 export const useSessionVault = () => {
   const context = useContext(SessionVaultContext);

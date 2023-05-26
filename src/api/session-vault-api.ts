@@ -18,23 +18,20 @@ const vault = createVault({
 
 let session: Session | undefined;
 
-/* React can register a callback to fire on these events! */
-
 const clearSession = async (): Promise<void> => {
-  // FIRE CALLBACK
   session = undefined;
   await vault.clear();
   await setUnlockMode('SecureStorage');
 };
 
+const clearSessionCache = () => (session = undefined);
+
 const getSession = async (): Promise<Session | undefined> => {
-  // FIRE CALLBACK
   if (!session) session = (await vault.getValue<Session>(keys.session)) || undefined;
   return session;
 };
 
 const setSession = async (s: Session): Promise<void> => {
-  // FIRE CALLBACK
   session = s;
   return vault.setValue(keys.session, s);
 };
@@ -73,4 +70,4 @@ const getUnlockMode = async (): Promise<UnlockMode> => {
   return (value as UnlockMode | null) || 'SecureStorage';
 };
 
-export { vault, canUnlock, setUnlockMode, getUnlockMode, clearSession, getSession, setSession };
+export { vault, canUnlock, setUnlockMode, getUnlockMode, clearSession, clearSessionCache, getSession, setSession };
