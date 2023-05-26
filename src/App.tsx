@@ -3,11 +3,13 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import SplashContainer from './splash/SplashContainer';
 import { PrivateRoute } from './auth/PrivateRoute';
+import SessionVaultProvider from './session-vault/SessionVaultProvider';
 import AuthProvider from './auth/AuthProvider';
 import TeaProvider from './tea/TeaProvider';
 
 import Tabs from './Tabs';
 import LoginPage from './login/LoginPage';
+import UnlockPage from './session-vault/UnlockPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -35,27 +37,32 @@ setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <AuthProvider>
-      <SplashContainer>
-        <IonReactRouter>
-          <IonRouterOutlet>
-            <Route exact path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/tabs">
-              <PrivateRoute>
-                <TeaProvider>
-                  <Tabs />
-                </TeaProvider>
-              </PrivateRoute>
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/tabs" />
-            </Route>
-          </IonRouterOutlet>
-        </IonReactRouter>
-      </SplashContainer>
-    </AuthProvider>
+    <SplashContainer>
+      <IonReactRouter>
+        <SessionVaultProvider>
+          <AuthProvider>
+            <IonRouterOutlet>
+              <Route exact path="/unlock">
+                <UnlockPage />
+              </Route>
+              <Route exact path="/login">
+                <LoginPage />
+              </Route>
+              <Route path="/tabs">
+                <PrivateRoute>
+                  <TeaProvider>
+                    <Tabs />
+                  </TeaProvider>
+                </PrivateRoute>
+              </Route>
+              <Route exact path="/">
+                <Redirect to="/tabs" />
+              </Route>
+            </IonRouterOutlet>
+          </AuthProvider>
+        </SessionVaultProvider>
+      </IonReactRouter>
+    </SplashContainer>
   </IonApp>
 );
 

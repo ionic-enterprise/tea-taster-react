@@ -1,11 +1,11 @@
 import { vi, Mock } from 'vitest';
 import { User } from '../models';
 import { client } from './backend-api';
-import { clearSession, setSession } from './session-api';
+import { clearSession, setSession } from './session-vault-api';
 import { login, logout } from './auth-api';
 
 vi.mock('./backend-api');
-vi.mock('./session-api');
+vi.mock('./session-vault-api');
 
 describe('Auth API', () => {
   beforeEach(() => vi.clearAllMocks());

@@ -40,7 +40,7 @@ describe('useTastingNotes', () => {
 
   beforeEach(() => {
     initializeTestData();
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     (client.get as Mock).mockResolvedValue({ data: tastingNotes });
   });
 
