@@ -7,7 +7,8 @@ type Props = { children?: ReactNode };
 export const PrivateRoute = ({ children }: Props) => {
   const { isAuthenticated } = useAuth();
 
-  if (!isAuthenticated) return <Redirect to="/login" />;
-
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
   return <>{children}</>;
 };
