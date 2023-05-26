@@ -18,7 +18,7 @@ const UnlockPage: React.FC = () => {
       await getSession();
       history.replace('/');
     } catch (err) {
-      console.log(err);
+      // Handle or log the error, or remove the try-catch block entirely
     }
   };
 
