@@ -6,6 +6,7 @@ const config: CapacitorConfig = {
   appId: 'io.ionic.teataster',
   appName: 'Tea Tasting Notes',
   webDir: 'dist',
+  bundledWebRuntime: false,
   plugins: {
     SplashScreen: {
       launchAutoHide: false,

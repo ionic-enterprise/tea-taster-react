@@ -1,5 +1,5 @@
 import { client } from './backend-api';
-import { clearSession, setSession } from './session-vault-api';
+import { clearSession, setSession } from './session-api';
 
 const login = async (email: string, password: string): Promise<boolean> => {
   const { data } = await client.post('/login', { username: email, password });

@@ -1,5 +1,5 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
-import { getSession } from './session-vault-api';
+import { getSession } from './session-api';
 
 const baseURL = 'https://cs-demo-api.herokuapp.com';
 
