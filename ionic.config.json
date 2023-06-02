@@ -1,0 +1,7 @@
+{
+  "name": "tea-taster",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
