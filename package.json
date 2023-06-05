@@ -27,6 +27,7 @@
     "@capacitor/keyboard": "5.0.2",
     "@capacitor/splash-screen": "~5.0.2",
     "@capacitor/status-bar": "5.0.2",
+    "@hookform/resolvers": "~3.1.0",
     "@ionic/react": "^7.0.0",
     "@ionic/react-router": "^7.0.0",
     "@types/react-router": "^5.1.20",
@@ -34,8 +35,10 @@
     "ionicons": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "~7.44.3",
     "react-router": "^5.3.4",
-    "react-router-dom": "^5.3.4"
+    "react-router-dom": "^5.3.4",
+    "yup": "~1.2.0"
   },
   "devDependencies": {
     "@capacitor/assets": "~2.0.4",
