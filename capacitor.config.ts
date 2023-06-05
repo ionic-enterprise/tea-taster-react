@@ -1,3 +1,5 @@
+/// <reference types="@capacitor/splash-screen" />
+
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
@@ -6,6 +8,11 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   server: {
     androidScheme: 'https',
+  },
+  plugins: {
+    SplashScreen: {
+      launchAutoHide: false,
+    },
   },
 };
 
