@@ -1,13 +1,79 @@
-import { vi } from 'vitest';
+import { Mock, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import TeaListPage, { teaData } from './TeaListPage';
+import TeaListPage from './TeaListPage';
 import { logout } from '../../utils/auth';
 import { useHistory } from 'react-router-dom';
+import { useTea } from '../../providers/TeaProvider';
 
 vi.mock('react-router-dom');
 vi.mock('../../utils/auth');
+vi.mock('../../providers/TeaProvider');
 
 describe('<TeaListPage />', () => {
+  beforeEach(() => {
+    (useTea as Mock).mockReturnValue({
+      teas: [
+        {
+          id: 1,
+          name: 'Green',
+          image: '/assets/images/green.jpg',
+          description:
+            'Green teas have the oxidation process stopped very early on, leaving them with a very subtle flavor and ' +
+            'complex undertones. These teas should be steeped at lower temperatures for shorter periods of time.',
+        },
+        {
+          id: 2,
+          name: 'Black',
+          image: '/assets/images/black.jpg',
+          description:
+            'A fully oxidized tea, black teas have a dark color and a full robust and pronounced flavor. Black teas tend ' +
+            'to have a higher caffeine content than other teas.',
+        },
+        {
+          id: 3,
+          name: 'Herbal',
+          image: '/assets/images/herbal.jpg',
+          description:
+            'Herbal infusions are not actually "tea" but are more accurately characterized as infused beverages ' +
+            'consisting of various dried herbs, spices, and fruits.',
+        },
+        {
+          id: 4,
+          name: 'Oolong',
+          image: '/assets/images/oolong.jpg',
+          description:
+            'Oolong teas are partially oxidized, giving them a flavor that is not as robust as black teas but also ' +
+            'not as subtle as green teas. Oolong teas often have a flowery fragrance.',
+        },
+        {
+          id: 5,
+          name: 'Dark',
+          image: '/assets/images/dark.jpg',
+          description:
+            'From the Hunan and Sichuan provinces of China, dark teas are flavorful aged probiotic teas that steeps ' +
+            'up very smooth with slightly sweet notes.',
+        },
+        {
+          id: 6,
+          name: 'Puer',
+          image: '/assets/images/puer.jpg',
+          description:
+            'An aged black tea from china. Puer teas have a strong rich flavor that could be described as "woody" or "peaty."',
+        },
+        {
+          id: 7,
+          name: 'White',
+          image: '/assets/images/white.jpg',
+          description:
+            'White tea is produced using very young shoots with no oxidation process. White tea has an extremely ' +
+            'delicate flavor that is sweet and fragrant. White tea should be steeped at lower temperatures for ' +
+            'short periods of time.',
+        },
+      ],
+    });
+    vi.clearAllMocks();
+  });
+
   it('renders consistently', () => {
     const { asFragment } = render(<TeaListPage />);
     expect(asFragment()).toMatchSnapshot();
@@ -45,7 +111,7 @@ describe('<TeaListPage />', () => {
       const cols = baseElement.querySelectorAll('ion-col');
       cols.forEach((c, idx) => {
         const title = c.querySelector('ion-card ion-card-header ion-card-title');
-        expect(title).toHaveTextContent(teaData[idx].name);
+        expect(title).toHaveTextContent(useTea().teas[idx].name);
       });
     });
 
@@ -54,7 +120,7 @@ describe('<TeaListPage />', () => {
       const cols = baseElement.querySelectorAll('ion-col');
       cols.forEach((c, idx) => {
         const title = c.querySelector('ion-card ion-card-content');
-        expect(title).toHaveTextContent(teaData[idx].description);
+        expect(title).toHaveTextContent(useTea().teas[idx].description);
       });
     });
   });

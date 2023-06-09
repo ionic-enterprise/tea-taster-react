@@ -4,6 +4,8 @@ import { IonReactRouter } from '@ionic/react-router';
 
 import SplashContainer from './components/splash/SplashContainer';
 import AuthProvider from './providers/AuthProvider';
+import TeaProvider from './providers/TeaProvider';
+
 import { PrivateRoute } from './routes/PrivateRoute';
 
 import TeaListPage from './pages/tea/TeaListPage';
@@ -41,7 +43,9 @@ const App: React.FC = () => (
             </Route>
             <Route exact path="/tea">
               <PrivateRoute>
-                <TeaListPage />
+                <TeaProvider>
+                  <TeaListPage />
+                </TeaProvider>
               </PrivateRoute>
             </Route>
             <Route exact path="/">
