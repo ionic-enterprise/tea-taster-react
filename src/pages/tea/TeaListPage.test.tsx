@@ -1,5 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import TeaListPage, { teaData } from './TeaListPage';
+import { logout } from '../../utils/auth';
+import { useHistory } from 'react-router-dom';
+
+vi.mock('react-router-dom');
+vi.mock('../../utils/auth');
 
 describe('<TeaListPage />', () => {
   it('renders consistently', () => {
@@ -50,6 +56,24 @@ describe('<TeaListPage />', () => {
         const title = c.querySelector('ion-card ion-card-content');
         expect(title).toHaveTextContent(teaData[idx].description);
       });
+    });
+  });
+
+  describe('sign out button', () => {
+    it('performs a logout when clicked', async () => {
+      render(<TeaListPage />);
+      const button = screen.getByTestId('logout-button');
+      fireEvent.click(button);
+      await waitFor(() => expect(logout).toHaveBeenCalledTimes(1));
+    });
+
+    it('navigates to the login page', async () => {
+      const history = useHistory();
+      render(<TeaListPage />);
+      const button = screen.getByTestId('logout-button');
+      fireEvent.click(button);
+      await waitFor(() => expect(history.replace).toHaveBeenCalledTimes(1));
+      expect(history.replace).toHaveBeenCalledWith('/login');
     });
   });
 });

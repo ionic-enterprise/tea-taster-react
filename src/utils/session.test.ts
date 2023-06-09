@@ -1,7 +1,13 @@
 import { Mock, vi } from 'vitest';
 import { Preferences } from '@capacitor/preferences';
 import { Session } from '../models';
-import { clearSession, getSession, setSession } from './session';
+import {
+  clearSession,
+  getSession,
+  registerSessionChangeCallback,
+  setSession,
+  unregisterSessionChangeCallback,
+} from './session';
 
 vi.mock('@capacitor/preferences');
 
@@ -33,6 +39,27 @@ describe('Session Utilities', () => {
       expect(Preferences.set).toHaveBeenCalledTimes(1);
       expect(Preferences.set).toHaveBeenCalledWith({ key: 'session', value: JSON.stringify(testSession) });
     });
+
+    describe('session change callback', () => {
+      let mockCallback: any;
+
+      beforeEach(() => {
+        mockCallback = vi.fn();
+        unregisterSessionChangeCallback();
+      });
+
+      it('passes the session to the callback if a callback is defined', async () => {
+        registerSessionChangeCallback(mockCallback);
+        await setSession(testSession);
+        expect(mockCallback).toHaveBeenCalledTimes(1);
+        expect(mockCallback).toHaveBeenCalledWith(testSession);
+      });
+
+      it('does not call the callback if it is undefined', async () => {
+        await setSession(testSession);
+        expect(mockCallback).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe('clearSession', () => {
@@ -47,6 +74,27 @@ describe('Session Utilities', () => {
       await clearSession();
       expect(Preferences.remove).toHaveBeenCalledTimes(1);
       expect(Preferences.remove).toHaveBeenCalledWith({ key: 'session' });
+    });
+
+    describe('session change callback', () => {
+      let mockCallback: any;
+
+      beforeEach(() => {
+        mockCallback = vi.fn();
+        unregisterSessionChangeCallback();
+      });
+
+      it('passes the session to the callback if a callback is defined', async () => {
+        registerSessionChangeCallback(mockCallback);
+        await clearSession();
+        expect(mockCallback).toHaveBeenCalledTimes(1);
+        expect(mockCallback).toHaveBeenCalledWith(undefined);
+      });
+
+      it('does not call the callback if it is undefined', async () => {
+        await clearSession();
+        expect(mockCallback).not.toHaveBeenCalled();
+      });
     });
   });
 

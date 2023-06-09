@@ -1,0 +1,5 @@
+.login-page .invalid-error-message {
+  font-size: x-large;
+  color: var(--ion-color-danger);
+  text-align: center;
+}

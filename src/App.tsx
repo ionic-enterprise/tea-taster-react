@@ -3,6 +3,8 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
 import SplashContainer from './components/splash/SplashContainer';
+import AuthProvider from './providers/AuthProvider';
+import { PrivateRoute } from './routes/PrivateRoute';
 
 import TeaListPage from './pages/tea/TeaListPage';
 import LoginPage from './pages/login/LoginPage';
@@ -30,21 +32,25 @@ setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <SplashContainer>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route exact path="/login">
-            <LoginPage />
-          </Route>
-          <Route exact path="/tea">
-            <TeaListPage />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tea" />
-          </Route>
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </SplashContainer>
+    <AuthProvider>
+      <SplashContainer>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route exact path="/login">
+              <LoginPage />
+            </Route>
+            <Route exact path="/tea">
+              <PrivateRoute>
+                <TeaListPage />
+              </PrivateRoute>
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/tea" />
+            </Route>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </SplashContainer>
+    </AuthProvider>
   </IonApp>
 );
 
