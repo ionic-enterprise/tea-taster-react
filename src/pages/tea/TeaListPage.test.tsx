@@ -85,6 +85,15 @@ describe('<TeaListPage />', () => {
     expect(titleElements).toHaveLength(2);
   });
 
+  it('navigates to the details page when a tea card is clicked', async () => {
+    const history = useHistory();
+    const { baseElement } = render(<TeaListPage />);
+    const cards = baseElement.querySelectorAll('ion-card');
+    fireEvent.click(cards[3]);
+    await waitFor(() => expect(history.push).toHaveBeenCalledTimes(1));
+    expect(history.push).toHaveBeenCalledWith('/tea/4');
+  });
+
   describe('with seven teas', () => {
     it('displays two rows', () => {
       const { baseElement } = render(<TeaListPage />);

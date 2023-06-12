@@ -10,6 +10,7 @@ import { PrivateRoute } from './routes/PrivateRoute';
 
 import TeaListPage from './pages/tea/TeaListPage';
 import LoginPage from './pages/login/LoginPage';
+import TeaDetailsPage from './pages/tea-details/TeaDetailsPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -45,6 +46,13 @@ const App: React.FC = () => (
               <PrivateRoute>
                 <TeaProvider>
                   <TeaListPage />
+                </TeaProvider>
+              </PrivateRoute>
+            </Route>
+            <Route exact path="/tea/:id">
+              <PrivateRoute>
+                <TeaProvider>
+                  <TeaDetailsPage />
                 </TeaProvider>
               </PrivateRoute>
             </Route>
