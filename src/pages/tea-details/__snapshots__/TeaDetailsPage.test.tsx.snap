@@ -12,7 +12,7 @@ exports[`<TeaDetailsPage /> > renders consistently 1`] = `
           slot="start"
         >
           <ion-back-button
-            default-href="/tea"
+            default-href="/tabs/tea"
           />
         </ion-buttons>
         <ion-title>

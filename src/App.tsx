@@ -7,10 +7,8 @@ import AuthProvider from './providers/AuthProvider';
 import TeaProvider from './providers/TeaProvider';
 
 import { PrivateRoute } from './routes/PrivateRoute';
-
-import TeaListPage from './pages/tea/TeaListPage';
+import Tabs from './routes/Tabs';
 import LoginPage from './pages/login/LoginPage';
-import TeaDetailsPage from './pages/tea-details/TeaDetailsPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -42,22 +40,15 @@ const App: React.FC = () => (
             <Route exact path="/login">
               <LoginPage />
             </Route>
-            <Route exact path="/tea">
+            <Route path="/tabs">
               <PrivateRoute>
                 <TeaProvider>
-                  <TeaListPage />
-                </TeaProvider>
-              </PrivateRoute>
-            </Route>
-            <Route exact path="/tea/:id">
-              <PrivateRoute>
-                <TeaProvider>
-                  <TeaDetailsPage />
+                  <Tabs />
                 </TeaProvider>
               </PrivateRoute>
             </Route>
             <Route exact path="/">
-              <Redirect to="/tea" />
+              <Redirect to="/tabs" />
             </Route>
           </IonRouterOutlet>
         </IonReactRouter>

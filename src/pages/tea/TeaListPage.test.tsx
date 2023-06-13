@@ -98,7 +98,7 @@ describe('<TeaListPage />', () => {
     const cards = baseElement.querySelectorAll('ion-card');
     fireEvent.click(cards[3]);
     await waitFor(() => expect(history.push).toHaveBeenCalledTimes(1));
-    expect(history.push).toHaveBeenCalledWith('/tea/4');
+    expect(history.push).toHaveBeenCalledWith('/tabs/tea/4');
   });
 
   describe('with seven teas', () => {
