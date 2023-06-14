@@ -44,7 +44,7 @@ const TeaListPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonTitle>Tea</IonTitle>
           <IonButtons slot="end">
@@ -54,7 +54,7 @@ const TeaListPage: React.FC = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen className="main-content">
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Tea</IonTitle>

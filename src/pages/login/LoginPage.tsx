@@ -57,7 +57,7 @@ const LoginPage: React.FC = () => {
           <IonTitle>Login</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen className="login-page">
+      <IonContent fullscreen className="login-page main-content">
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Login</IonTitle>
@@ -106,7 +106,7 @@ const LoginPage: React.FC = () => {
         {showError && <div className="invalid-error-message">Invalid email and/or password</div>}
       </IonContent>
       <IonFooter>
-        <IonToolbar>
+        <IonToolbar color="secondary">
           <IonButton expand="full" onClick={handleSubmit((data) => handleLogin(data))} disabled={!isValid}>
             Sign In
             <IonIcon slot="end" icon={logInOutline} />

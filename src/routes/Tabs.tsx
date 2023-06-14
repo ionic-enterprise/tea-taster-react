@@ -28,7 +28,7 @@ const Tabs: React.FC = () => {
           <Redirect to={`${url}/tea`} />
         </Route>
       </IonRouterOutlet>
-      <IonTabBar slot="bottom">
+      <IonTabBar color="tertiary" slot="bottom">
         <IonTabButton tab="tea" href={`${url}/tea`}>
           <IonIcon icon={leaf} />
           <IonLabel>Tea</IonLabel>
