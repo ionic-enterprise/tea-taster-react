@@ -9,13 +9,71 @@ exports[`<AboutPage /> > renders consistently 1`] = `
       <!---->
       <ion-toolbar>
         <ion-title>
-          About Page
+          About Tea Taster
         </ion-title>
+        <ion-buttons
+          slot="end"
+        >
+          <ion-button
+            data-testid="logout-button"
+          >
+            <ion-icon
+              icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><path d='M304 336v40a40 40 0 01-40 40H104a40 40 0 01-40-40V136a40 40 0 0140-40h152c22.09 0 48 17.91 48 40v40M368 336l80-80-80-80M176 256h256' stroke-linecap='round' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+              slot="icon-only"
+            />
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content
-      class="main-content"
-    />
+      class="ion-text-center ion-padding main-content"
+    >
+      <ion-list>
+        <ion-list-header>
+          About
+        </ion-list-header>
+        <ion-item>
+          <ion-label>
+            Name
+          </ion-label>
+          <ion-note
+            slot="end"
+          >
+            tea-taster
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Description
+          </ion-label>
+          <ion-note
+            slot="end"
+          >
+            Tea Tasting Notes
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Version
+          </ion-label>
+          <ion-note
+            slot="end"
+          >
+            1.0.0
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Author
+          </ion-label>
+          <ion-note
+            slot="end"
+          >
+            Ionic
+          </ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-content>
   </div>
 </DocumentFragment>
 `;
