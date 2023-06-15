@@ -11,6 +11,7 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  useIonAlert,
   useIonModal,
 } from '@ionic/react';
 import { add, create, trash } from 'ionicons/icons';
@@ -25,6 +26,7 @@ const TastingNotesPage: React.FC = () => {
   const [note, setNote] = useState<TastingNote | undefined>(undefined);
   const { teas } = useTea();
   const [present, dismiss] = useIonModal(TastingNoteEditor, { onDismiss: () => refresh().then(dismiss), teas, note });
+  const [presentAlert] = useIonAlert();
 
   useEffect(() => {
     refresh();
@@ -38,6 +40,23 @@ const TastingNotesPage: React.FC = () => {
   const handleUpdateNote = (note: TastingNote) => {
     setNote(note);
     present();
+  };
+
+  const handleRemoveNote = async (note: TastingNote) => {
+    await presentAlert({
+      message: 'Are you sure you want to remove this note?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+        },
+        {
+          text: 'Yes, remove it',
+          role: 'confirm',
+          handler: async () => await remove(note),
+        },
+      ],
+    });
   };
 
   return (
@@ -75,7 +94,12 @@ const TastingNotesPage: React.FC = () => {
                 >
                   <IonIcon icon={create} />
                 </IonButton>
-                <IonButton slot="end" fill="clear" data-testid="delete-note-button" onClick={() => remove(note)}>
+                <IonButton
+                  slot="end"
+                  fill="clear"
+                  data-testid="delete-note-button"
+                  onClick={() => handleRemoveNote(note)}
+                >
                   <IonIcon icon={trash} />
                 </IonButton>
               </IonItem>

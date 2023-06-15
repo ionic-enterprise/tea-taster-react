@@ -4,6 +4,8 @@ import TastingNotesPage from './TastingNotesPage';
 import { useTastingNotes } from '../../hooks/useTastingNotes';
 
 const present = vi.fn();
+const mockRemove = vi.fn();
+
 vi.mock('@ionic/react', async (getOriginal) => {
   const original: any = await getOriginal();
   return { ...original, useIonModal: vi.fn(() => [present, vi.fn()]) };
@@ -41,7 +43,7 @@ describe('<TastingNotesPage />', () => {
         },
       ],
       refresh: vi.fn(),
-      remove: vi.fn(),
+      remove: mockRemove,
     });
     vi.clearAllMocks();
   });
@@ -94,11 +96,38 @@ describe('<TastingNotesPage />', () => {
   });
 
   describe('deleting a note', () => {
-    it('removes the tasting note', async () => {
-      const { remove } = useTastingNotes();
+    it('launches a confirmation alert', async () => {
       render(<TastingNotesPage />);
-      fireEvent.click(screen.getAllByTestId('delete-note-button')[0]);
-      await waitFor(() => expect(remove).toHaveBeenCalledTimes(1));
+      await waitFor(() => fireEvent.click(screen.getAllByTestId('delete-note-button')[0]));
+      await waitFor(() => expect(screen.getByRole('alertdialog')).toBeInTheDocument());
+    });
+
+    describe('cancelling the alert', () => {
+      it('does not remove a note', async () => {
+        const { remove } = useTastingNotes();
+        const { baseElement } = render(<TastingNotesPage />);
+        await waitFor(() => fireEvent.click(screen.getAllByTestId('delete-note-button')[0]));
+        await waitFor(() => fireEvent.click(baseElement.querySelector('.alert-button-role-cancel')!));
+        await waitFor(() => expect(remove).not.toBeCalled());
+      });
+    });
+
+    describe('confirming the alert', () => {
+      it('removes a note from the list', async () => {
+        const { remove } = useTastingNotes();
+        const { baseElement } = render(<TastingNotesPage />);
+        await waitFor(() => fireEvent.click(screen.getAllByTestId('delete-note-button')[0]));
+        await waitFor(() => fireEvent.click(baseElement.querySelector('.alert-button-role-confirm')!));
+        await waitFor(() => expect(remove).toHaveBeenCalledTimes(1));
+        expect(remove).toHaveBeenCalledWith({
+          id: 42,
+          brand: 'Lipton',
+          name: 'Green Tea',
+          teaCategoryId: 3,
+          rating: 3,
+          notes: 'A basic green tea, very passable but nothing special',
+        });
+      });
     });
   });
 });
