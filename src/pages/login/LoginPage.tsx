@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import {
   IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
   IonContent,
   IonFooter,
   IonHeader,
@@ -9,6 +14,7 @@ import {
   IonItem,
   IonList,
   IonPage,
+  IonToast,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
@@ -30,7 +36,7 @@ const validationSchema = yup.object({
 
 const LoginPage: React.FC = () => {
   const history = useHistory();
-  const [showError, setShowError] = useState<boolean>(false);
+  const [loginFailed, setLoginFailed] = useState<boolean>(false);
   const {
     handleSubmit,
     control,
@@ -46,26 +52,20 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = async (data: LoginInputs) => {
     const success = await login(data.email, data.password);
-    setShowError(!success);
+    setLoginFailed(!success);
     success && history.replace('/');
   };
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Login</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen className="login-page main-content">
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Login</IonTitle>
-          </IonToolbar>
-        </IonHeader>
         <form>
-          <IonList lines="none">
-            <IonItem>
+          <IonCard>
+            <IonCardHeader>
+              <IonCardTitle>Login</IonCardTitle>
+              <IonCardSubtitle>Welcome to Tea Taster</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
               <Controller
                 name="email"
                 control={control}
@@ -82,8 +82,6 @@ const LoginPage: React.FC = () => {
                   />
                 )}
               />
-            </IonItem>
-            <IonItem>
               <Controller
                 name="password"
                 control={control}
@@ -100,19 +98,29 @@ const LoginPage: React.FC = () => {
                   />
                 )}
               />
-            </IonItem>
-          </IonList>
+              <IonButton expand="full" onClick={handleSubmit((data) => handleLogin(data))} disabled={!isValid}>
+                Sign In
+                <IonIcon slot="end" icon={logInOutline} />
+              </IonButton>
+            </IonCardContent>
+          </IonCard>
         </form>
-        {showError && <div className="invalid-error-message">Invalid email and/or password</div>}
+        <IonToast
+          data-testid="error-toast"
+          isOpen={loginFailed}
+          position="bottom"
+          message="Invalid email and/or password"
+          duration={3000}
+          onDidDismiss={() => setLoginFailed(false)}
+          buttons={[
+            {
+              text: 'Dismiss',
+              role: 'cancel',
+              handler: () => setLoginFailed(false),
+            },
+          ]}
+        />
       </IonContent>
-      <IonFooter>
-        <IonToolbar color="secondary">
-          <IonButton expand="full" onClick={handleSubmit((data) => handleLogin(data))} disabled={!isValid}>
-            Sign In
-            <IonIcon slot="end" icon={logInOutline} />
-          </IonButton>
-        </IonToolbar>
-      </IonFooter>
     </IonPage>
   );
 };

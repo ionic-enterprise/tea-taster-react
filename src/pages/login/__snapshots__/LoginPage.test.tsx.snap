@@ -5,70 +5,48 @@ exports[`<LoginPage /> > renders consistently 1`] = `
   <div
     class="ion-page"
   >
-    <ion-header>
-      <!---->
-      <ion-toolbar>
-        <ion-title>
-          Login
-        </ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content
       class="login-page main-content"
       fullscreen="true"
     >
-      <ion-header
-        collapse="condense"
-      >
-        <!---->
-        <ion-toolbar>
-          <ion-title
-            size="large"
-          >
-            Login
-          </ion-title>
-        </ion-toolbar>
-      </ion-header>
       <form>
-        <ion-list
-          lines="none"
-        >
-          <ion-item>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              Login
+            </ion-card-title>
+            <ion-card-subtitle>
+              Welcome to Tea Taster
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
             <ion-input
               class="ion-valid ion-untouched ion-pristine"
               label="Email Address"
               label-placement="floating"
               type="email"
             />
-          </ion-item>
-          <ion-item>
             <ion-input
               class="ion-valid ion-untouched ion-pristine"
               label="Password"
               label-placement="floating"
               type="password"
             />
-          </ion-item>
-        </ion-list>
+            <ion-button
+              disabled="true"
+              expand="full"
+            >
+              Sign In
+              <ion-icon
+                icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><path d='M192 176v-40a40 40 0 0140-40h160a40 40 0 0140 40v240a40 40 0 01-40 40H240c-22.09 0-48-17.91-48-40v-40' stroke-linecap='round' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/><path stroke-linecap='round' stroke-linejoin='round' d='M288 336l80-80-80-80M80 256h272' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
+                slot="end"
+              />
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
       </form>
+      <template />
     </ion-content>
-    <ion-footer>
-      <!---->
-      <ion-toolbar
-        color="secondary"
-      >
-        <ion-button
-          disabled="true"
-          expand="full"
-        >
-          Sign In
-          <ion-icon
-            icon="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><path d='M192 176v-40a40 40 0 0140-40h160a40 40 0 0140 40v240a40 40 0 01-40 40H240c-22.09 0-48-17.91-48-40v-40' stroke-linecap='round' stroke-linejoin='round' class='ionicon-fill-none ionicon-stroke-width'/><path stroke-linecap='round' stroke-linejoin='round' d='M288 336l80-80-80-80M80 256h272' class='ionicon-fill-none ionicon-stroke-width'/></svg>"
-            slot="end"
-          />
-        </ion-button>
-      </ion-toolbar>
-    </ion-footer>
   </div>
 </DocumentFragment>
 `;

@@ -18,7 +18,7 @@ describe('<LoginPage />', () => {
   it('displays the title', () => {
     render(<LoginPage />);
     const titleElements = screen.getAllByText('Login');
-    expect(titleElements).toHaveLength(2);
+    expect(titleElements).toHaveLength(1);
   });
 
   describe('sign in button', () => {
@@ -41,7 +41,7 @@ describe('<LoginPage />', () => {
     });
 
     describe('clicking the sign in button', () => {
-      const errorMessage = 'Invalid email and/or password';
+      let toast: HTMLIonToastElement;
 
       beforeEach(async () => {
         render(<LoginPage />);
@@ -49,6 +49,7 @@ describe('<LoginPage />', () => {
         const password = await waitFor(() => screen.getByLabelText('Password'));
         await waitFor(() => fireEvent.input(email, { target: { value: 'test@test.com' } }));
         await waitFor(() => fireEvent.input(password, { target: { value: 'password' } }));
+        toast = await waitFor(() => screen.getByTestId('error-toast') as HTMLIonToastElement);
       });
 
       it('performs the login', async () => {
@@ -64,7 +65,7 @@ describe('<LoginPage />', () => {
         it('does not show an error', async () => {
           const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
           fireEvent.click(button);
-          await waitFor(() => expect(screen.queryByText(errorMessage)).not.toBeInTheDocument());
+          await waitFor(() => expect(Array.from(toast.classList)).toContain('overlay-hidden'));
         });
 
         it('navigates to the root page', async () => {
@@ -82,7 +83,7 @@ describe('<LoginPage />', () => {
         it('shows an error', async () => {
           const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
           fireEvent.click(button);
-          await waitFor(() => expect(screen.queryByText(errorMessage)).toBeInTheDocument());
+          await waitFor(() => expect(Array.from(toast.classList)).not.toContain('overlay-hidden'));
         });
 
         it('does not navigate', async () => {
