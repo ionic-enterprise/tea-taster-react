@@ -3,6 +3,7 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
@@ -12,7 +13,9 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
+  isPlatform,
 } from '@ionic/react';
+import { Share } from '@capacitor/share';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'Yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,6 +23,7 @@ import { TastingNote, Tea } from '../../models';
 import { Rating } from '../rating/Rating';
 import { useTastingNotes } from '../../hooks/useTastingNotes';
 import { useEffect } from 'react';
+import { shareOutline } from 'ionicons/icons';
 
 type Props = { onDismiss: () => void; teas: Tea[]; note?: TastingNote };
 
@@ -38,11 +42,15 @@ export const TastingNoteEditor: React.FC<Props> = ({ onDismiss, teas, note }) =>
     control,
     formState: { errors, isValid, touchedFields, dirtyFields },
     reset,
+    watch,
+    getValues,
   } = useForm<TastingNote>({
     mode: 'onTouched',
     resolver: yupResolver(validationSchema),
     defaultValues: note || undefined,
   });
+  const sharingIsAvailable = isPlatform('hybrid');
+  const allowShare = watch(['brand', 'name', 'rating']).every((el) => !!el);
 
   useEffect(() => {
     note && reset(note);
@@ -62,6 +70,16 @@ export const TastingNoteEditor: React.FC<Props> = ({ onDismiss, teas, note }) =>
     onDismiss();
   };
 
+  const share = async (): Promise<void> => {
+    const [brand, name, rating] = getValues(['brand', 'name', 'rating']);
+    await Share.share({
+      title: `${brand}: ${name}`,
+      text: `I gave ${brand}: ${name} ${rating} stars on the Tea Taster app`,
+      dialogTitle: 'Share your tasting note',
+      url: 'https://tea-taster-training.web.app',
+    });
+  };
+
   return (
     <>
       <IonHeader className="ion-text-center">
@@ -73,6 +91,11 @@ export const TastingNoteEditor: React.FC<Props> = ({ onDismiss, teas, note }) =>
             </IonButton>
           </IonButtons>
           <IonButtons slot="end">
+            {sharingIsAvailable && (
+              <IonButton data-testid="share-button" disabled={!allowShare} onClick={() => share()}>
+                <IonIcon slot="icon-only" icon={shareOutline} />
+              </IonButton>
+            )}
             <IonButton
               strong={true}
               data-testid="submit-button"

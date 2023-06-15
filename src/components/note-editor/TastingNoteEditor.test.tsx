@@ -1,10 +1,17 @@
-import { vi } from 'vitest';
+import { Mock, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { isPlatform } from '@ionic/react';
+import { Share } from '@capacitor/share';
 import { TastingNoteEditor } from './TastingNoteEditor';
 import { useTastingNotes } from '../../hooks/useTastingNotes';
 import { TastingNote } from '../../models';
 
+vi.mock('@capacitor/share');
 vi.mock('../../hooks/useTastingNotes');
+vi.mock('@ionic/react', async (getOriginal) => {
+  const original: any = await getOriginal();
+  return { ...original, isPlatform: vi.fn() };
+});
 
 const props = {
   onDismiss: vi.fn(),
@@ -49,7 +56,10 @@ const note: TastingNote = {
 };
 
 describe('<TastingNoteEditor />', () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    (isPlatform as Mock).mockReturnValue(true);
+    vi.clearAllMocks();
+  });
 
   it('renders without crashing', () => {
     const { baseElement } = render(<TastingNoteEditor {...props} />);
@@ -196,6 +206,55 @@ describe('<TastingNoteEditor />', () => {
       const button = screen.getByTestId('cancel-button');
       fireEvent.click(button);
       await waitFor(() => expect(props.onDismiss).toHaveBeenCalledTimes(1));
+    });
+  });
+
+  describe('share button', () => {
+    describe('in a web context', () => {
+      beforeEach(() => (isPlatform as Mock).mockReturnValue(false));
+
+      it('does not exist', () => {
+        render(<TastingNoteEditor {...props} />);
+        expect(screen.queryByTestId('share-button')).not.toBeInTheDocument();
+      });
+    });
+
+    describe('in a mobile context', () => {
+      it('exists', () => {
+        render(<TastingNoteEditor {...props} />);
+        expect(screen.queryByTestId('share-button')).toBeInTheDocument();
+      });
+
+      it('is disabled until enough information is entered', async () => {
+        render(<TastingNoteEditor {...props} />);
+        const button = screen.getByTestId('share-button') as HTMLIonButtonElement;
+        await waitFor(() => expect(button.disabled).toBeTruthy());
+
+        await waitFor(() => fireEvent.input(screen.getByLabelText('Brand'), { target: { value: 'foobar' } }));
+        await waitFor(() => expect(button.disabled).toBeTruthy());
+
+        await waitFor(() => fireEvent.input(screen.getByLabelText('Name'), { target: { value: 'mytea' } }));
+        await waitFor(() => expect(button.disabled).toBeTruthy());
+
+        await waitFor(() => fireEvent.click(screen.getAllByTestId('outline')[2]));
+        await waitFor(() => expect(button.disabled).toBeFalsy());
+      });
+
+      it('calls the share plugin when pressed', async () => {
+        render(<TastingNoteEditor {...props} />);
+        const button = screen.getByTestId('share-button') as HTMLIonButtonElement;
+        await waitFor(() => fireEvent.input(screen.getByLabelText('Brand'), { target: { value: 'foobar' } }));
+        await waitFor(() => fireEvent.input(screen.getByLabelText('Name'), { target: { value: 'mytea' } }));
+        await waitFor(() => fireEvent.click(screen.getAllByTestId('outline')[2]));
+        fireEvent.click(button);
+        await waitFor(() => expect(Share.share).toHaveBeenCalledTimes(1));
+        expect(Share.share).toHaveBeenCalledWith({
+          title: 'foobar: mytea',
+          text: 'I gave foobar: mytea 3 stars on the Tea Taster app',
+          dialogTitle: 'Share your tasting note',
+          url: 'https://tea-taster-training.web.app',
+        });
+      });
     });
   });
 });

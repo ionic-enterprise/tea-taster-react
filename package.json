@@ -26,6 +26,7 @@
     "@capacitor/ios": "5.0.4",
     "@capacitor/keyboard": "5.0.2",
     "@capacitor/preferences": "~5.0.2",
+    "@capacitor/share": "~5.0.4",
     "@capacitor/splash-screen": "~5.0.2",
     "@capacitor/status-bar": "5.0.2",
     "@hookform/resolvers": "~3.1.0",
