@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import {
   IonButton,
   IonButtons,
@@ -8,25 +9,21 @@ import {
   IonLabel,
   IonList,
   IonListHeader,
+  IonModal,
   IonNote,
   IonPage,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import { useHistory } from 'react-router-dom';
-import { logout } from '../../utils/auth';
+import { settingsOutline } from 'ionicons/icons';
+import { PreferencesEditor } from '../../components/preferences/PreferencesEditor';
 import packageInfo from '../../../package.json';
-import { logOutOutline } from 'ionicons/icons';
 
 const { author, description, name, version } = packageInfo;
 
 const AboutPage: React.FC = () => {
-  const history = useHistory();
-
-  const handleLogout = async (): Promise<void> => {
-    await logout();
-    history.replace('/login');
-  };
+  const page = useRef(undefined);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <IonPage>
@@ -34,8 +31,8 @@ const AboutPage: React.FC = () => {
         <IonToolbar>
           <IonTitle>About Tea Taster</IonTitle>
           <IonButtons slot="end">
-            <IonButton data-testid="logout-button" onClick={() => handleLogout()}>
-              <IonIcon slot="icon-only" icon={logOutOutline} />
+            <IonButton data-testid="logout-button" onClick={() => setIsOpen(true)}>
+              <IonIcon slot="icon-only" icon={settingsOutline} />
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -60,6 +57,9 @@ const AboutPage: React.FC = () => {
             <IonNote slot="end">{author.name}</IonNote>
           </IonItem>
         </IonList>
+        <IonModal isOpen={isOpen} presentingElement={page.current}>
+          <PreferencesEditor onDismiss={() => setIsOpen(false)} />
+        </IonModal>
       </IonContent>
     </IonPage>
   );

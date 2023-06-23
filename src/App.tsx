@@ -9,6 +9,8 @@ import TeaProvider from './providers/TeaProvider';
 import { PrivateRoute } from './routes/PrivateRoute';
 import Tabs from './routes/Tabs';
 import LoginPage from './pages/login/LoginPage';
+import UnlockPage from './pages/unlock/UnlockPage';
+import StartPage from './pages/StartPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -29,15 +31,21 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/global.css';
+import { hideContentsInBackground, isHidingContentsInBackground } from './utils/device';
 
 setupIonicReact();
 
+isHidingContentsInBackground().then((hide) => hideContentsInBackground(hide));
+
 const App: React.FC = () => (
   <IonApp>
-    <AuthProvider>
-      <SplashContainer>
-        <IonReactRouter>
+    <IonReactRouter>
+      <AuthProvider>
+        <SplashContainer>
           <IonRouterOutlet>
+            <Route exact path="/unlock">
+              <UnlockPage />
+            </Route>
             <Route exact path="/login">
               <LoginPage />
             </Route>
@@ -49,12 +57,12 @@ const App: React.FC = () => (
               </PrivateRoute>
             </Route>
             <Route exact path="/">
-              <Redirect to="/tabs" />
+              <StartPage />
             </Route>
           </IonRouterOutlet>
-        </IonReactRouter>
-      </SplashContainer>
-    </AuthProvider>
+        </SplashContainer>
+      </AuthProvider>
+    </IonReactRouter>
   </IonApp>
 );
 
