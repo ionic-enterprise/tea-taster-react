@@ -1,7 +1,7 @@
 import { Mock, vi } from 'vitest';
 import { Preferences } from '@capacitor/preferences';
 import { VaultType, DeviceSecurityType } from '@ionic-enterprise/identity-vault';
-import { Session, UnlockMode, User } from '../models';
+import { UnlockMode } from '../models';
 import { createVault } from './vault-factory';
 
 import {
@@ -15,13 +15,17 @@ import {
   setUnlockMode,
   unregisterCallback,
 } from './session-vault';
+import { AuthResult } from '@ionic-enterprise/auth';
 
 vi.mock('@capacitor/preferences');
 
 describe('Session Utilities', () => {
   let mockVault: any;
-  const testUser: User = { id: 314159, firstName: 'Testy', lastName: 'McTest', email: 'test@test.com' };
-  const testSession: Session = { user: testUser, token: '123456789' };
+  const testSession = {
+    accessToken: 'test-access-token',
+    refreshToken: 'test-refresh-token',
+    idToken: 'test-id-token',
+  };
   const mockVaultOptions = {
     key: 'io.ionic.teatasterreact',
     type: VaultType.SecureStorage,
@@ -43,12 +47,12 @@ describe('Session Utilities', () => {
 
   describe('setSession', () => {
     it('sets the session', async () => {
-      await setSession(testSession);
+      await setSession(testSession as AuthResult);
       expect(await getSession()).toEqual(testSession);
     });
 
     it('stores the session in the Vault', async () => {
-      await setSession(testSession);
+      await setSession(testSession as AuthResult);
       expect(mockVault.setValue).toHaveBeenCalledTimes(1);
       expect(mockVault.setValue).toHaveBeenCalledWith('session', testSession);
     });
@@ -63,20 +67,20 @@ describe('Session Utilities', () => {
 
       it('passes the session to the callback if a callback is defined', async () => {
         registerCallback('onSessionChange', mockCallback);
-        await setSession(testSession);
+        await setSession(testSession as AuthResult);
         expect(mockCallback).toHaveBeenCalledTimes(1);
         expect(mockCallback).toHaveBeenCalledWith(testSession);
       });
 
       it('does not call the callback if it is undefined', async () => {
-        await setSession(testSession);
+        await setSession(testSession as AuthResult);
         expect(mockCallback).not.toHaveBeenCalled();
       });
     });
   });
 
   describe('clearSession', () => {
-    beforeEach(async () => await setSession(testSession));
+    beforeEach(async () => await setSession(testSession as AuthResult));
 
     it('clears the session', async () => {
       await clearSession();
@@ -137,7 +141,7 @@ describe('Session Utilities', () => {
     });
 
     it('caches the session set via setSession', async () => {
-      await setSession(testSession);
+      await setSession(testSession as AuthResult);
       expect(await getSession()).toEqual(testSession);
       expect(mockVault.getValue).not.toHaveBeenCalled();
     });
@@ -238,7 +242,7 @@ describe('Session Utilities', () => {
       mockCallback = vi.fn();
       unregisterCallback('onVaultLock');
       unregisterCallback('onSessionChange');
-      await setSession(testSession);
+      await setSession(testSession as AuthResult);
     });
 
     it('calls the onVaultLock callback', async () => {

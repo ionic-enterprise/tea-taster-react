@@ -1,19 +1,20 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { IonSpinner, useIonModal } from '@ionic/react';
+import { AuthResult } from '@ionic-enterprise/auth';
 import { useHistory } from 'react-router-dom';
-import { Session } from '../models';
 import { registerCallback, unregisterCallback } from '../utils/session-vault';
+import { setupAuthConnect } from '../utils/auth';
 import { PinDialog } from '../components/pin-dialog/PinDialog';
 
 type Props = { children?: ReactNode };
-type Context = { session?: Session };
+type Context = { session?: AuthResult };
 type CustomPasscodeCallback = (opts: { data: any; role?: string }) => void;
 
 let handlePasscodeRequest: CustomPasscodeCallback = () => {};
 const AuthContext = createContext<Context | undefined>(undefined);
 const AuthProvider = ({ children }: Props) => {
   const history = useHistory();
-  const [session, setSession] = useState<Session | undefined>(undefined);
+  const [session, setSession] = useState<AuthResult | undefined>(undefined);
   const [isSetup, setIsSetup] = useState<boolean>(false);
   const [isSetPasscodeMode, setIsSetPasscodeMode] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -33,14 +34,11 @@ const AuthProvider = ({ children }: Props) => {
   };
 
   useEffect(() => {
-    // Session initialization logic has been moved into src/pages/StartPage.tsx.
-    // `setIsSetup` is a hold-over from previous tags and left in preparation for
-    // the AuthConnect integration tag.
-    setIsSetup(true);
+    setupAuthConnect().then(() => setIsSetup(true));
   }, []);
 
   useEffect(() => {
-    registerCallback('onSessionChange', (s: Session | undefined) => setSession(s));
+    registerCallback('onSessionChange', (s: AuthResult | undefined) => setSession(s));
     registerCallback('onVaultLock', () => history.replace('/unlock'));
     registerCallback('onPasscodeRequested', (isSetPasscodeMode, onComplete) =>
       handlePasscodeRequested(isSetPasscodeMode, onComplete)

@@ -21,105 +21,25 @@ describe('<LoginPage />', () => {
     expect(titleElements).toHaveLength(1);
   });
 
-  describe('sign in button', () => {
-    it('starts disabled', async () => {
+  describe('clicking the sign in button', () => {
+    it('performs the login', async () => {
       render(<LoginPage />);
-      const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
-      expect(button.disabled).toBeTruthy();
+      const button = screen.getByTestId('signin-button') as HTMLIonButtonElement;
+      fireEvent.click(button);
+      await waitFor(() => expect(login).toHaveBeenCalledTimes(1));
     });
 
-    it('is enabled once valid data is entered', async () => {
-      render(<LoginPage />);
-      const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
-      const password = await waitFor(() => screen.getByLabelText('Password'));
-      const email = await waitFor(() => screen.getByLabelText('Email Address'));
-      expect(button.disabled).toBeTruthy();
-      await waitFor(() => fireEvent.input(email, { target: { value: 'test@test.com' } }));
-      expect(button.disabled).toBeTruthy();
-      await waitFor(() => fireEvent.input(password, { target: { value: 'password' } }));
-      expect(button.disabled).toBeFalsy();
-    });
+    describe('if the login succeeds', () => {
+      beforeEach(() => (login as Mock).mockResolvedValue(undefined));
 
-    describe('clicking the sign in button', () => {
-      let toast: HTMLIonToastElement;
-
-      beforeEach(async () => {
+      it('navigates to the root page', async () => {
+        const history = useHistory();
         render(<LoginPage />);
-        const email = await waitFor(() => screen.getByLabelText('Email Address'));
-        const password = await waitFor(() => screen.getByLabelText('Password'));
-        await waitFor(() => fireEvent.input(email, { target: { value: 'test@test.com' } }));
-        await waitFor(() => fireEvent.input(password, { target: { value: 'password' } }));
-        toast = await waitFor(() => screen.getByTestId('error-toast') as HTMLIonToastElement);
-      });
-
-      it('performs the login', async () => {
-        const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
+        const button = screen.getByTestId('signin-button') as HTMLIonButtonElement;
         fireEvent.click(button);
-        await waitFor(() => expect(login).toHaveBeenCalledTimes(1));
-        expect(login).toHaveBeenCalledWith('test@test.com', 'password');
+        await waitFor(() => expect(history.replace).toHaveBeenCalledTimes(1));
+        expect(history.replace).toHaveBeenCalledWith('/');
       });
-
-      describe('if the login succeeds', () => {
-        beforeEach(() => (login as Mock).mockResolvedValue(true));
-
-        it('does not show an error', async () => {
-          const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
-          fireEvent.click(button);
-          await waitFor(() => expect(Array.from(toast.classList)).toContain('overlay-hidden'));
-        });
-
-        it('navigates to the root page', async () => {
-          const history = useHistory();
-          const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
-          fireEvent.click(button);
-          await waitFor(() => expect(history.replace).toBeCalledTimes(1));
-          expect(history.replace).toHaveBeenCalledWith('/');
-        });
-      });
-
-      describe('if the login fails', () => {
-        beforeEach(() => (login as Mock).mockResolvedValue(false));
-
-        it('shows an error', async () => {
-          const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
-          fireEvent.click(button);
-          await waitFor(() => expect(Array.from(toast.classList)).not.toContain('overlay-hidden'));
-        });
-
-        it('does not navigate', async () => {
-          const history = useHistory();
-          const button = await waitFor(() => screen.getByText('Sign In') as HTMLIonButtonElement);
-          fireEvent.click(button);
-          await waitFor(() => expect(history.replace).not.toHaveBeenCalled());
-        });
-      });
-    });
-  });
-
-  describe('error messages', () => {
-    it('displays an error if the e-mail address is dirty and empty', async () => {
-      render(<LoginPage />);
-      const email = await waitFor(() => screen.getByLabelText('Email Address'));
-      await waitFor(() => fireEvent.input(email, { target: { value: 'test@test.com' } }));
-      await waitFor(() => fireEvent.blur(email));
-      await waitFor(() => fireEvent.input(email, { target: { value: '' } }));
-      await waitFor(() => expect(screen.getByText(/Email address is a required field/)).toBeInTheDocument());
-    });
-
-    it('displays an error if the email address has an invalid format', async () => {
-      render(<LoginPage />);
-      const email = await waitFor(() => screen.getByLabelText('Email Address'));
-      await waitFor(() => fireEvent.input(email, { target: { value: 'test' } }));
-      await waitFor(() => fireEvent.blur(email));
-      await waitFor(() => expect(screen.getByText(/Email address must be a valid email/)).toBeInTheDocument());
-    });
-
-    it('displays an error message if the password is dirty and empty', async () => {
-      render(<LoginPage />);
-      const password = await waitFor(() => screen.getByLabelText('Password'));
-      await waitFor(() => fireEvent.input(password, { target: { value: '' } }));
-      await waitFor(() => fireEvent.blur(password));
-      await waitFor(() => expect(screen.getByText(/Password is a required field/)).toBeInTheDocument());
     });
   });
 });

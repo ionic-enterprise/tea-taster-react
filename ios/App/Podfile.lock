@@ -18,6 +18,8 @@ PODS:
     - Capacitor
   - CordovaPlugins (5.0.4):
     - CapacitorCordova
+  - IonicEnterpriseAuth (5.0.2):
+    - Capacitor
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -30,6 +32,7 @@ DEPENDENCIES:
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
+  - "IonicEnterpriseAuth (from `../../node_modules/@ionic-enterprise/auth`)"
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -52,6 +55,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/status-bar"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
+  IonicEnterpriseAuth:
+    :path: "../../node_modules/@ionic-enterprise/auth"
 
 SPEC CHECKSUMS:
   Capacitor: d3d4463573438b9fa65326d1f3549da6f4c21634
@@ -64,7 +69,8 @@ SPEC CHECKSUMS:
   CapacitorSplashScreen: bd2a056394ba0b8807e7bb3e746424f67c426e03
   CapacitorStatusBar: 48f2899f6846cc7d8431b251ebfc58e1c10e3d58
   CordovaPlugins: 6b563e3308b51cf0759ffbe31980db7e1e99d86b
+  IonicEnterpriseAuth: 6177bb33d4bc22eb499a42d309b71778e5eee123
 
-PODFILE CHECKSUM: 9b44280200db34ec4ac830dfa4e350a242ac3d7f
+PODFILE CHECKSUM: f17c4cd06854aa571e7cbafe045de23600dcdb6f
 
 COCOAPODS: 1.12.1

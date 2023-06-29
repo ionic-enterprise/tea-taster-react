@@ -1,0 +1,49 @@
+:root {
+  --ion-color-auth0: #000;
+  --ion-color-auth0-rgb: 0, 0, 0;
+  --ion-color-auth0-contrast: #fff;
+  --ion-color-auth0-contrast-rgb: 255, 255, 255;
+  --ion-color-auth0-shade: #2222;
+  --ion-color-auth0-tint: #333;
+
+  --ion-color-aws: #ff9900;
+  --ion-color-aws-rgb: 255, 153, 0;
+  --ion-color-aws-contrast: #000000;
+  --ion-color-aws-contrast-rgb: 0, 0, 0;
+  --ion-color-aws-shade: #e08700;
+  --ion-color-aws-tint: #ffa31a;
+
+  --ion-color-azure: #007fff;
+  --ion-color-azure-rgb: 0, 127, 255;
+  --ion-color-azure-contrast: #ffffff;
+  --ion-color-azure-contrast-rgb: 255, 255, 255;
+  --ion-color-azure-shade: #0070e0;
+  --ion-color-azure-tint: #1a8cff;
+}
+
+.ion-color-auth0 {
+  --ion-color-base: var(--ion-color-auth0);
+  --ion-color-base-rgb: var(--ion-color-auth0-rgb);
+  --ion-color-contrast: var(--ion-color-auth0-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-auth0-contrast-rgb);
+  --ion-color-shade: var(--ion-color-auth0-shade);
+  --ion-color-tint: var(--ion-color-auth0-tint);
+}
+
+.ion-color-aws {
+  --ion-color-base: var(--ion-color-aws);
+  --ion-color-base-rgb: var(--ion-color-aws-rgb);
+  --ion-color-contrast: var(--ion-color-aws-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-aws-contrast-rgb);
+  --ion-color-shade: var(--ion-color-aws-shade);
+  --ion-color-tint: var(--ion-color-aws-tint);
+}
+
+.ion-color-azure {
+  --ion-color-base: var(--ion-color-azure);
+  --ion-color-base-rgb: var(--ion-color-azure-rgb);
+  --ion-color-contrast: var(--ion-color-azure-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-azure-contrast-rgb);
+  --ion-color-shade: var(--ion-color-azure-shade);
+  --ion-color-tint: var(--ion-color-azure-tint);
+}

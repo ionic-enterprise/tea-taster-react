@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { canUnlock, restoreSession } from '../utils/session-vault';
+import { canUnlock, restoreSession } from '../../utils/session-vault';
 
 const StartPage: React.FC = () => {
   const history = useHistory();

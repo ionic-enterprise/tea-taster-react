@@ -1,34 +1,39 @@
+.login-page .auth-button-area {
+  margin-top: 1em;
+  font-size: large;
+}
+
 @media (min-width: 0px) {
   .login-page ion-card {
-    margin-top: 25%;
+    margin-top: 45%;
     margin-left: 5%;
     margin-right: 5%;
   }
 }
 @media (min-width: 576px) {
   .login-page ion-card {
-    margin-top: 20%;
+    margin-top: 35%;
     margin-left: 10%;
     margin-right: 10%;
   }
 }
 @media (min-width: 768px) {
   .login-page ion-card {
-    margin-top: 10%;
+    margin-top: 30%;
     margin-left: 20%;
     margin-right: 20%;
   }
 }
 @media (min-width: 992px) {
   .login-page ion-card {
-    margin-top: 10%;
+    margin-top: 30%;
     margin-left: 25%;
     margin-right: 25%;
   }
 }
 @media (min-width: 1200px) {
   .login-page ion-card {
-    margin-top: 10%;
+    margin-top: 20%;
     margin-left: 30%;
     margin-right: 30%;
   }

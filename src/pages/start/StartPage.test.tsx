@@ -1,11 +1,11 @@
 import { Mock, vi } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import { useHistory } from 'react-router-dom';
-import { canUnlock } from '../utils/session-vault';
+import { canUnlock } from '../../utils/session-vault';
 import StartPage from './StartPage';
 
 vi.mock('react-router-dom');
-vi.mock('../utils/session-vault');
+vi.mock('../../utils/session-vault');
 
 describe('<StartPage />', () => {
   beforeEach(() => vi.clearAllMocks());

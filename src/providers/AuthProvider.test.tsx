@@ -1,21 +1,17 @@
 import { Mock, vi } from 'vitest';
-import { act, render, renderHook, waitFor } from '@testing-library/react';
-import { Session } from '../models';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import AuthProvider, { useAuth } from './AuthProvider';
-import { getSession, registerCallback } from '../utils/session-vault';
+import { registerCallback } from '../utils/session-vault';
 
 vi.mock('../utils/session-vault');
+vi.mock('../utils/auth');
 
 describe('<AuthProvider />', () => {
   const wrapper = ({ children }: any) => <AuthProvider>{children}</AuthProvider>;
-  const testSession: Session = {
-    user: {
-      id: 314159,
-      firstName: 'Testy',
-      lastName: 'McTest',
-      email: 'test@test.com',
-    },
-    token: '123456789',
+  const testSession = {
+    accessToken: 'test-access-token',
+    refreshToken: 'test-refresh-token',
+    idToken: 'test-id-token',
   };
 
   beforeEach(() => vi.clearAllMocks());

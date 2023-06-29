@@ -1,13 +1,14 @@
 import { Preferences } from '@capacitor/preferences';
 import { DeviceSecurityType, IdentityVaultConfig, VaultType } from '@ionic-enterprise/identity-vault';
+import { AuthResult } from '@ionic-enterprise/auth';
 import { createVault } from './vault-factory';
 import { provisionBiometricPermission } from './device';
-import { Session, UnlockMode } from '../models';
+import { UnlockMode } from '../models';
 
 type VaultUnlockType = Pick<IdentityVaultConfig, 'type' | 'deviceSecurityType'>;
 
 type CallbackMap = {
-  onSessionChange?: (session: Session | undefined) => void;
+  onSessionChange?: (session: AuthResult | undefined) => void;
   onVaultLock?: () => void;
   onPasscodeRequested?: (isPasscodeSetRequest: boolean, onComplete: (code: string) => void) => void;
 };
@@ -32,7 +33,7 @@ vault.onPasscodeRequested((isPasscodeSetRequest, onComplete) => {
   if (callbackMap.onPasscodeRequested) callbackMap.onPasscodeRequested(isPasscodeSetRequest, onComplete);
 });
 
-let session: Session | undefined;
+let session: AuthResult | undefined;
 const callbackMap: CallbackMap = {};
 
 const clearSession = async (): Promise<void> => {
@@ -42,18 +43,18 @@ const clearSession = async (): Promise<void> => {
   if (callbackMap.onSessionChange) callbackMap.onSessionChange(undefined);
 };
 
-const getSession = async (): Promise<Session | undefined> => {
-  if (!session) session = (await vault.getValue<Session>(keys.session)) || undefined;
+const getSession = async (): Promise<AuthResult | undefined> => {
+  if (!session) session = (await vault.getValue<AuthResult>(keys.session)) || undefined;
   return session;
 };
 
 const restoreSession = async () => {
-  const s = (await vault.getValue<Session>(keys.session)) || undefined;
+  const s = (await vault.getValue<AuthResult>(keys.session)) || undefined;
   session = s;
   if (callbackMap.onSessionChange) callbackMap.onSessionChange(session);
 };
 
-const setSession = async (s: Session): Promise<void> => {
+const setSession = async (s: AuthResult): Promise<void> => {
   session = s;
   await vault.setValue(keys.session, s);
   if (callbackMap.onSessionChange) callbackMap.onSessionChange(session);

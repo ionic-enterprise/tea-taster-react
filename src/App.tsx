@@ -1,6 +1,8 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+
+import { hideContentsInBackground, isHidingContentsInBackground } from './utils/device';
 
 import SplashContainer from './components/splash/SplashContainer';
 import AuthProvider from './providers/AuthProvider';
@@ -8,9 +10,10 @@ import TeaProvider from './providers/TeaProvider';
 
 import { PrivateRoute } from './routes/PrivateRoute';
 import Tabs from './routes/Tabs';
+import AuthActionCompletePage from './pages/auth-action-complete/AuthActionCompletePage';
 import LoginPage from './pages/login/LoginPage';
+import StartPage from './pages/start/StartPage';
 import UnlockPage from './pages/unlock/UnlockPage';
-import StartPage from './pages/StartPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -31,7 +34,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/global.css';
-import { hideContentsInBackground, isHidingContentsInBackground } from './utils/device';
+import './theme/custom-colors.css';
 
 setupIonicReact();
 
@@ -43,6 +46,9 @@ const App: React.FC = () => (
       <AuthProvider>
         <SplashContainer>
           <IonRouterOutlet>
+            <Route exact path="/auth-action-complete">
+              <AuthActionCompletePage />
+            </Route>
             <Route exact path="/unlock">
               <UnlockPage />
             </Route>
