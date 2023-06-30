@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, setupIonicReact, useIonAlert } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { useRegisterSW } from 'virtual:pwa-register/react';
 
 import { hideContentsInBackground, isHidingContentsInBackground } from './utils/device';
 
@@ -40,36 +42,70 @@ setupIonicReact();
 
 isHidingContentsInBackground().then((hide) => hideContentsInBackground(hide));
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <AuthProvider>
-        <SplashContainer>
-          <IonRouterOutlet>
-            <Route exact path="/auth-action-complete">
-              <AuthActionCompletePage />
-            </Route>
-            <Route exact path="/unlock">
-              <UnlockPage />
-            </Route>
-            <Route exact path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/tabs">
-              <PrivateRoute>
-                <TeaProvider>
-                  <Tabs />
-                </TeaProvider>
-              </PrivateRoute>
-            </Route>
-            <Route exact path="/">
-              <StartPage />
-            </Route>
-          </IonRouterOutlet>
-        </SplashContainer>
-      </AuthProvider>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const [presentAlert] = useIonAlert();
+  const interval = 3600 * 1000;
+  const {
+    needRefresh: [needRefresh],
+    updateServiceWorker,
+  } = useRegisterSW({
+    onRegistered: (r) => r && setInterval(() => r.update(), interval),
+  });
+
+  const presentRefreshAlert = async () => {
+    await presentAlert({
+      header: 'Update Available',
+      message:
+        'An update is available for this application. Would you like to refresh this application to get the update?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+        },
+        {
+          text: 'Yes',
+          role: 'confirm',
+          handler: () => updateServiceWorker(),
+        },
+      ],
+    });
+  };
+
+  useEffect(() => {
+    needRefresh && presentRefreshAlert();
+  }, [needRefresh]);
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <AuthProvider>
+          <SplashContainer>
+            <IonRouterOutlet>
+              <Route exact path="/auth-action-complete">
+                <AuthActionCompletePage />
+              </Route>
+              <Route exact path="/unlock">
+                <UnlockPage />
+              </Route>
+              <Route exact path="/login">
+                <LoginPage />
+              </Route>
+              <Route path="/tabs">
+                <PrivateRoute>
+                  <TeaProvider>
+                    <Tabs />
+                  </TeaProvider>
+                </PrivateRoute>
+              </Route>
+              <Route exact path="/">
+                <StartPage />
+              </Route>
+            </IonRouterOutlet>
+          </SplashContainer>
+        </AuthProvider>
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 
 export default App;
