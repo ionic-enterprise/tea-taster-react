@@ -3,7 +3,7 @@ import { isPlatform } from '@ionic/react';
 import { clearSession, getSession, setSession } from './session-vault';
 
 const isMobile = isPlatform('hybrid');
-const url = isMobile ? 'msauth://auth-action-complete' : 'http://localhost:8100/auth-action-complete';
+const url = isMobile ? 'io.ionic.teataster://auth-action-complete' : 'http://localhost:8100/auth-action-complete';
 const options: ProviderOptions = {
   clientId: '64p9c53l5thd5dikra675suvq9',
   discoveryUrl: 'https://cognito-idp.us-east-2.amazonaws.com/us-east-2_YU8VQe29z/.well-known/openid-configuration',

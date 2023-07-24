@@ -16,7 +16,7 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
         manifestPlaceholders = [
-            'AUTH_URL_SCHEME': 'msauth'
+            'AUTH_URL_SCHEME': 'io.ionic.teataster'
         ]
     }
     buildTypes {

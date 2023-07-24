@@ -71,7 +71,7 @@ describe('Auth Utilities', () => {
 
           describe('when the refresh fails', () => {
             beforeEach(() =>
-              (AuthConnect.refreshSession as Mock).mockImplementationOnce(() => Promise.reject('refresh failed'))
+              (AuthConnect.refreshSession as Mock).mockImplementationOnce(() => Promise.reject('refresh failed')),
             );
 
             it('clears the vault', async () => {
@@ -151,7 +151,7 @@ describe('Auth Utilities', () => {
 
           describe('when the refresh fails', () => {
             beforeEach(() =>
-              (AuthConnect.refreshSession as Mock).mockImplementationOnce(() => Promise.reject('refresh failed'))
+              (AuthConnect.refreshSession as Mock).mockImplementationOnce(() => Promise.reject('refresh failed')),
             );
 
             it('clears the Vault', async () => {
@@ -190,8 +190,8 @@ describe('Auth Utilities', () => {
         clientId: '64p9c53l5thd5dikra675suvq9',
         discoveryUrl:
           'https://cognito-idp.us-east-2.amazonaws.com/us-east-2_YU8VQe29z/.well-known/openid-configuration',
-        redirectUri: 'msauth://auth-action-complete',
-        logoutUrl: 'msauth://auth-action-complete',
+        redirectUri: 'io.ionic.teataster://auth-action-complete',
+        logoutUrl: 'io.ionic.teataster://auth-action-complete',
         scope: 'openid email profile',
         audience: '',
       });
