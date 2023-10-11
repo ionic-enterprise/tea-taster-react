@@ -1,9 +1,9 @@
 PODS:
-  - Capacitor (5.2.2):
+  - Capacitor (5.5.0):
     - CapacitorCordova
   - CapacitorApp (5.0.6):
     - Capacitor
-  - CapacitorCordova (5.2.2)
+  - CapacitorCordova (5.5.0)
   - CapacitorHaptics (5.0.6):
     - Capacitor
   - CapacitorKeyboard (5.0.6):
@@ -16,9 +16,9 @@ PODS:
     - Capacitor
   - CapacitorStatusBar (5.0.6):
     - Capacitor
-  - CordovaPlugins (5.2.2):
+  - CordovaPlugins (5.5.0):
     - CapacitorCordova
-  - IonicEnterpriseAuth (5.0.4):
+  - IonicEnterpriseAuth (5.0.10):
     - Capacitor
 
 DEPENDENCIES:
@@ -59,17 +59,17 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@ionic-enterprise/auth"
 
 SPEC CHECKSUMS:
-  Capacitor: 070b18988e0f566728ae9a5eb3a7a974595f1626
+  Capacitor: 57890b363df14d5d2d5d8461aa23e886cb34da2a
   CapacitorApp: 024e1b1bea5f883d79f6330d309bc441c88ad04a
-  CapacitorCordova: 3773395d5331add072300ff6041ca2cf7b93cb0b
+  CapacitorCordova: 3d3908a3d208a11a75f9df3b18c4405c4de76e1d
   CapacitorHaptics: 1fffc1217c7e64a472d7845be50fb0c2f7d4204c
   CapacitorKeyboard: b978154b024a5f65e044908e37d15b7de58b9d12
   CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
   CapacitorShare: cd41743331cb71d217c029de54b681cbd91e0fcc
   CapacitorSplashScreen: 5fa2ab5e46cf5cc530cf16a51c80c7a986579ccd
   CapacitorStatusBar: 565c0a1ebd79bb40d797606a8992b4a105885309
-  CordovaPlugins: 3e87e2c67f12a2a9975b426ac978078ec53d2397
-  IonicEnterpriseAuth: 7bcf935c0c396beadc12ee52cd299a6646faa419
+  CordovaPlugins: 11d429fd653fe424ac24a56b8060dd5faaae2860
+  IonicEnterpriseAuth: 0406599d884f119844b1e9ebc256501bcf3c6f0e
 
 PODFILE CHECKSUM: f17c4cd06854aa571e7cbafe045de23600dcdb6f
 
