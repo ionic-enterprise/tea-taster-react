@@ -1,5 +1,7 @@
 # Tea Taster
 
+**note:** this repo has been archived. please see the [React Tutorials and Demos Repo](https://github.com/ionic-enterprise/tutorials-and-demos-react).
+
 An application for storing tea tasting notes. This application is the output of the three day Ionic Framework Enterprise training. It is also used as the starting point for some of our other product demos such as the demos for Identity Vault and Auth Connect.
 
 ## Building
